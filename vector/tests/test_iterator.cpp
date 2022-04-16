@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 04:47:13 by ehakam            #+#    #+#             */
-/*   Updated: 2022/04/15 08:07:35 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/04/16 00:19:20 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,6 @@
 using namespace ft;
 using namespace std;
 
-namespace hakam {
-	template<typename T> class A {
-		
-	};
-
-	template<> class A<bool> {
-		
-	};
-}
-
-hakam::A<int> a;
-
-template<typename T> void func() {
-	
-}
-
 int main() {
 	int *ptr = new int[10];
 	for (int i = 0; i < 10; i++)
@@ -39,8 +23,6 @@ int main() {
 	racc_iterator<int> rai(ptr);
 	racc_iterator<int> rai1(rai);
 	racc_iterator<int> rai2 = rai1;
-
-	func<int>();
 
 	cout << boolalpha;
 
