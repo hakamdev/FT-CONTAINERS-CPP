@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   test_iterator.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 04:47:13 by ehakam            #+#    #+#             */
-/*   Updated: 2022/04/17 02:21:32 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/04/17 07:21:01 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../src/random_access_iterator.hpp"
+#include "../src/reverse_random_access_iterator.hpp"
 #include "../src/vector.hpp"
 #include <iostream>
 #include <set>
@@ -18,6 +19,37 @@
 #include <vector>
 
 //using namespace ft;
+
+class Human {
+	private:
+		int age;
+		std::string name;
+	public:
+		Human( void ) : age(0), name("DEFAULT NAME") {
+			std::cout << "DEF CONS" << std::endl;
+		}
+		Human(int _age, std::string _name) : age(_age), name(_name) { 
+			std::cout << "PARAM CONS" << std::endl;
+		}
+		Human( Human const & h ) { 
+			std::cout << "COPY CONS" << std::endl;
+			*this = h;
+			print();
+			std::cout << "---------" << std::endl;
+		}
+		Human& operator = ( Human const & h ) {
+			std::cout << "COPY ASSIGN" << std::endl;
+			age = h.age;
+			name = h.name;
+			return (*this);
+		}
+		~Human() {
+			std::cout << "DESTR" << std::endl;
+		}
+		void print( void ) {
+			std::cout << "AGE: " << age << " - NAME: " << name << std::endl;
+		}
+};
 
 int main() {
 	// std::set<int> s;
@@ -32,15 +64,50 @@ int main() {
 	// 	std::cout << x << std::endl;
 	// }
 
-	int xx[] = {1, 2, 3};
+	int xx[] = {1, 2, 3, 4, 55, 66};
 
-	std::vector<int> vv(xx, xx + 3);
+	std::vector<int> vv(xx, xx + 6);
 
-	std::vector<int>::iterator start = vv.begin();
-	std::vector<int>::iterator end = vv.end();
+	std::vector<int>::iterator it = vv.begin();
+	std::vector<int>::reverse_iterator rit(it);
 
-	ft::vector<int> v(start, end);
+	ft::racc_iterator<int> myit(xx);
+	ft::rracc_iterator< ft::racc_iterator<int> > myrit(myit);
 
+	std::cout << "IT" << std::endl;
+	//std::cout << *it << std::endl;
+
+	int n = -6;
+	std::cout << (rit[n]) << std::endl;
+
+	std::cout << "MY IT" << std::endl;	
+	//std::cout << *myit << std::endl;
+	std::cout << (myrit[n]) << std::endl;
+	
+	// std::cout << *it << std::endl;
+	// std::cout << *rit << std::endl;
+
+	// std::vector<Human> v;
+
+	// Human *h1 = new Human(12, "Hamza");
+	// //Human h3;
+
+	// std::cout << "== END DECLARATION ==" << std::endl;
+
+	// std::vector<Human> v2(3, *h1);
+	// v2.push_back(*h1);
+	// v.push_back(h3);
+
+	// for (int i = 0; i < 30; ++i) {
+	// 	std::cout << "CAP:  " << v.capacity() << std::endl;
+	// 	std::cout << "SIZE: " << v.size() << std::endl;
+	// 	v.push_back(i);
+	// 	std::cout << "PUSHED: " << i << std::endl;
+	// }
+	// std::cout << "CAP:  " << v.capacity() << std::endl;
+	// std::cout << "SIZE: " << v.size() << std::endl;
+	// v.push_back(3);
+	
 	return (0);
 }
 

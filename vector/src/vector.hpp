@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 00:22:11 by ehakam            #+#    #+#             */
-/*   Updated: 2022/04/17 02:35:11 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/04/17 05:16:54 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,41 +20,41 @@ namespace ft
 	template < typename T, typename Alloc = std::allocator<T> >
 	class vector {
 		// member types
-		typedef T								value_type;
-		typedef Alloc							allocator_type;
-		typedef typename allocator_type::reference				reference;
-		typedef typename allocator_type::const_reference		const_reference;
-		typedef typename allocator_type::pointer				pointer;
-		typedef typename allocator_type::const_pointer			const_pointer;
-		typedef typename ft::racc_iterator<value_type>			iterator;
-		// typedef typename ft::racc_iterator<value_type>				const_iterator;
-		// typedef typename ft::racc_iterator<value_type>			reverse_iterator;
-		// typedef typename ft::racc_iterator<value_type>		const_reverse_iterator;
-		typedef typename iterator::difference_type				difference_type;
-		typedef size_t											size_type;
+		typedef T											value_type;
+		typedef Alloc										allocator_type;
+		typedef typename allocator_type::reference			reference;
+		typedef typename allocator_type::const_reference	const_reference;
+		typedef typename allocator_type::pointer			pointer;
+		typedef typename allocator_type::const_pointer		const_pointer;
+		typedef typename ft::racc_iterator<value_type>		iterator;
+		// typedef typename ft::racc_iterator<value_type>	const_iterator;
+		// typedef typename ft::racc_iterator<value_type>	reverse_iterator;
+		// typedef typename ft::racc_iterator<value_type>	const_reverse_iterator;
+		typedef typename iterator::difference_type			difference_type;
+		typedef size_t										size_type;
 
 		private:
 			value_type		*_data;
 			size_type		_size;
 			size_type		_capacity;
 			allocator_type	_alloc;
+			void _reallocate_and_copy_data( size_type _new_capacity );
+			void _init (size_type _initial_capacity, const allocator_type& alloc) {
+				// TODO: allocate memory for *_Data using alloc
+			}
 
 		public:
 			// constructors
-			explicit vector (const allocator_type& alloc = allocator_type()) _alloc(alloc) {
+			explicit vector (const allocator_type& alloc = allocator_type()) : _alloc(alloc), _size(0), _capacity(0), _data(NULL) {
 				// TODO: allocate memory for *_Data using alloc
-				
-				
 			}
-			explicit vector (size_type n, const value_type& val = value_type(),
-				const allocator_type& alloc = allocator_type()) {
+			explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc) {
 				// TODO: allocate memory for *_Data using alloc
 				std::cout << "N CONS" << std::endl;
 			}
 			template <class InputIterator>
-			vector (InputIterator first, InputIterator last,
-				const allocator_type& alloc = allocator_type(),
-				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type t = InputIterator()) {
+			vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type __t = InputIterator()) : _alloc(alloc) {
 				// typename ft::iterator_traits<InputIterator>::reference p;
 				// TODO: allocate memory for *_Data using alloc
 				std::cout << "InputIterator CONS" << std::endl;

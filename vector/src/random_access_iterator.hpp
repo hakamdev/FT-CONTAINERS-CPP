@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   random_access_iterator.hpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:48:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/04/17 01:34:24 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/04/17 06:36:17 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ namespace ft
 			// Make default constructor private
 			// to ensure it won't be used outside
 			// It's only here for the sh*tty canonical form.
-			racc_iterator( void ) {}
 
 		public:
 			// Constructors / Destructor
+			racc_iterator( void ) {}
 			racc_iterator( pointer ptr ) : _ptr(ptr) {}
 			racc_iterator( racc_iterator const & copy ) { *this = copy; }
 			racc_iterator& operator = ( racc_iterator const & copy ) {
