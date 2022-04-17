@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 00:22:11 by ehakam            #+#    #+#             */
-/*   Updated: 2022/04/17 07:37:36 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/04/17 08:09:10 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ namespace ft
 		typedef typename ft::racc_iterator<pointer>			iterator;
 		typedef typename ft::racc_iterator<const_pointer>	const_iterator;
 		typedef typename ft::rracc_iterator<iterator>		reverse_iterator;
-		// typedef typename ft::racc_iterator<value_type>	const_reverse_iterator;
+		typedef typename ft::rracc_iterator<const_iterator>	const_reverse_iterator;
 		typedef typename iterator::difference_type			difference_type;
 		typedef size_t										size_type;
 
@@ -39,6 +39,11 @@ namespace ft
 			size_type		_size;
 			size_type		_capacity;
 			allocator_type	_alloc;
+			iterator		_begin;
+			iterator		_end;
+			const_iterator	_cbegin;
+			const_iterator	_cend;
+			// private helper functions
 			void _reallocate_and_copy_data( size_type _new_capacity );
 			void _init (size_type _initial_capacity, const allocator_type& alloc) {
 				// TODO: allocate memory for *_Data using alloc
