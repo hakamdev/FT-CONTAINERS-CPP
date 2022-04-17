@@ -6,13 +6,14 @@
 /*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 00:22:11 by ehakam            #+#    #+#             */
-/*   Updated: 2022/04/17 05:16:54 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/04/17 07:37:36 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <memory>
 #include <iostream>
 #include "random_access_iterator.hpp"
+#include "reverse_random_access_iterator.hpp"
 #include "traits.hpp"
 
 namespace ft
@@ -26,9 +27,9 @@ namespace ft
 		typedef typename allocator_type::const_reference	const_reference;
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_pointer		const_pointer;
-		typedef typename ft::racc_iterator<value_type>		iterator;
-		// typedef typename ft::racc_iterator<value_type>	const_iterator;
-		// typedef typename ft::racc_iterator<value_type>	reverse_iterator;
+		typedef typename ft::racc_iterator<pointer>			iterator;
+		typedef typename ft::racc_iterator<const_pointer>	const_iterator;
+		typedef typename ft::rracc_iterator<iterator>		reverse_iterator;
 		// typedef typename ft::racc_iterator<value_type>	const_reverse_iterator;
 		typedef typename iterator::difference_type			difference_type;
 		typedef size_t										size_type;

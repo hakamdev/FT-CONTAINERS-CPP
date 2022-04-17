@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 04:47:13 by ehakam            #+#    #+#             */
-/*   Updated: 2022/04/17 07:21:01 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/04/17 07:55:57 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,16 @@ int main() {
 
 	std::vector<int> vv(xx, xx + 6);
 
-	std::vector<int>::iterator it = vv.begin();
+	std::vector<int>::iterator it(xx);
 	std::vector<int>::reverse_iterator rit(it);
 
-	ft::racc_iterator<int> myit(xx);
-	ft::rracc_iterator< ft::racc_iterator<int> > myrit(myit);
+	ft::racc_iterator<int*> myit(xx);
+	ft::rracc_iterator< ft::racc_iterator<int*> > myrit(myit);
 
 	std::cout << "IT" << std::endl;
 	//std::cout << *it << std::endl;
 
-	int n = -6;
+	int n = -3;
 	std::cout << (rit[n]) << std::endl;
 
 	std::cout << "MY IT" << std::endl;	

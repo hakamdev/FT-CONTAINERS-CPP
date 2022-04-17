@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   traits.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:47:05 by ehakam            #+#    #+#             */
-/*   Updated: 2022/04/17 01:31:10 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/04/17 07:54:50 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __TRAITS_HPP__
 # define __TRAITS_HPP__
 
+# include <iterator>
 namespace ft
 {
 	// for class iterators
@@ -42,7 +43,7 @@ namespace ft
 	struct iterator_traits<const Ptr*>
 	{
 		typedef std::random_access_iterator_tag	iterator_category;
-		typedef const Ptr						value_type;
+		typedef Ptr								value_type;
 		typedef const Ptr*						pointer;
 		typedef const Ptr&						reference;
 		typedef std::ptrdiff_t					difference_type;
