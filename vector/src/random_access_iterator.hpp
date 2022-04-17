@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   random_access_iterator.hpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:48:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/04/17 07:54:03 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/04/17 18:36:59 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,12 @@ namespace ft
 			// Constructors / Destructor
 			racc_iterator( void ) {}
 			racc_iterator( iterator_type _t ) : __tt(_t) {}
-			racc_iterator( racc_iterator const & copy ) { *this = copy; }
-			racc_iterator& operator = ( racc_iterator const & copy ) {
+			racc_iterator( racc_iterator<T> const & copy ) { *this = copy; }
+			template <class T2>
+			racc_iterator( const racc_iterator<T2> & copy ) { 
+				*this = copy;
+			}
+			racc_iterator& operator = ( racc_iterator<T> const & copy ) {
 				this->__tt = copy.__tt;
 				return (*this);
 			}

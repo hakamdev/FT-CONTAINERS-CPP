@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_iterator.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 04:47:13 by ehakam            #+#    #+#             */
-/*   Updated: 2022/04/17 07:55:57 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/04/17 18:32:47 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,21 +68,28 @@ int main() {
 
 	std::vector<int> vv(xx, xx + 6);
 
-	std::vector<int>::iterator it(xx);
-	std::vector<int>::reverse_iterator rit(it);
+	std::vector<int>::iterator it = vv.begin();
+	std::vector<int>::const_iterator cit = it;
+
+	// it = cit;
+	//std::vector<int>::reverse_iterator rit(it);
 
 	ft::racc_iterator<int*> myit(xx);
-	ft::rracc_iterator< ft::racc_iterator<int*> > myrit(myit);
+	ft::racc_iterator<const int*> constIt = myit;
+
+	//ft::rracc_iterator< ft::racc_iterator<std::vector<int>::iterator> > myrit(myit);
 
 	std::cout << "IT" << std::endl;
 	//std::cout << *it << std::endl;
 
+	
+
 	int n = -3;
-	std::cout << (rit[n]) << std::endl;
+	//std::cout << (rit[n]) << std::endl;
 
 	std::cout << "MY IT" << std::endl;	
 	//std::cout << *myit << std::endl;
-	std::cout << (myrit[n]) << std::endl;
+	//std::cout << (myrit[n]) << std::endl;
 	
 	// std::cout << *it << std::endl;
 	// std::cout << *rit << std::endl;
