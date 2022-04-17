@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:48:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/04/15 08:07:10 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/04/17 01:34:24 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,11 @@ namespace ft
 {
 	// random access iterator implementation.
 	template	<typename T>
-	class racc_iterator : public ft::iterator<std::random_access_iterator_tag, T> {
-
-		typedef typename ft::iterator<std::random_access_iterator_tag, T>::value_type		value_type;
-		typedef typename ft::iterator<std::random_access_iterator_tag, T>::difference_type  difference_type;
-		typedef typename ft::iterator<std::random_access_iterator_tag, T>::pointer			pointer;
-		typedef typename ft::iterator<std::random_access_iterator_tag, T>::reference		reference;
+	struct racc_iterator : public ft::iterator<std::random_access_iterator_tag, T> {
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::value_type		value_type;
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::difference_type  difference_type;
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::pointer			pointer;
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::reference		reference;
 
 		private:
 			pointer _ptr;

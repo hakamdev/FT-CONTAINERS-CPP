@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:47:05 by ehakam            #+#    #+#             */
-/*   Updated: 2022/04/15 07:33:23 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/04/17 01:31:10 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ namespace ft
 	// true specialization
 	template< typename T >
 	struct enable_if<true, T> {
-		typedef typename T type;
+		typedef T type;
 	};
 
 	// general template for all non-integral types
