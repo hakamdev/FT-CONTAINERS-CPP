@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_iterator.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 04:47:13 by ehakam            #+#    #+#             */
-/*   Updated: 2022/04/17 07:55:57 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/04/18 00:01:15 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,36 +20,36 @@
 
 //using namespace ft;
 
-class Human {
-	private:
-		int age;
-		std::string name;
-	public:
-		Human( void ) : age(0), name("DEFAULT NAME") {
-			std::cout << "DEF CONS" << std::endl;
-		}
-		Human(int _age, std::string _name) : age(_age), name(_name) { 
-			std::cout << "PARAM CONS" << std::endl;
-		}
-		Human( Human const & h ) { 
-			std::cout << "COPY CONS" << std::endl;
-			*this = h;
-			print();
-			std::cout << "---------" << std::endl;
-		}
-		Human& operator = ( Human const & h ) {
-			std::cout << "COPY ASSIGN" << std::endl;
-			age = h.age;
-			name = h.name;
-			return (*this);
-		}
-		~Human() {
-			std::cout << "DESTR" << std::endl;
-		}
-		void print( void ) {
-			std::cout << "AGE: " << age << " - NAME: " << name << std::endl;
-		}
-};
+// class Human {
+// 	private:
+// 		int age;
+// 		std::string name;
+// 	public:
+// 		Human( void ) : age(0), name("DEFAULT NAME") {
+// 			std::cout << "DEF CONS" << std::endl;
+// 		}
+// 		Human(int _age, std::string _name) : age(_age), name(_name) { 
+// 			std::cout << "PARAM CONS" << std::endl;
+// 		}
+// 		Human( Human const & h ) { 
+// 			std::cout << "COPY CONS" << std::endl;
+// 			*this = h;
+// 			print();
+// 			std::cout << "---------" << std::endl;
+// 		}
+// 		Human& operator = ( Human const & h ) {
+// 			std::cout << "COPY ASSIGN" << std::endl;
+// 			age = h.age;
+// 			name = h.name;
+// 			return (*this);
+// 		}
+// 		~Human() {
+// 			std::cout << "DESTR" << std::endl;
+// 		}
+// 		void print( void ) {
+// 			std::cout << "AGE: " << age << " - NAME: " << name << std::endl;
+// 		}
+// };
 
 int main() {
 	// std::set<int> s;
@@ -64,25 +64,38 @@ int main() {
 	// 	std::cout << x << std::endl;
 	// }
 
-	int xx[] = {1, 2, 3, 4, 55, 66};
+	int xx[] = {10, 20, 77,123, 55, 66};
 
 	std::vector<int> vv(xx, xx + 6);
 
-	std::vector<int>::iterator it(xx);
-	std::vector<int>::reverse_iterator rit(it);
+	std::vector<int>::iterator it = vv.begin();
+	std::vector<int>::const_iterator cit = vv.cbegin();
+	
+	cit = vv.cend();
+	// std::vector<int>::reverse_iterator<>
+	//std::
+
+	// it = cit;
+	//std::vector<int>::reverse_iterator rit(it);
 
 	ft::racc_iterator<int*> myit(xx);
-	ft::rracc_iterator< ft::racc_iterator<int*> > myrit(myit);
+	ft::racc_iterator<const int*> constIt = myit;
 
-	std::cout << "IT" << std::endl;
-	//std::cout << *it << std::endl;
+	std::cout << "MY IT" << std::endl;
+	constIt += 1;
+	std::cout << *(constIt) << std::endl;
+
+	cit -= 1;
+	std::cout << "THEIR IT" << std::endl;
+	std::cout << *(cit) << std::endl;
+	
 
 	int n = -3;
-	std::cout << (rit[n]) << std::endl;
+	//std::cout << (rit[n]) << std::endl;
 
 	std::cout << "MY IT" << std::endl;	
 	//std::cout << *myit << std::endl;
-	std::cout << (myrit[n]) << std::endl;
+	//std::cout << (myrit[n]) << std::endl;
 	
 	// std::cout << *it << std::endl;
 	// std::cout << *rit << std::endl;
