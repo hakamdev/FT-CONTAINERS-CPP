@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 00:22:11 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/09 17:09:40 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/09 23:33:02 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ namespace ft
                 return std::min<size_type>(this->_alloc.max_size(),
                             numeric_limits<difference_type>::max());
             }
-            
+
             void resize(size_type n, value_type val = value_type()) {
                 // TODO: Implement
             }
@@ -206,7 +206,7 @@ namespace ft
 
             void reserve(size_type n) {
                 // TODO: Implement
-            }
+            }  
 
 			reference operator[] (size_type n) {
                 return this->_begin[n];
@@ -268,13 +268,17 @@ namespace ft
 			template <class InputIterator>
     		void insert (iterator position, InputIterator first, InputIterator last) {
                 // TODO: implement
-                pointer     _p = this->_begin + (position - begin());
+                size_type   _index = static_cast<size_type>(position - begin());
+                // pointer     _p = this->_begin + _index;
                 size_type   _diff = static_cast<size_type>(last - first);
                 if (size() + _diff > this->_capacity) {
                     _reallocate();
                 }
 
-                for(size_type i = size() - 1; )
+                for(size_type i = size() - 1; i >= _index; --i) {
+                    this->_alloc.construct(this->_begin + (i + _diff), this->_begin[i]);
+                     this->_alloc.destr
+                }
             }
 
 			iterator insert (iterator position, const value_type& val) {
