@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 00:22:11 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/11 00:49:19 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/11 18:27:33 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "random_access_iterator.hpp"
 #include "reverse_random_access_iterator.hpp"
 #include "traits.hpp"
+#include "algorithms.hpp"
 
 namespace ft
 {
@@ -43,9 +44,9 @@ namespace ft
             pointer         _end;
 
 			void _init (size_type initial_capacity) {
-				// TODO: allocate memory for *_Data using alloc
+				// TODO: allocate memory for *_data using alloc
                 try {
-                    _begin = _alloc.allocate(initial_capacity);
+                    this->_begin = _alloc.allocate(initial_capacity);
                 } catch (std::bad_alloc& e) {
                     std::cerr << "bad_alloc: " << e.what() << std::endl;
                     exit(1);
@@ -53,10 +54,7 @@ namespace ft
 			}
 
             // TODO: Move to private methods
-            void _reallocate(size_type new_capacity) {
-                size_type _current_size = size();
-                // size_type _new_capacity =
-                //     std::min<size_type>(this->_alloc.max_size(), this->_capacity * 2);
+            void _reallocate(size_type new_capacity, bool copy = true) {
                 pointer _new_begin = this->_alloc.allocate(new_capacity);
 
                 // Copy data and delete
@@ -69,11 +67,10 @@ namespace ft
                 // Clean old data
                 this->_alloc.deallocate(this->_begin, this->_capacity);
 
-                // reassign _begin & _begin & _end
+                // reassign _begin & _end & _capacity
                 this->_begin = _new_begin;
-                this->_capacity = new_capacity;
-                //this->_begin = this->_begin;
                 this->_end = this->_begin[i];
+                this->_capacity = new_capacity;
             }
 
 		public:
@@ -117,11 +114,10 @@ namespace ft
                     this->_alloc.construct(&this->_begin[i], *first);
                 }
 
-                // reassign _begin & _end
-                // _begin = _begin;
+                // reassign _end
                 this->_end = this->_begin + i;
 			}
-        
+
 			vector (const vector& other) {
                 *this = other;
             }
@@ -191,7 +187,21 @@ namespace ft
             }
 
             void resize(size_type n, value_type val = value_type()) {
-                // TODO: Implement
+                if (n > this->_capacity) {
+                    _reallocate(n);
+                }
+
+                // would add new items with val, if n > size() || capacity)
+                for(size_type i = size(); i < n; ++i) {
+                    this->_alloc.construct(this->_begin + i, val);
+                }
+
+                // would destroy elements beyond n if n < size()
+                for(size_type i = n; i < size(); ++i) {
+                    this->_alloc.destroy(&this->_begin[i]);
+                }
+
+                this->_end = this->_begin + n;
             }
 
             size_type capacity() const {
@@ -203,7 +213,8 @@ namespace ft
             }
 
             void reserve(size_type n) {
-                // TODO: Implement
+                if (n <= this->_capacity) return ;
+                _reallocate(n);
             }  
 
 			reference operator[] (size_type n) {
@@ -238,13 +249,43 @@ namespace ft
                 return *(this->_end - 1);
             }
 
-			template <class InputIterator>
+			template <class InputIterator,
+                typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type __t = InputIterator()>
   			void assign(InputIterator first, InputIterator last) {
-                // TODO: implement
+                size_type   _diff = static_cast<size_type>(last - first);
+                // Clear previous content
+                clear();
+
+                // Reallocate if necessary
+                if (_diff > this->_capacity) {
+                    _reallocate(_diff);
+                }
+
+                // Copy new content from first -> last
+                size_type i = 0;
+                for (; first != last; ++i, ++first) {
+                    this->_alloc.construct(&this->_begin[i], *first);
+                }
+
+                this->_end = this->_begin + i;
             }
 
 			void assign(size_type n, const value_type& val) {
-                // TODO: implement
+                // Clear previous content
+                clear();
+
+                // Reallocate if necessary
+                if (n > this->_capacity) {
+                    _reallocate(n);
+                }
+
+                // Copy new content from first -> last
+                size_type i = 0;
+                for (; i < n; ++i) {
+					this->_alloc.construct(this->_begin + i, val);
+				}
+
+                this->_end = this->_begin + i;
             }
 
 			void push_back(const value_type& val) {
@@ -263,7 +304,8 @@ namespace ft
                 --this->_end;
             }
 
-			template <class InputIterator>
+			template <class InputIterator, 
+                typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type __t = InputIterator()>
     		void insert (iterator position, InputIterator first, InputIterator last) {
                 size_type   _index = static_cast<size_type>(position - begin());
                 size_type   _diff = static_cast<size_type>(last - first);
@@ -273,7 +315,7 @@ namespace ft
                     size_type _new_capacity = std::min<size_type>(this->_alloc.max_size(), this->_capacity * 2);
                     if (_new_capacity < size() + _diff) _new_capacity += _diff;
                     _reallocate(_new_capacity);
-                    this->_capacity = _new_capacity;
+                    // this->_capacity = _new_capacity;
                 }
 				// Move items to make space for new items
                 for(size_type i = size() - 1; i >= _index; --i) {
@@ -292,7 +334,7 @@ namespace ft
 				if (size() >= this->_capacity) {
                     size_type _new_capacity = std::min<size_type>(this->_alloc.max_size(), this->_capacity * 2);
                     _reallocate(_new_capacity);
-                    this->_capacity = _new_capacity;
+                    // this->_capacity = _new_capacity;
                 }
 				for(size_type i = size() - 1; i >= _index; --i) {
                     this->_alloc.construct(this->_begin + (i + 1), this->_begin[i]);
@@ -312,7 +354,7 @@ namespace ft
                     size_type _new_capacity = std::min<size_type>(this->_alloc.max_size(), this->_capacity * 2);
                     if (_new_capacity < size() + n) _new_capacity += n;
                     _reallocate(_new_capacity);
-                    this->_capacity = _new_capacity;
+                    // this->_capacity = _new_capacity;
                 }
 
 				// Move items to make space for new items
@@ -360,7 +402,7 @@ namespace ft
                 return (iterator(this->_end + _index));
             }
 
-			void swap (vector& x) {
+			void swap (vector<T, Alloc>& x) {
                 size_type       _tmp_capacity = x._capacity;
                 allocator_type  _tmp_alloc = x._alloc;
                 pointer         _tmp_begin = x._begin;
@@ -390,19 +432,38 @@ namespace ft
 	};
 
 	template <class T, class Alloc>
-	bool operator == (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+	bool operator == (const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs) {
+        return lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+    }
+    
 	template <class T, class Alloc>
-	bool operator != (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
-	template <class T, class Alloc>
-	bool operator < (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
-	template <class T, class Alloc>
-	bool operator <= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
-	template <class T, class Alloc>
-	bool operator > (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
-	template <class T, class Alloc>
-	bool operator >= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+	bool operator != (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+        return !(lhs == rhs);
+    }
 
 	template <class T, class Alloc>
-  	void swap (vector< T, Alloc>& x, vector< T, Alloc>& y);
+	bool operator < (const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs) {
+        return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+    }
+
+	template <class T, class Alloc>
+	bool operator <= (const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs) {
+        !(lhs > rhs);
+    }
+
+	template <class T, class Alloc>
+	bool operator > (const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs) {
+        return rhs < lhs;
+    }
+
+	template <class T, class Alloc>
+	bool operator >= (const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs) {
+        !(lhs < rhs);
+    }
+
+	template <class T, class Alloc>
+  	void swap (vector< T, Alloc>& x, vector< T, Alloc>& y) {
+        x.swap(y);
+    }
 
 } // namespace ft
