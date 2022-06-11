@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/11 20:38:10 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/11 21:18:40 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ int main() {
 	
 	int arr[] = {0, 1, 2, 3, 4};
 
-	std::vector<int> v1(arr, arr + 5);
-	
-	ft::vector<int> v2(v1.rbegin(), v1.rend() - 2);
+	ft::vector<int> v1(arr, arr + 5);
+
+	std::vector<int> v2(v1.rbegin(), v1.rend() - 2);
 
 	printv(v1);
 	printv(v2);

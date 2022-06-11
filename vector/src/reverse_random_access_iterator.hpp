@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reverse_random_access_iterator.hpp                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 05:34:16 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/05 02:09:48 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/11 21:18:22 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,19 @@
 
 # include "iterator.hpp"
 # include "random_access_iterator.hpp"
+# include "traits.hpp"
 # include <iostream>
 
 namespace ft
 {
 	// random access iterator implementation.
 	template	<typename Iter>
-	struct rracc_iterator {
-			typedef Iter									iterator_type;
-			typedef typename iterator_type::value_type		value_type;
-			typedef typename iterator_type::difference_type	difference_type;
-			typedef typename iterator_type::pointer			pointer;
-			typedef typename iterator_type::reference		reference;
+	struct rracc_iterator : public ft::iterator<std::random_access_iterator_tag, Iter> {
+			typedef Iter												iterator_type;
+			typedef typename ft::iterator_traits<Iter>::value_type		value_type;
+			typedef typename ft::iterator_traits<Iter>::difference_type	difference_type;
+			typedef typename ft::iterator_traits<Iter>::pointer			pointer;
+			typedef typename ft::iterator_traits<Iter>::reference		reference;
 
 		private:
 			iterator_type _base;
@@ -41,7 +42,7 @@ namespace ft
 				return (*this);
 			}
 			~rracc_iterator() {}
-			iterator_type base() const { return iterator_type(_base); }
+			iterator_type base() const { return _base; }
 
 			// Overloaded operators
 			bool operator == ( rracc_iterator const & other ) {
@@ -91,7 +92,7 @@ namespace ft
 				return (rracc_iterator<iterator_type>(this->_base + n));
 			}
 			difference_type operator - ( rracc_iterator const & other ) {
-				return (other._base - this->_base);
+				return (other.base() - this->base());
 			}
 			rracc_iterator& operator += ( int n ) {
 				this->_base -= n;

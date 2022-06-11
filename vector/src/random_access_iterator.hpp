@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:48:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/11 18:40:42 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/11 21:15:34 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ namespace ft
 			}
 			racc_iterator& operator = ( racc_iterator<Iter> const & copy ) { this->__tt = copy.__tt; return (*this); }
 			~racc_iterator() {}
-			iterator_type base() const { return iterator_type(__tt); }
+			iterator_type base() const { return __tt; }
 
 			// Overloaded operators
 			bool operator == ( racc_iterator const & other ) {
@@ -110,6 +110,11 @@ namespace ft
 	template <typename Iter>
 	racc_iterator<Iter> operator + ( int n, racc_iterator<Iter> const & other ) {
 		return (other + n);
+	}
+
+	template <typename Iter>
+	racc_iterator<Iter> operator - ( racc_iterator<Iter> const & lhs, racc_iterator<Iter> const & rhs ) {
+		return (lhs.base() - rhs.base());
 	}
 
 } // namespace ft
