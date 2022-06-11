@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/11 20:02:35 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/11 20:38:10 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,16 @@ void printv(V v) {
 }
 
 int main() {
-	//std::vector<int> v1(5, 100);
-	ft::vector<int> v2(5, 100);
-	std::cerr << "N VAL CONST 0" << std::endl;
+	
+	int arr[] = {0, 1, 2, 3, 4};
 
-	//printv(v1);
+	std::vector<int> v1(arr, arr + 5);
+	
+	ft::vector<int> v2(v1.rbegin(), v1.rend() - 2);
+
+	printv(v1);
 	printv(v2);
-
+	
+	std::cerr << "ENDDDDDD" << std::endl;
 	return (0);
 }

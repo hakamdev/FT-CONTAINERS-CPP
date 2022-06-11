@@ -6,10 +6,11 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 00:22:11 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/11 20:06:46 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/11 20:31:23 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdexcept>
 #include <memory>
 #include <algorithm>
 #include <iostream>
@@ -17,30 +18,6 @@
 #include "reverse_random_access_iterator.hpp"
 #include "traits.hpp"
 #include "algorithms.hpp"
-
-//////////////////////
-//////////////////////
-//////////////////////
-//////////////////////
-// template<typename V>
-// void printv(V v) {
-// 	std::cout << "===============================" << std::endl;
-// 	std::cout << "CAP   : " << v.capacity() << std::endl;
-// 	std::cout << "SZE   : " << v.size() << std::endl;
-// 	std::cout << "MX SZE: " << v.max_size() << std::endl;
-	
-// 	std::cout << "[ ";
-// 	for(size_t i = 0; i < v.size(); ++i) {
-// 		std::cout <<  v[i]; std::cout << (i < v.size() - 1 ? ", " : "");
-// 	}
-// 	std::cout << " ]" << std::endl;
-// 	std::cout << "===============================" << std::endl;
-// }
-//////////////////////
-//////////////////////
-//////////////////////
-//////////////////////
-
 
 namespace ft
 {
@@ -124,7 +101,9 @@ namespace ft
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type __t = InputIterator()) : _alloc(alloc) {
                 std::cerr << "ITER CONST " << std::endl;
                 // convert the difference between (first) & (last) iterators into size_type
-                this->_capacity = static_cast<size_type>(last - first);
+                difference_type _diff = last - first;
+                if (_diff < 0) throw std::length_error("length between first and last is a negative value");
+                this->_capacity = static_cast<size_type>(_diff);
  
                 // allocate_memory (_capacity)
                 _init(this->_capacity);
@@ -144,7 +123,14 @@ namespace ft
                 *this = other;
             }
 
-			vector& operator = (const vector& other) {
+			~vector() {
+                std::cerr << "DEST CONST " << std::endl;
+				// clear & deallocate memory using alloc
+                // clear();
+                // this->_alloc.deallocate(this->_begin, this->_capacity);
+			}
+
+            vector& operator = (const vector& other) {
                 std::cerr << "= CONST " << std::endl;
                 this->_capacity = other._capacity;
                 this->_alloc = other._alloc;
@@ -164,13 +150,6 @@ namespace ft
                 // // _end
                 this->_end = this->_begin + i;
                 return (*this);
-			}
-
-			~vector() {
-                std::cerr << "DEST CONST " << std::endl;
-				// clear & deallocate memory using alloc
-                // clear();
-                // this->_alloc.deallocate(this->_begin, this->_capacity);
 			}
 
 			// member functions
@@ -280,13 +259,16 @@ namespace ft
 			template <class InputIterator,
                 typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type>
   			void assign(InputIterator first, InputIterator last) {
-                size_type   _diff = static_cast<size_type>(last - first);
+                difference_type _diff = last - first;
+                if (_diff < 0) throw std::length_error("length between first and last is a negative value");
+                                
+                size_type   _dist = static_cast<size_type>(_diff);
                 // Clear previous content
                 clear();
 
                 // Reallocate if necessary
-                if (_diff > this->_capacity) {
-                    _reallocate(_diff);
+                if (_dist > this->_capacity) {
+                    _reallocate(_dist);
                 }
 
                 // Copy new content from first -> last
@@ -335,26 +317,29 @@ namespace ft
 			template <class InputIterator, 
                 typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type>
     		void insert (iterator position, InputIterator first, InputIterator last) {
+                difference_type _diff = last - first;
+                if (_diff < 0) throw std::length_error("length between first and last is a negative value");
+
                 size_type   _index = static_cast<size_type>(position - begin());
-                size_type   _diff = static_cast<size_type>(last - first);
+                size_type   _dist = static_cast<size_type>(_diff);
 
 				// Reallocate
-                if (size() + _diff > this->_capacity) {
+                if (size() + _dist > this->_capacity) {
                     size_type _new_capacity = std::min<size_type>(this->_alloc.max_size(), this->_capacity * 2);
-                    if (_new_capacity < size() + _diff) _new_capacity += _diff;
+                    if (_new_capacity < size() + _dist) _new_capacity += _dist;
                     _reallocate(_new_capacity);
                     // this->_capacity = _new_capacity;
                 }
 				// Move items to make space for new items
                 for(size_type i = size() - 1; i >= _index; --i) {
-                    this->_alloc.construct(this->_begin + (i + _diff), this->_begin[i]);
+                    this->_alloc.construct(this->_begin + (i + _dist), this->_begin[i]);
                     this->_alloc.destroy(&this->_begin[i]);
                 }
 				// Consturct new items in place
 				for (size_type i = _index; first != last; ++first, ++i) {
 					this->_alloc.construct(this->_begin + i, *first);
 				}
-                this->_end += _diff;
+                this->_end += _dist;
             }
 
 			iterator insert (iterator position, const value_type& val) {
