@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 00:22:11 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/11 18:27:33 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/11 20:06:46 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,30 @@
 #include "reverse_random_access_iterator.hpp"
 #include "traits.hpp"
 #include "algorithms.hpp"
+
+//////////////////////
+//////////////////////
+//////////////////////
+//////////////////////
+// template<typename V>
+// void printv(V v) {
+// 	std::cout << "===============================" << std::endl;
+// 	std::cout << "CAP   : " << v.capacity() << std::endl;
+// 	std::cout << "SZE   : " << v.size() << std::endl;
+// 	std::cout << "MX SZE: " << v.max_size() << std::endl;
+	
+// 	std::cout << "[ ";
+// 	for(size_t i = 0; i < v.size(); ++i) {
+// 		std::cout <<  v[i]; std::cout << (i < v.size() - 1 ? ", " : "");
+// 	}
+// 	std::cout << " ]" << std::endl;
+// 	std::cout << "===============================" << std::endl;
+// }
+//////////////////////
+//////////////////////
+//////////////////////
+//////////////////////
+
 
 namespace ft
 {
@@ -60,7 +84,7 @@ namespace ft
                 // Copy data and delete
                 size_type i = 0;
                 for (; i < size(); ++i) {
-                    this->_alloc.construct(&_new_begin[i],this-> _begin[i]);
+                    this->_alloc.construct(&_new_begin[i], this-> _begin[i]);
                     this->_alloc.destroy(&this->_begin[i]);
                 }
 
@@ -76,15 +100,12 @@ namespace ft
 		public:
 			// constructors
 			explicit vector (const allocator_type& alloc = allocator_type()) : _alloc(alloc), _capacity(0) {
-                // allocate memory (0)
-                _init(_capacity);
-
-                // reassign _begin & _end
-                this->_begin = NULL;
-                this->_end = NULL;
+                std::cerr << "DEF CONST " << std::endl;
+                this->_end = this->_begin = NULL;
 			}
 
 			explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _capacity(n) {
+                std::cerr << "N VAL CONST " << std::endl;
                 // allocate memory (n)
                 _init(this->_capacity);
 
@@ -94,14 +115,14 @@ namespace ft
                     this->_alloc.construct(&this->_begin[i], val);
                 }
 
-                // reassign _begin & _end
-                // _begin = _begin;
+                // // reassign _end
                 this->_end = this->_begin + i;
 			}
 
 			template <class InputIterator>
 			vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type __t = InputIterator()) : _alloc(alloc) {
+                std::cerr << "ITER CONST " << std::endl;
                 // convert the difference between (first) & (last) iterators into size_type
                 this->_capacity = static_cast<size_type>(last - first);
  
@@ -119,29 +140,37 @@ namespace ft
 			}
 
 			vector (const vector& other) {
+                std::cerr << "CPY CONST " << std::endl;
                 *this = other;
             }
 
 			vector& operator = (const vector& other) {
+                std::cerr << "= CONST " << std::endl;
                 this->_capacity = other._capacity;
                 this->_alloc = other._alloc;
-                
+                this->_end = this->_begin = NULL;
+
+                if (this->_capacity <= 0) return (*this);
+
                 // allocate memory
                 _init(this->_capacity);
                 
-                // copy elements from other->_begin
+                // // copy elements from other->_begin
                 size_type i = 0;
-                for (; i < size(); ++i) {
-                    this->_alloc.construct(&this->_begin[i], other._begin[i]);
+                for (; i < other.size(); ++i) {
+                    this->_alloc.construct(&(this->_begin[i]), other._begin[i]);
                 }
 
-                // reassign _begin & _end
-                // _begin = _begin;
+                // // _end
                 this->_end = this->_begin + i;
+                return (*this);
 			}
 
 			~vector() {
-				// TODO: deallocate memory using alloc
+                std::cerr << "DEST CONST " << std::endl;
+				// clear & deallocate memory using alloc
+                // clear();
+                // this->_alloc.deallocate(this->_begin, this->_capacity);
 			}
 
 			// member functions
@@ -182,8 +211,7 @@ namespace ft
             }
 
             size_type max_size() const {
-                return std::min<size_type>(this->_alloc.max_size(),
-                            numeric_limits<difference_type>::max());
+                return std::min<size_type>(this->_alloc.max_size(), std::numeric_limits<difference_type>::max());
             }
 
             void resize(size_type n, value_type val = value_type()) {
@@ -250,7 +278,7 @@ namespace ft
             }
 
 			template <class InputIterator,
-                typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type __t = InputIterator()>
+                typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type>
   			void assign(InputIterator first, InputIterator last) {
                 size_type   _diff = static_cast<size_type>(last - first);
                 // Clear previous content
@@ -305,7 +333,7 @@ namespace ft
             }
 
 			template <class InputIterator, 
-                typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type __t = InputIterator()>
+                typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type>
     		void insert (iterator position, InputIterator first, InputIterator last) {
                 size_type   _index = static_cast<size_type>(position - begin());
                 size_type   _diff = static_cast<size_type>(last - first);
