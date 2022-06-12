@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 00:22:11 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/12 21:00:13 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/12 21:02:45 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ namespace ft
 {
 	template < typename T, typename Alloc = std::allocator<T> >
 	class vector {
-        
         public:
             // member types
             typedef T											value_type;
@@ -496,7 +495,7 @@ namespace ft
 	bool operator == (const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs) {
         return lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin());
     }
-    
+
 	// GOOD //
 	template <class T, class Alloc>
 	bool operator != (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
