@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/12 15:31:48 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/12 20:56:58 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "../src/vector.hpp"
 
 template<typename V>
-void printv(V v) {
+void printv(V& v) {
 	std::cout << "===============================" << std::endl;
 	std::cout << "CAP   : " << v.capacity() << std::endl;
 	std::cout << "SZE   : " << v.size() << std::endl;
@@ -32,34 +32,19 @@ void printv(V v) {
 }
 
 int main() {
-	
-	std::string arr[] = {"00", "11", "22", "33", "44"};
 
-	ft::vector<std::string> v1;
+	const int arr[] = {0, 1, 2, 3, 4};
+	const int arr2[] = {0, 1, 32, 3, 4};
 
-	std::vector<std::string> v2;
+	std::vector<int> v1(arr, arr + 5);
+	std::vector<int> v2(arr2, arr2 + 5);
 
-	// printv(v1);
-	// printv(v2);
-
-	v1.reserve(300);
-	v2.reserve(300);
-
-	v1.push_back("123");
-	v1.push_back("123");
-	v1.push_back("123");
-	v1.push_back("123");
-	v1.push_back("123");
-	
-	v2.push_back("123");
-	v2.push_back("123");
-	v2.push_back("123");
-	v2.push_back("123");
-	v2.push_back("123");
-
-	printv(v1);
-	printv(v2);
-	
-	std::cerr << "ENDDDDDD" << std::endl;
+	std::cerr << std::boolalpha;
+	std::cerr << "(v1 == v2) " << (v1 == v2) << std::endl;
+	std::cerr << "(v1 != v2) " << (v1 != v2) << std::endl;
+	std::cerr << "(v1 < v2) " << (v1 < v2) << std::endl;
+	std::cerr << "(v1 > v2) " << (v1 > v2) << std::endl;
+	std::cerr << "(v1 <= v2) " << (v1 <= v2) << std::endl;
+	std::cerr << "(v1 >= v2) " << (v1 >= v2) << std::endl;
 	return (0);
 }
