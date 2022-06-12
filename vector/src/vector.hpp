@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 00:22:11 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/11 20:31:23 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/12 14:07:49 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,20 @@ namespace ft
 
                 // reassign _begin & _end & _capacity
                 this->_begin = _new_begin;
-                this->_end = this->_begin[i];
+                this->_end = this->_begin + i;
                 this->_capacity = new_capacity;
             }
 
 		public:
 			// constructors
+            
+            // GOOD //
 			explicit vector (const allocator_type& alloc = allocator_type()) : _alloc(alloc), _capacity(0) {
                 std::cerr << "DEF CONST " << std::endl;
                 this->_end = this->_begin = NULL;
 			}
 
+            // GOOD //
 			explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _capacity(n) {
                 std::cerr << "N VAL CONST " << std::endl;
                 // allocate memory (n)
@@ -96,9 +99,11 @@ namespace ft
                 this->_end = this->_begin + i;
 			}
 
+            // GOOD //
 			template <class InputIterator>
-			vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
-				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type __t = InputIterator()) : _alloc(alloc) {
+			vector (typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
+                InputIterator last, const allocator_type& alloc = allocator_type()) : _alloc(alloc) {
+
                 std::cerr << "ITER CONST " << std::endl;
                 // convert the difference between (first) & (last) iterators into size_type
                 difference_type _diff = last - first;
@@ -118,18 +123,13 @@ namespace ft
                 this->_end = this->_begin + i;
 			}
 
+            // GOOD //
 			vector (const vector& other) {
                 std::cerr << "CPY CONST " << std::endl;
                 *this = other;
             }
 
-			~vector() {
-                std::cerr << "DEST CONST " << std::endl;
-				// clear & deallocate memory using alloc
-                // clear();
-                // this->_alloc.deallocate(this->_begin, this->_capacity);
-			}
-
+            // GOOD //
             vector& operator = (const vector& other) {
                 std::cerr << "= CONST " << std::endl;
                 this->_capacity = other._capacity;
@@ -152,7 +152,15 @@ namespace ft
                 return (*this);
 			}
 
+			~vector() {
+                std::cerr << "DEST CONST " << std::endl;
+				// clear & deallocate memory using alloc
+                // clear();
+                // this->_alloc.deallocate(this->_begin, this->_capacity);
+			}
+
 			// member functions
+            // GOOD //
             iterator begin() {
                 return iterator(this->_begin);
             }
@@ -161,6 +169,7 @@ namespace ft
                 return iterator(this->_begin);
             }
 
+            // GOOD //
             iterator end() {
                 return iterator(this->_end);
             }
@@ -169,6 +178,7 @@ namespace ft
                 return const_iterator(this->_end);
             }
 
+            // GOOD //
             reverse_iterator rbegin() {
                 return reverse_iterator(end());
             }
@@ -177,6 +187,7 @@ namespace ft
                 return const_reverse_iterator(end());
             }
 
+            // GOOD //
             reverse_iterator rend() {
                 return reverse_iterator(begin());
             }
@@ -185,13 +196,72 @@ namespace ft
                 return const_reverse_iterator(begin());
             }
 
+            // GOOD //
             size_type size() const {
                 return static_cast<size_type>(end() - begin());
             }
 
+            // GOOD //
             size_type max_size() const {
                 return std::min<size_type>(this->_alloc.max_size(), std::numeric_limits<difference_type>::max());
             }
+
+            
+
+            // GOOD //
+            size_type capacity() const {
+                return this->_capacity;
+            }
+
+            // GOOD //
+            bool empty() const {
+                return size() == 0;
+            }
+
+            
+            // GOOD //
+			reference operator[] (size_type n) {
+                return this->_begin[n];
+            }
+
+			const_reference operator[] (size_type n) const {
+                return this->_begin[n];
+            }
+
+            // GOOD //
+			reference at (size_type n) {
+                if (n >= size()) throw std::out_of_range("index_out_of_range: n is larger or equal to vector size.");
+                return this->_begin[n];
+            }
+
+			const_reference at (size_type n) const {
+                if (n >= size()) throw std::out_of_range("index_out_of_range: n is larger or equal to vector size.");
+                return this->_begin[n];
+            }
+
+            // GOOD //
+			reference front() {
+                return this->_begin[0];
+            }
+
+			const_reference front() const {
+                return this->_begin[0];
+            }
+
+            // GOOD //
+			reference back() {
+                return *(this->_end - 1);
+            }
+
+			const_reference back() const {
+                return *(this->_end - 1);
+            }
+
+            void reserve(size_type n) {
+                if (n <= this->_capacity) return ;
+                if (n > max_size()) throw std::length_error("length_error: the requested size is larger than the max_size allowed.");
+                _reallocate(n);
+            }  
 
             void resize(size_type n, value_type val = value_type()) {
                 if (n > this->_capacity) {
@@ -211,57 +281,11 @@ namespace ft
                 this->_end = this->_begin + n;
             }
 
-            size_type capacity() const {
-                return this->_capacity;
-            }
-
-            bool empty() const {
-                return size() == 0;
-            }
-
-            void reserve(size_type n) {
-                if (n <= this->_capacity) return ;
-                _reallocate(n);
-            }  
-
-			reference operator[] (size_type n) {
-                return this->_begin[n];
-            }
-
-			const_reference operator[] (size_type n) const {
-                return this->_begin[n];
-            }
-
-			reference at (size_type n) {
-                return this->_begin[n];
-            }
-
-			const_reference at (size_type n) const {
-                return this->_begin[n];
-            }
-
-			reference front() {
-                return this->_begin[0];
-            }
-
-			const_reference front() const {
-                return this->_begin[0];
-            }
-
-			reference back() {
-                return *(this->_end - 1);
-            }
-
-			const_reference back() const {
-                return *(this->_end - 1);
-            }
-
-			template <class InputIterator,
-                typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type>
-  			void assign(InputIterator first, InputIterator last) {
+			template <class InputIterator>
+  			void assign(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last) {
                 difference_type _diff = last - first;
                 if (_diff < 0) throw std::length_error("length between first and last is a negative value");
-                                
+
                 size_type   _dist = static_cast<size_type>(_diff);
                 // Clear previous content
                 clear();
@@ -299,9 +323,10 @@ namespace ft
             }
 
 			void push_back(const value_type& val) {
-                if (size() >= this->_capacity) {
+                if (this->_capacity == 0 || size() >= this->_capacity) {
+                    
                     size_type _new_capacity =
-                        std::min<size_type>(this->_alloc.max_size(), this->_capacity * 2);
+                        std::min<size_type>(this->_alloc.max_size(), this->_capacity > 0 ? (this->_capacity * 2) : 1);
                     _reallocate(_new_capacity);
                 }
                 this->_alloc.construct(this->_end, val);
@@ -314,9 +339,9 @@ namespace ft
                 --this->_end;
             }
 
-			template <class InputIterator, 
-                typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type>
-    		void insert (iterator position, InputIterator first, InputIterator last) {
+			template <class InputIterator>
+    		void insert (iterator position, typename ft::enable_if<!ft::is_integral<InputIterator>::value,
+                InputIterator>::type first, InputIterator last) {
                 difference_type _diff = last - first;
                 if (_diff < 0) throw std::length_error("length between first and last is a negative value");
 
@@ -342,24 +367,7 @@ namespace ft
                 this->_end += _dist;
             }
 
-			iterator insert (iterator position, const value_type& val) {
-                size_type   _index = static_cast<size_type>(position - begin());
-				if (size() >= this->_capacity) {
-                    size_type _new_capacity = std::min<size_type>(this->_alloc.max_size(), this->_capacity * 2);
-                    _reallocate(_new_capacity);
-                    // this->_capacity = _new_capacity;
-                }
-				for(size_type i = size() - 1; i >= _index; --i) {
-                    this->_alloc.construct(this->_begin + (i + 1), this->_begin[i]);
-                    this->_alloc.destroy(&this->_begin[i]);
-                }
-				this->_alloc.construct(this->_begin + _index, val);
-                this->_end += 1;
-
-                return (iterator(this->_begin + _index));
-            }
-
-    		void insert (iterator position, size_type n, const value_type& val) {
+            void insert (iterator position, size_type n, const value_type& val) {
                 size_type   _index = static_cast<size_type>(position - begin());
 
 				// Reallocate
@@ -382,6 +390,23 @@ namespace ft
 				}
 
                 this->_end += n;
+            }
+
+			iterator insert (iterator position, const value_type& val) {
+                size_type   _index = static_cast<size_type>(position - begin());
+				if (size() >= this->_capacity) {
+                    size_type _new_capacity = std::min<size_type>(this->_alloc.max_size(), this->_capacity * 2);
+                    _reallocate(_new_capacity);
+                    // this->_capacity = _new_capacity;
+                }
+				for(size_type i = size() - 1; i >= _index; --i) {
+                    this->_alloc.construct(this->_begin + (i + 1), this->_begin[i]);
+                    this->_alloc.destroy(&this->_begin[i]);
+                }
+				this->_alloc.construct(this->_begin + _index, val);
+                this->_end += 1;
+
+                return (iterator(this->_begin + _index));
             }
 
 			iterator erase (iterator position) {

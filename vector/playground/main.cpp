@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/11 21:28:24 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/12 15:31:48 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,34 @@ void printv(V v) {
 		std::cout <<  v[i]; std::cout << (i < v.size() - 1 ? ", " : "");
 	}
 	std::cout << " ]" << std::endl;
-	std::cout << "===============================" << std::endl;
+	std::cout << "-------------------------------" << std::endl;
 }
 
 int main() {
 	
-	int arr[] = {0, 1, 2, 3, 4};
+	std::string arr[] = {"00", "11", "22", "33", "44"};
 
-	ft::vector<int> v1(arr, arr + 5);
+	ft::vector<std::string> v1;
 
-	std::vector<int> v2(v1.rbegin(), v1.rend() - 2);
+	std::vector<std::string> v2;
+
+	// printv(v1);
+	// printv(v2);
+
+	v1.reserve(300);
+	v2.reserve(300);
+
+	v1.push_back("123");
+	v1.push_back("123");
+	v1.push_back("123");
+	v1.push_back("123");
+	v1.push_back("123");
+	
+	v2.push_back("123");
+	v2.push_back("123");
+	v2.push_back("123");
+	v2.push_back("123");
+	v2.push_back("123");
 
 	printv(v1);
 	printv(v2);
