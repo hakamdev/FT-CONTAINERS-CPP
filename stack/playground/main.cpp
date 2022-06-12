@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/12 23:19:51 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/12 23:31:52 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 #include <stack>
 #include <iostream>
 #include <algorithm>
-#include "../src/algorithms.hpp"
-#include "../src/vector.hpp"
+#include "../src/stack.hpp"
 
 template<typename V>
 void printv(V& v) {
@@ -37,18 +36,31 @@ int main() {
 	const int arr[] = {0, 1, 2, 3, 4};
 	const int arr2[] = {0, 1, 32, 3, 4};
 
-	std::vector<int> v1(arr, arr + 5);
-	std::vector<int> v2(arr2, arr2 + 5);
-	std::stack<int> s;
+	ft::stack<int> s;
 
-	
+	s.push(0);
+	s.push(100);
+	s.push(200);
+
+	std::cerr << s.top() << std::endl;
+
+	s.pop();
+
+	std::cerr << s.top() << std::endl;
+
+	s.pop();
+
+	std::cerr << s.top() << std::endl;
+
+	std::cerr << "SZE: " << s.size() << std::endl;
 
 	std::cerr << std::boolalpha;
-	std::cerr << "(v1 == v2) " << (v1 == v2) << std::endl;
-	std::cerr << "(v1 != v2) " << (v1 != v2) << std::endl;
-	std::cerr << "(v1 < v2) " << (v1 < v2) << std::endl;
-	std::cerr << "(v1 > v2) " << (v1 > v2) << std::endl;
-	std::cerr << "(v1 <= v2) " << (v1 <= v2) << std::endl;
-	std::cerr << "(v1 >= v2) " << (v1 >= v2) << std::endl;
+
+	std::cerr << "EMPT: " << s.empty() << std::endl;
+	
+	s.pop();
+
+	std::cerr << "EMPT: " << s.empty() << std::endl;
+	
 	return (0);
 }

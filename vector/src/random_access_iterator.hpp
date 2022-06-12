@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:48:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/11 21:15:34 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/12 22:58:23 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ namespace ft
 			racc_iterator( racc_iterator<T2> const & copy ) {
 				this->__tt = copy.base();
 			}
-			racc_iterator& operator = ( racc_iterator<Iter> const & copy ) { this->__tt = copy.__tt; return (*this); }
+			racc_iterator& operator = ( racc_iterator<Iter> const & copy ) { this->__tt = copy.base(); return (*this); }
 			~racc_iterator() {}
 			iterator_type base() const { return __tt; }
 
