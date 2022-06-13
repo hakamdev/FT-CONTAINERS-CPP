@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 23:05:18 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/12 23:30:29 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/13 16:45:48 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ namespace ft
 			typedef size_t										size_type;
 
 		protected:
-			ft::vector<T> _c;
+			container_type _c;
 
 		public:
 			explicit stack (const container_type& ctnr = container_type()) {

@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/12 23:19:51 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/13 16:23:46 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,35 @@ void printv(V& v) {
 	std::cout << "-------------------------------" << std::endl;
 }
 
+struct XX {
+	void func() {
+		ft::vector<const int> v1;
+		ft::vector<const int>::const_iterator it = v1.begin();
+	}
+};
+
 int main() {
 
-	const int arr[] = {0, 1, 2, 3, 4};
-	const int arr2[] = {0, 1, 32, 3, 4};
+	// const int arr[] = {0, 1, 2, 3, 4};
+	// const int arr2[] = {0, 1, 32, 3, 4};
 
-	std::vector<int> v1(arr, arr + 5);
-	std::vector<int> v2(arr2, arr2 + 5);
-	std::stack<int> s;
+	//ft::vector<int> v1;
+	//std::vector<int> v2(v1.rbegin(), v1.rend());
+	//std::stack<int> s;
+
+	XX x;
+
+	x.func();
 
 	
+	
 
-	std::cerr << std::boolalpha;
-	std::cerr << "(v1 == v2) " << (v1 == v2) << std::endl;
-	std::cerr << "(v1 != v2) " << (v1 != v2) << std::endl;
-	std::cerr << "(v1 < v2) " << (v1 < v2) << std::endl;
-	std::cerr << "(v1 > v2) " << (v1 > v2) << std::endl;
-	std::cerr << "(v1 <= v2) " << (v1 <= v2) << std::endl;
-	std::cerr << "(v1 >= v2) " << (v1 >= v2) << std::endl;
+	// std::cerr << std::boolalpha;
+	// std::cerr << "(v1 == v2) " << (v1 == v2) << std::endl;
+	// std::cerr << "(v1 != v2) " << (v1 != v2) << std::endl;
+	// std::cerr << "(v1 < v2) " << (v1 < v2) << std::endl;
+	// std::cerr << "(v1 > v2) " << (v1 > v2) << std::endl;
+	// std::cerr << "(v1 <= v2) " << (v1 <= v2) << std::endl;
+	// std::cerr << "(v1 >= v2) " << (v1 >= v2) << std::endl;
 	return (0);
 }
