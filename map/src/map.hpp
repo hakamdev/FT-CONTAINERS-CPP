@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/12 22:47:08 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/13 02:22:52 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <memory>
 # include <utility>
 # include <functional>
+# include "bidirectional_iterator.hpp"
+# include "reverse_bidirectional_iterator.hpp"
 
 namespace ft
 {
@@ -35,7 +37,7 @@ namespace ft
             typedef typename allocator_type::const_reference	const_reference;
             typedef typename allocator_type::pointer			pointer;
             typedef typename allocator_type::const_pointer		const_pointer;
-			typedef typename /* a bidirectional iterator to value_type */ iterator;
+			typedef typename  /* a bidirectional iterator to const value_type */ iterator;
 			typedef typename /* a bidirectional iterator to const value_type */ const_iterator;
 			typedef typename /* a reverse bidirectional iterator to iterator */ reverse_iterator;
 			typedef typename /* a reverse bidirectional iterator to const_iterator */ const_reverse_iterator;
