@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/13 16:23:46 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/17 19:26:17 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,14 @@ struct XX {
 
 int main() {
 
-	// const int arr[] = {0, 1, 2, 3, 4};
+	const int arr[] = {0, 1, 2, 3, 4};
 	// const int arr2[] = {0, 1, 32, 3, 4};
 
-	//ft::vector<int> v1;
-	//std::vector<int> v2(v1.rbegin(), v1.rend());
+	ft::vector<const int> v1(arr, arr + 4);
+	std::vector<int> v2(v1.rbegin(), v1.rend());
 	//std::stack<int> s;
 
-	XX x;
-
-	x.func();
-
-	
-	
+	v2.assign(arr, arr + 2);
 
 	// std::cerr << std::boolalpha;
 	// std::cerr << "(v1 == v2) " << (v1 == v2) << std::endl;

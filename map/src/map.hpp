@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/13 02:22:52 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/17 16:16:14 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@
 
 namespace ft
 {
-	template < class Key,                                     		// map::key_type
-           class T,                                       			// map::mapped_type
-           class Compare = std::less<Key>,                     		// map::key_compare
-           class Alloc = std::allocator<std::pair<const Key,T> >    // map::allocator_type
+	template < typename Key,                                     		// map::key_type
+           typename T,                                       			// map::mapped_type
+           typename Compare = std::less<Key>,                     		// map::key_compare
+           typename Alloc = std::allocator<std::pair<const Key,T> >    // map::allocator_type
            >
 	class map {
 		public:
@@ -103,8 +103,8 @@ namespace ft
 			const_iterator lower_bound (const key_type& k) const;
 			iterator upper_bound (const key_type& k);
 			const_iterator upper_bound (const key_type& k) const;
-			std::pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
-			std::pair<iterator,iterator>             equal_range (const key_type& k);
+			std::pair<const_iterator, const_iterator> equal_range (const key_type& k) const;
+			std::pair<iterator, iterator>             equal_range (const key_type& k);
 
 	};
 
