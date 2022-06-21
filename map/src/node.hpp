@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/20 22:29:15 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/21 20:20:53 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,46 +19,52 @@
 
 namespace ft
 {
-	template <typename T, typename Alloc>
+	template < typename Key,                                     		// map::key_type
+           typename T,                                       			// map::mapped_type
+           typename Alloc = std::allocator<std::pair<const Key,T> >     // map::allocator_type
+           >
 	struct node {
 		// Memeber types
-		typedef T		value_type;
-		typedef Alloc	allocator_type;
+		typedef std::pair<const Key,T>	value_type;
+		typedef Key						key_type;
+		typedef T						mapped_type;
+		typedef Alloc					allocator_type;
+		typedef node<Key, T, Alloc>		node_type;
 
 		private:
 			allocator_type		_alloc;
-			
+
 		public:
 		// Member variables
 			value_type			*content;
-			node<T, Alloc>		*left;
-			node<T, Alloc>		*right;
-			node<T, Alloc>		*parent;
+			node_type			*left;
+			node_type			*right;
+			node_type			*parent;
 			int					height_factor;
 
 			node(const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) :
-				_alloc(alloc), parent(NULL), left(NULL), right(NULL), height_factor(-1) {
-				this->content =	alloc.allocate(1);
+					_alloc(alloc), parent(NULL), left(NULL), right(NULL), height_factor(-1) {
+				this->content =	this->_alloc.allocate(1);
 				this->_alloc.construct(content, val);
 			}
 
-			node(const node<T, Alloc>& parent, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) :
-				_alloc(alloc), parent(parent), left(NULL), right(NULL), height_factor(-1) {
-				this->content =	alloc.allocate(1);
+			node(const node_type& parent, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) :
+					_alloc(alloc), parent(parent), left(NULL), right(NULL), height_factor(-1) {
+				this->content =	this->_alloc.allocate(1);
 				this->_alloc.construct(content, val);
 			}
 
-			node(const node<T, Alloc>& other) {
+			node(const node_type& other) {
 				*this = other;
 			}
 
-			node& operator = (const node<T, Alloc>& other) {
-				parent = other.parent;
-				content = other.content;
-				left = other.left;
-				right = other.right;
-				height_factor = other.height_factor;
-				_alloc = other._alloc;
+			node& operator = (const node_type& other) {
+				this->parent = other.parent;
+				this->content = other.content;
+				this->left = other.left;
+				this->right = other.right;
+				this->height_factor = other.height_factor;
+				this->_alloc = other._alloc;
 			}
 
 			~node() {
