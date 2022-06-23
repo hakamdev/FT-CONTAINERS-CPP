@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/22 02:11:20 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/23 03:09:56 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ namespace ft
            >
 	class avl_tree {
 		public:
-			typedef std::pair<const Key,T>	value_type;
+			typedef std::pair<Key,T>		value_type;
 			typedef Key						key_type;
 			typedef T						mapped_type;
 			typedef Alloc					allocator_type;
@@ -44,14 +44,34 @@ namespace ft
 			typedef Compare					key_compare;
 			typedef node<value_type, Alloc>	node_type;
 
+			typedef typename allocator_type::pointer			pointer;
+			typedef typename node_allocator_type::pointer		node_pointer;
+
 		private:
-			node_type*			_root;
+			node_pointer		_root;
 			allocator_type 		_alloc;
 			node_allocator_type	_node_alloc;
-			key_compare			_comp_less;
+			key_compare	_comp_less;
 
-			node_type* _make_node(const value_type& val) {
-				node_type* _ptr = NULL;
+			// Print the tree
+			void _printTree(node_pointer root, std::string indent, bool last) {
+				if (root != NULL) {
+					std::cout << indent;
+					if (last) {
+					std::cout << "R----";
+					indent += "   ";
+					} else {
+					std::cout << "L----";
+					indent += "|  ";
+					}
+					std::cout << root->content->first << std::endl;
+					_printTree(root->left, indent, false);
+					_printTree(root->right, indent, true);
+				}
+			}
+
+			node_pointer _make_node(const value_type& val) {
+				node_pointer _ptr = NULL;
 				try {
 					_ptr = _node_alloc.allocate(1);
 					_node_alloc.construct(_ptr, node_type(val, _alloc));
@@ -62,29 +82,29 @@ namespace ft
 				return (_ptr);
 			}
 
-			node_type* _insert(node_type* parent, const value_type& val) {
+			node_pointer _insert(node_pointer parent, const value_type& val, const key_compare& _comp = key_compare()) {
 				if (parent == NULL)
 					return _make_node(val);
 
-				if (_comp_less(val.first, parent->content.first)) {
+				if (_comp(val.first, parent->content->first)) {
 					// val smaller than parent
-					parent->left = _insert(parent->left, val);
+					parent->left = _insert(parent->left, val, _comp);
 					parent->left->parent = parent;
-				} else if (_comp_less(parent->content.first, val.first))
+				} else if (_comp(parent->content->first, val.first)) {
 					// val greater to parent
-					parent->right = _insert(parent->right, val);
+					parent->right = _insert(parent->right, val, _comp);
 					parent->right->parent = parent;
-				else {
+				} else {
 					// == replace previous value
 					parent->set_content(val);
 				}
-				
+
 				parent->height = std::max(_height(parent->left), _height(parent->right)) + 1;
 			
 				return parent;
 			}
 
-			int _height(node_type* node) {
+			int _height(node_pointer node) {
 				return node == NULL ? -1 : node->height;
 			}
 
@@ -94,28 +114,16 @@ namespace ft
 
 		public:
 			avl_tree() {
+				_comp_less = key_compare();
 				// TODO:
 			}
 
-			void insert(const value_type& val) {
-				_root = _insert(_root, val);
+			void insert(const value_type& val, const key_compare& _comp = key_compare()) {
+				_root = _insert(_root, val, _comp);
 			}
 
-			// Print the tree
-			void printTree(node_type *root, std::string indent, bool last) {
-				if (root != NULL) {
-					cout << indent;
-					if (last) {
-					cout << "R----";
-					indent += "   ";
-					} else {
-					cout << "L----";
-					indent += "|  ";
-					}
-					cout << root->content << endl;
-					printTree(root->left, indent, false);
-					printTree(root->right, indent, true);
-				}
+			void printTree() {
+				_printTree(_root, "", false);
 			}
 
 	};

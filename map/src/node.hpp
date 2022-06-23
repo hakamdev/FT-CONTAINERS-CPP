@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/22 01:15:51 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/23 02:59:02 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,51 +24,59 @@ namespace ft
            typename Alloc = std::allocator<std::pair<const Key,T> >     // map::allocator_type
            >
 	struct node {
-			// Memeber types
-			typedef std::pair<const Key,T>	value_type;
-			typedef Key						key_type;
-			typedef T						mapped_type;
-			typedef Alloc					allocator_type;
-			typedef node<Key, T, Alloc>		node_type;
+			
 
-			// Member variables
-			value_type			*content;
-			node_type			*left;
-			node_type			*right;
-			node_type			*parent;
-			int					height;
+			public:
+				// Memeber types
+				typedef std::pair<Key,T>		value_type;
+				typedef Key						key_type;
+				typedef T						mapped_type;
+				typedef Alloc					allocator_type;
+				typedef node<Key, T, Alloc>		node_type;
+				typedef typename allocator_type::pointer			pointer;
 
-			node(const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) :
-					_alloc(alloc), parent(NULL), left(NULL), right(NULL), height(0) {
-				this->content =	this->_alloc.allocate(1);
-				this->_alloc.construct(content, val);
-			}
+			private:
+				allocator_type		_alloc;
 
-			node(const node_type& parent, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) :
-					_alloc(alloc), parent(parent), left(NULL), right(NULL), height(0) {
-				this->content =	this->_alloc.allocate(1);
-				this->_alloc.construct(content, val);
-			}
+			public:
+				// Member variables
+				pointer				content;
+				node_type			*left;
+				node_type			*right;
+				node_type			*parent;
+				int					height;
 
-			node(const node_type& other) {
-				*this = other;
-			}
+				node(const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) :
+						_alloc(alloc), parent(NULL), left(NULL), right(NULL), height(0) {
+					this->content =	this->_alloc.allocate(1);
+					this->_alloc.construct(content, val);
+				}
 
-			node& operator = (const node_type& other) {
-				this->parent = other.parent;
-				this->content = other.content;
-				this->left = other.left;
-				this->right = other.right;
-				this->height_factor = other.height_factor;
-				this->_alloc = other._alloc;
-			}
+				node(const node_type& parent, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) :
+						_alloc(alloc), parent(parent), left(NULL), right(NULL), height(0) {
+					this->content =	this->_alloc.allocate(1);
+					this->_alloc.construct(content, val);
+				}
 
-			~node() {
-				this->_alloc.destroy(content);
-				this->_alloc.deallocate(content, 1);
-			}
+				node(const node_type& other) {
+					*this = other;
+				}
 
-			void set_content(const value_type& val) {
+				node& operator = (const node_type& other) {
+					this->parent = other.parent;
+					this->content = other.content;
+					this->left = other.left;
+					this->right = other.right;
+					this->height_factor = other.height_factor;
+					this->_alloc = other._alloc;
+				}
+
+				~node() {
+					//this->_alloc.destroy(content);
+					//this->_alloc.deallocate(content, 1);
+				}
+
+				void set_content(const value_type& val) {
 				if (content != NULL) {
 					this->_alloc.destroy(content);
 				} else {
@@ -77,8 +85,6 @@ namespace ft
 				this->_alloc.construct(content, val);
 			}
 
-			private:
-				allocator_type		_alloc;
 	};
 
 } // namespace ft
