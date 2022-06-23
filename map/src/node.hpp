@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/23 02:59:02 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/23 16:58:56 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,19 @@ namespace ft
 				node_type			*parent;
 				int					height;
 
-				node(const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) :
+				explicit node(const value_type& val, const allocator_type& alloc = allocator_type()) :
 						_alloc(alloc), parent(NULL), left(NULL), right(NULL), height(0) {
 					this->content =	this->_alloc.allocate(1);
 					this->_alloc.construct(content, val);
 				}
 
-				node(const node_type& parent, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) :
-						_alloc(alloc), parent(parent), left(NULL), right(NULL), height(0) {
-					this->content =	this->_alloc.allocate(1);
-					this->_alloc.construct(content, val);
-				}
+				// explicit node(node_type& parent, const value_type& val, const allocator_type& alloc = allocator_type()) :
+				// 		_alloc(alloc), parent(parent), left(NULL), right(NULL), height(0) {
+				// 	this->content =	this->_alloc.allocate(1);
+				// 	this->_alloc.construct(content, val);
+				// }
 
-				node(const node_type& other) {
+				explicit node(const node_type& other) {
 					*this = other;
 				}
 
@@ -67,8 +67,9 @@ namespace ft
 					this->content = other.content;
 					this->left = other.left;
 					this->right = other.right;
-					this->height_factor = other.height_factor;
+					this->height = other.height;
 					this->_alloc = other._alloc;
+					return *this;
 				}
 
 				~node() {

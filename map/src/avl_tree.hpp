@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/23 03:09:56 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/23 17:10:44 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,19 @@ namespace ft
 				return (_ptr);
 			}
 
-			node_pointer _insert(node_pointer parent, const value_type& val, const key_compare& _comp = key_compare()) {
+			node_pointer _insert(node_pointer parent, const value_type& val) {
+				std::less<Key> _comp = std::less<Key>();
+
 				if (parent == NULL)
 					return _make_node(val);
 
 				if (_comp(val.first, parent->content->first)) {
 					// val smaller than parent
-					parent->left = _insert(parent->left, val, _comp);
+					parent->left = _insert(parent->left, val);
 					parent->left->parent = parent;
 				} else if (_comp(parent->content->first, val.first)) {
 					// val greater to parent
-					parent->right = _insert(parent->right, val, _comp);
+					parent->right = _insert(parent->right, val);
 					parent->right->parent = parent;
 				} else {
 					// == replace previous value
@@ -118,8 +120,8 @@ namespace ft
 				// TODO:
 			}
 
-			void insert(const value_type& val, const key_compare& _comp = key_compare()) {
-				_root = _insert(_root, val, _comp);
+			void insert(const value_type& val) {
+				_root = _insert(_root, val);
 			}
 
 			void printTree() {

@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/23 02:37:58 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/23 17:07:15 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ int main() {
 	ft::avl_tree<std::string, int> tr;
 
 	tr.insert(std::make_pair<std::string, int>("0", 0));
-	tr.insert(std::make_pair<std::string, int>("10", 10));
-	tr.insert(std::make_pair<std::string, int>("20", 20));
+	// tr.insert(std::make_pair<std::string, int>("10", 10));
+	// tr.insert(std::make_pair<std::string, int>("20", 20));
 
-	tr.printTree();
+	// tr.printTree();
 
 	return (0);
 }
