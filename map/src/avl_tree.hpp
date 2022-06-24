@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/24 17:49:39 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/24 20:57:49 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ namespace ft
            typename T,                                       			// map::mapped_type
            typename Compare = std::less<Key>,                     		// map::key_compare
            typename Alloc = std::allocator<std::pair<const Key,T> >,    // map::allocator_type
-		   typename NodeAlloc = std::allocator<node<std::pair<const Key,T>, Alloc> >
+		   typename NodeAlloc = std::allocator<node<Key, T, Alloc> >
            >
 	class avl_tree {
 		public:
@@ -42,7 +42,7 @@ namespace ft
 			typedef Alloc					allocator_type;
 			typedef NodeAlloc				node_allocator_type;
 			typedef Compare					key_compare;
-			typedef node<value_type, Alloc>	node_type;
+			typedef node<Key, T, Alloc>		node_type;
 
 			typedef typename allocator_type::pointer			pointer;
 			typedef typename node_allocator_type::pointer		node_pointer;
@@ -83,23 +83,32 @@ namespace ft
 			}
 
 			node_pointer _insert(node_pointer parent, const value_type& val) {
-				if (parent == NULL)
+				std::cout << "-- Inserting " << val.first << std::endl;
+
+				if (parent == NULL) {
+					std::cout << "Parent is NULL, INSERT" << std::endl;
 					return _make_node(val);
+				}
 
 				if (_comp(val.first, parent->content->first)) {
+					std::cout << "Val < Parent" << std::endl;
 					// val smaller than parent
 					parent->left = _insert(parent->left, val);
 					parent->left->parent = parent;
 				} else if (_comp(parent->content->first, val.first)) {
+					std::cout << "Val > Parent" << std::endl;
 					// val greater to parent
 					parent->right = _insert(parent->right, val);
 					parent->right->parent = parent;
 				} else {
+					std::cout << "Val == Parent" << std::endl;
 					// == replace previous value
 					parent->set_content(val);
 				}
 
 				parent->height = std::max(_height(parent->left), _height(parent->right)) + 1;
+
+				std::cout << "Height = " << parent->height << std::endl;
 			
 				return parent;
 			}
@@ -118,8 +127,7 @@ namespace ft
 			}
 
 			void insert(const value_type& val) {
-				node_pointer p = _make_node(val);
-				//_root = _insert(_root, val);
+				_root = _insert(_root, val);
 			}
 
 			void printTree() {

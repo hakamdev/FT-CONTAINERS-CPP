@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/24 17:52:48 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/24 20:58:49 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ namespace ft
            typename Alloc = std::allocator<std::pair<const Key,T> >     // map::allocator_type
            >
 	struct node {
-			
-
 			public:
 				// Memeber types
 				typedef std::pair<Key,T>		value_type;
@@ -33,7 +31,7 @@ namespace ft
 				typedef T						mapped_type;
 				typedef Alloc					allocator_type;
 				typedef node<Key, T, Alloc>		node_type;
-				typedef typename allocator_type::pointer			pointer;
+				typedef typename allocator_type::pointer	pointer;
 
 			private:
 				allocator_type		_alloc;
