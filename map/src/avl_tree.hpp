@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/23 17:10:44 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/24 17:49:39 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ namespace ft
 			node_pointer		_root;
 			allocator_type 		_alloc;
 			node_allocator_type	_node_alloc;
-			key_compare	_comp_less;
+			key_compare			_comp;
 
 			// Print the tree
 			void _printTree(node_pointer root, std::string indent, bool last) {
@@ -83,8 +83,6 @@ namespace ft
 			}
 
 			node_pointer _insert(node_pointer parent, const value_type& val) {
-				std::less<Key> _comp = std::less<Key>();
-
 				if (parent == NULL)
 					return _make_node(val);
 
@@ -116,12 +114,12 @@ namespace ft
 
 		public:
 			avl_tree() {
-				_comp_less = key_compare();
 				// TODO:
 			}
 
 			void insert(const value_type& val) {
-				_root = _insert(_root, val);
+				node_pointer p = _make_node(val);
+				//_root = _insert(_root, val);
 			}
 
 			void printTree() {

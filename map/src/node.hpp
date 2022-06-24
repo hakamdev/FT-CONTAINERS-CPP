@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/23 16:58:56 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/24 17:52:48 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,6 @@ namespace ft
 					this->content =	this->_alloc.allocate(1);
 					this->_alloc.construct(content, val);
 				}
-
-				// explicit node(node_type& parent, const value_type& val, const allocator_type& alloc = allocator_type()) :
-				// 		_alloc(alloc), parent(parent), left(NULL), right(NULL), height(0) {
-				// 	this->content =	this->_alloc.allocate(1);
-				// 	this->_alloc.construct(content, val);
-				// }
 
 				explicit node(const node_type& other) {
 					*this = other;
