@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/24 20:57:49 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/25 02:05:28 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@
 # include <iostream>
 # include <algorithm>
 # include "node.hpp"
-
-// this->_alloc.construct(&_new_begin[i], this-> _begin[i]);
-// pointer _new_begin = this->_alloc.allocate(new_capacity);
-// this->_alloc.destroy(&this->_begin[i]);
-// this->_alloc.deallocate(this->_begin, this->_capacity);
 
 namespace ft
 {
@@ -64,7 +59,7 @@ namespace ft
 					std::cout << "L----";
 					indent += "|  ";
 					}
-					std::cout << root->content->first << std::endl;
+					std::cout << root->content->first << " {" << root->height << "}" << " (" << (root->parent != NULL ? root->parent->content->first : ".")  << ")" << std::endl;
 					_printTree(root->left, indent, false);
 					_printTree(root->right, indent, true);
 				}
@@ -83,42 +78,104 @@ namespace ft
 			}
 
 			node_pointer _insert(node_pointer parent, const value_type& val) {
-				std::cout << "-- Inserting " << val.first << std::endl;
-
 				if (parent == NULL) {
-					std::cout << "Parent is NULL, INSERT" << std::endl;
 					return _make_node(val);
 				}
 
 				if (_comp(val.first, parent->content->first)) {
-					std::cout << "Val < Parent" << std::endl;
 					// val smaller than parent
 					parent->left = _insert(parent->left, val);
 					parent->left->parent = parent;
 				} else if (_comp(parent->content->first, val.first)) {
-					std::cout << "Val > Parent" << std::endl;
 					// val greater to parent
 					parent->right = _insert(parent->right, val);
 					parent->right->parent = parent;
 				} else {
-					std::cout << "Val == Parent" << std::endl;
 					// == replace previous value
 					parent->set_content(val);
 				}
 
-				parent->height = std::max(_height(parent->left), _height(parent->right)) + 1;
+				// Calculate node hieght for balancing.
+				_calculate_height(parent);
 
-				std::cout << "Height = " << parent->height << std::endl;
-			
+				parent = _balance_tree(parent);
+
 				return parent;
+			}
+
+			void _calculate_height(node_pointer node) {
+				// Calculate node hieght for balancing.
+				node->height = std::max(_height(node->left), _height(node->right)) + 1;
 			}
 
 			int _height(node_pointer node) {
 				return node == NULL ? -1 : node->height;
 			}
 
-			void _balance_tree() {
-				// TODO: 
+			int _get_balance_factor(node_pointer node) {
+				return _height(node->left) - _height(node->right);
+			}
+
+			bool _is_left_heavy(node_pointer node) {
+				return _get_balance_factor(node) > 1;
+			}
+
+			bool _is_right_heavy(node_pointer node) {
+				return _get_balance_factor(node) < -1;
+			}
+
+			node_pointer _balance_tree(node_pointer parent) {
+				if (_is_right_heavy(parent)) {
+					if (_get_balance_factor(parent->right) > 0)
+						parent->right = _right_rotate(parent->right);
+					return _left_rotate(parent);
+				} else if (_is_left_heavy(parent)) {
+					if (_get_balance_factor(parent->left) < 0)
+						parent->left = _left_rotate(parent->left);
+					return _right_rotate(parent);
+				}
+				return (parent);
+			}
+
+			node_pointer _left_rotate(node_pointer parent) {
+				// Perform rotation
+				node_pointer new_parent = parent->right;
+				parent->right = new_parent->left;
+				new_parent->left = parent;
+
+				// Reset parents
+				new_parent->parent = parent->parent;
+				if (parent->right != NULL)
+					parent->right->parent = parent;
+				if (new_parent->left != NULL)
+					new_parent->left->parent = new_parent;
+
+				// Reset height
+				_calculate_height(parent);
+				_calculate_height(new_parent);
+				
+				return (new_parent);
+			}
+
+			node_pointer _right_rotate(node_pointer parent) {
+				// Perform rotation
+				node_pointer new_parent = parent->left;
+				parent->left = new_parent->right;
+				new_parent->right = parent;
+
+				// Reset parents
+				new_parent->parent = parent->parent;
+				if (parent->left != NULL)
+					parent->left->parent = parent;
+				if (new_parent->right != NULL)
+					new_parent->right->parent = new_parent;
+
+				// Reset height
+				_calculate_height(parent);
+				_calculate_height(new_parent);
+
+				// Return new_parent to assign it to parent
+				return (new_parent);
 			}
 
 		public:

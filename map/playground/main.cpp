@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/24 21:10:28 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/25 02:00:26 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,18 @@ int main() {
 
 	ft::avl_tree<std::string, int> tr;
 
-	tr.insert(std::make_pair<std::string, int>("7", 100));
-	tr.insert(std::make_pair<std::string, int>("3", 10));
+	tr.insert(std::make_pair<std::string, int>("0", 100));
+	tr.insert(std::make_pair<std::string, int>("1", 10));
+	tr.insert(std::make_pair<std::string, int>("2", 20));
+	tr.insert(std::make_pair<std::string, int>("3", 20));
+	tr.insert(std::make_pair<std::string, int>("4", 20));
+	tr.insert(std::make_pair<std::string, int>("5", 20));
+	tr.insert(std::make_pair<std::string, int>("6", 20));
+	tr.insert(std::make_pair<std::string, int>("7", 20));
+	tr.insert(std::make_pair<std::string, int>("8", 20));
 	tr.insert(std::make_pair<std::string, int>("9", 20));
-	// tr.insert(std::make_pair<std::string, int>("5", 20));
-	// tr.insert(std::make_pair<std::string, int>("8", 20));
-	// tr.insert(std::make_pair<std::string, int>("9", 20));
-	// tr.insert(std::make_pair<std::string, int>("1", 20));
 
 	tr.printTree();
-
-	// std::allocator<std::pair<std::string, int> > alloc;
-	// std::pair<std::string, int> *p1 = alloc.allocate(1);
-	// alloc.construct(p1, std::pair<std::string, int>("key", 100));
 
 	return (0);
 }
