@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/25 06:24:00 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/25 23:48:38 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <functional>
 # include "bidirectional_iterator.hpp"
 # include "reverse_bidirectional_iterator.hpp"
+# include "avl_tree.hpp"
 
 namespace ft
 {
@@ -33,19 +34,21 @@ namespace ft
 			typedef T											mapped_type;
 			typedef Compare										key_compare;
 			typedef Alloc										allocator_type;
+			typedef typename ft::avl_tree<Key, T, Alloc>		tree;
 			typedef typename allocator_type::reference			reference;
             typedef typename allocator_type::const_reference	const_reference;
             typedef typename allocator_type::pointer			pointer;
             typedef typename allocator_type::const_pointer		const_pointer;
-			typedef typename  /* a bidirectional iterator to const value_type */ iterator;
-			typedef typename /* a bidirectional iterator to const value_type */ const_iterator;
-			typedef typename /* a reverse bidirectional iterator to iterator */ reverse_iterator;
-			typedef typename /* a reverse bidirectional iterator to const_iterator */ const_reverse_iterator;
-			typedef typename /*iterator::difference_type		*/	difference_type;
+			typedef ft::bidir_iterator<tree>   					iterator;
+			typedef ft::bidir_iterator<const tree> 				const_iterator;
+			typedef ft::rbidir_iterator<tree>					reverse_iterator;
+			typedef ft::rbidir_iterator<const tree>				const_reverse_iterator;
+			typedef ptrdiff_t									difference_type;
 			typedef size_t										size_type;
 
 		private:
 			allocator_type		_alloc;
+			tree				_tree;
 
 		public:
 			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) {
@@ -69,7 +72,10 @@ namespace ft
 				// TODO: 
 			}
 			
-			iterator begin();
+			iterator begin() {
+				return 
+			}
+
 			const_iterator begin() const;
 			iterator end();
 			const_iterator end() const;

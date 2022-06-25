@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/25 19:31:00 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/25 23:56:19 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <iostream>
 # include <algorithm>
 # include "node.hpp"
+# include "bidirectional_iterator.hpp"
+# include "reverse_bidirectional_iterator.hpp"
 
 namespace ft
 {
@@ -247,6 +249,15 @@ namespace ft
 				return _root;
 			}
 
+			ft::bidir_iterator& begin() const {
+				return ft::bidir_iterator(this->min_node(), _root);
+			}
+
+			ft::bidir_iterator& end() const {
+				ft::bidir_iterator it = ft::bidir_iterator(this->max_node(), _root);
+				return ++it;
+			}
+
 			void printTree() {
 				_printTree(_root, "", false);
 			}
@@ -283,13 +294,17 @@ namespace ft
 					while (curr != NULL && _compare(node->content->first, curr->content->first)) {
 						curr = curr->parent;
 					}
+					// Crash when trying to access prev node of min_node :/
+					if (curr == NULL) {
+						curr = curr->parent;
+					}
 					return curr;
 				} else {
 					return max_node(node->left);
 				}
 			}
 
-			static node_pointer make_node(const value_type& val) {
+			static node_pointer make_node(const value_type& val = value_type()) {
 				node_pointer _ptr = NULL;
 				try {
 					_ptr = _node_alloc.allocate(1);
@@ -301,6 +316,12 @@ namespace ft
 				return (_ptr);
 			}
 
+			static void destroy_node(node_pointer node) {
+				node_allocator_type _node_alloc;
+				_node_alloc.destroy(node);
+				_node_alloc.deallocate(node, 1);
+			}
+	
 	};
 } // namespace ft
 
