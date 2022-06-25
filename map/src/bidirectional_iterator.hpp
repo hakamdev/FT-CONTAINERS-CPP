@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bidirectional_iterator.hpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 22:54:07 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/13 02:13:10 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/25 07:04:41 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ namespace ft
 
 		typedef Iter															iterator_type;
 		typedef typename ft::iterator_traits<iterator_type>::value_type			value_type;
-		typedef typename ft::iterator_traits<iterator_type>::difference_type	difference_type;
 		typedef typename ft::iterator_traits<iterator_type>::pointer			pointer;
 		typedef typename ft::iterator_traits<iterator_type>::reference			reference;
 
@@ -33,7 +32,7 @@ namespace ft
 
 		// Constructors / Destructor
 		bidir_iterator( void ) : _base() {}
-		bidir_iterator( iterator_type base ) : _base(base) {}
+		bidir_iterator( const iterator_type& base ) : _base(base) {}
 		bidir_iterator( bidir_iterator<iterator_type> const & copy ) { *this = copy; }
 		template <typename T2>
 		bidir_iterator( bidir_iterator<T2> const & copy ) { this->_base = copy.base(); }

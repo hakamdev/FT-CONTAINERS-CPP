@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/17 16:16:14 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/25 06:24:00 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ namespace ft
 				// TODO: 
 			}
 				
-			map (const map<Key, T>& x) {
+			map (const map& x) {
 				// TODO: 
 			}
 
-			map<Key, T>& operator = (const map<Key, T>& x) {
+			map& operator = (const map& x) {
 				// TODO: 
 			}
 

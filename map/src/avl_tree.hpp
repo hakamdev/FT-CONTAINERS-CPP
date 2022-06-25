@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/25 04:12:25 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/25 07:07:01 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ namespace ft
            >
 	class avl_tree {
 		public:
-			typedef std::pair<Key,T>						value_type;
+			typedef std::pair<const Key,T>					value_type;
 			typedef Key										key_type;
 			typedef T										mapped_type;
 			typedef Alloc									allocator_type;
@@ -38,6 +38,7 @@ namespace ft
 			typedef Compare									key_compare;
 			typedef node<const Key, T, Alloc>				node_type;
 			typedef typename allocator_type::pointer		pointer;
+			typedef typename allocator_type::reference		reference;
 			typedef typename node_allocator_type::pointer	node_pointer;
 
 		private:
@@ -100,16 +101,6 @@ namespace ft
 				return parent;
 			}
 
-			node_pointer _min_node(node_pointer parent) {
-				if (parent->left == NULL) return parent;
-				return _min_node(parent->left);
-			}
-
-			node_pointer _max_node(node_pointer parent) {
-				if (parent->right == NULL) return parent;
-				return _max_node(parent->right);
-			}
-
 			node_pointer _delete_node(node_pointer parent, const Key& key) {
 				if (parent == NULL) return NULL;
 				if (_comp(key, parent->content->first)) {
@@ -133,10 +124,11 @@ namespace ft
 						// Both left and right are NOT NULL
 						// Find max_node in the left subtree
 				
-						node_pointer max = _max_node(parent->left);
+						node_pointer max = max_node(parent->left);
 						// replace current node content with max->content
-						_alloc.destroy(parent->content);
-						_alloc.construct(parent->content, *max->content);
+						parent->set_content(*max->content);
+						// _alloc.destroy(parent->content);
+						// _alloc.construct(parent->content, *max->content);
 						// find and delete the max_node from its old position
 						parent->left = _delete_node(parent->left, parent->content->first);
 					}
@@ -223,8 +215,34 @@ namespace ft
 			}
 
 		public:
-			avl_tree() {
-				// TODO:
+			avl_tree(const key_compare& comp = key_compare(),
+					const allocator_type& alloc = allocator_type(),
+					const node_allocator_type& node_alloc = node_allocator_type()) : 
+					_comp(comp), _alloc(alloc), _node_alloc(node_alloc) {
+			}
+
+			// avl_tree(node_pointer root,
+			// 		const key_compare& comp = key_compare(),
+			// 		const allocator_type& alloc = allocator_type(),
+			// 		const node_allocator_type& node_alloc = node_allocator_type()) : 
+			// 		_comp(comp), _alloc(alloc), _node_alloc(node_alloc) {
+			// 	_root = root;
+			// }
+
+			avl_tree(const avl_tree& other) {
+				*this = other;
+			}
+
+			avl_tree& operator = (const avl_tree& other) {
+				this->_alloc = other._alloc;
+				this->_node_alloc = other._node_alloc;
+				this->_comp = other._comp;
+				node_pointer curr = other.min_node();
+				do {
+					if (curr == NULL) break;
+					insert(*curr->content);
+				} while((curr = next_node(curr)) != NULL);
+				return *this;
 			}
 
 			void insert(const value_type& val) {
@@ -235,19 +253,63 @@ namespace ft
 				_root = _delete_node(_root, key);
 			}
 
-			node_pointer min_node() {
+			node_pointer min_node() const {
 				if (_root == NULL) return NULL;
-				return _min_node(_root);
+				return avl_tree::min_node(_root);
 			}
 
-			node_pointer max_node() {
+			node_pointer max_node() const {
 				if (_root == NULL) return NULL;
-				return _max_node(_root);
+				return avl_tree::max_node(_root);
+			}
+
+			node_pointer root() const {
+				return _root;
 			}
 
 			void printTree() {
 				_printTree(_root, "", false);
 			}
+
+			static node_pointer min_node(node_pointer parent) {
+				if (parent->left == NULL) return parent;
+				return min_node(parent->left);
+			}
+
+			static node_pointer max_node(node_pointer parent) {
+				if (parent->right == NULL) return parent;
+				return max_node(parent->right);
+			}
+
+			static node_pointer next_node(node_pointer node) {
+				key_compare	_compare;
+				if (node == NULL) return NULL;
+				if (node->right == NULL) {
+					node_pointer curr = node->parent;
+					while (curr != NULL && _compare(curr->content->first, node->content->first)) {
+						curr = curr->parent;
+					}
+					return curr;
+				} else {
+					return min_node(node->right);
+				}
+			}
+
+			static node_pointer prev_node(node_pointer node) {
+				key_compare	_compare;
+				if (node == NULL) return NULL;
+				if (node->left == NULL) {
+					node_pointer curr = node->parent;
+					while (curr != NULL && _compare(node->content->first, curr->content->first)) {
+						curr = curr->parent;
+					}
+					return curr;
+				} else {
+					return max_node(node->left);
+				}
+			}
+
+			
 
 	};
 } // namespace ft
