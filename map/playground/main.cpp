@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/25 02:00:26 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/25 04:10:18 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,6 @@ int main() {
 	// const int arr[] = {0, 1, 2, 3, 4};
 	// const int arr2[] = {0, 1, 32, 3, 4};
 
-	// std::map<std::string, int> m;
-
-	// std::pair<std::string, int>("", 0);
-
-	// std::make_pair<std::string, int>("", 0);
-
 	ft::avl_tree<std::string, int> tr;
 
 	tr.insert(std::make_pair<std::string, int>("0", 100));
@@ -40,6 +34,22 @@ int main() {
 	tr.insert(std::make_pair<std::string, int>("7", 20));
 	tr.insert(std::make_pair<std::string, int>("8", 20));
 	tr.insert(std::make_pair<std::string, int>("9", 20));
+
+	std::cout << "MIN: " << tr.min_node()->content->first << std::endl;
+
+	std::cout << "MAX: " << tr.max_node()->content->first << std::endl;
+
+	tr.printTree();
+
+	tr.delete_node("7");
+
+	tr.printTree();
+
+	tr.delete_node("8");
+
+	tr.printTree();
+
+	tr.delete_node("9");
 
 	tr.printTree();
 

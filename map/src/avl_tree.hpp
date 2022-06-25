@@ -6,13 +6,12 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/25 02:05:28 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/25 04:12:25 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __AVL_TREE_HPP__
 # define __AVL_TREE_HPP__
-
 
 # include <memory>
 # include <utility>
@@ -26,21 +25,20 @@ namespace ft
 	template < typename Key,                                     		// map::key_type
            typename T,                                       			// map::mapped_type
            typename Compare = std::less<Key>,                     		// map::key_compare
-           typename Alloc = std::allocator<std::pair<const Key,T> >,    // map::allocator_type
-		   typename NodeAlloc = std::allocator<node<Key, T, Alloc> >
+           typename Alloc = std::allocator<std::pair<const Key, T> >,    // map::allocator_type
+		   typename NodeAlloc = std::allocator<node<const Key, T, Alloc> >
            >
 	class avl_tree {
 		public:
-			typedef std::pair<Key,T>		value_type;
-			typedef Key						key_type;
-			typedef T						mapped_type;
-			typedef Alloc					allocator_type;
-			typedef NodeAlloc				node_allocator_type;
-			typedef Compare					key_compare;
-			typedef node<Key, T, Alloc>		node_type;
-
-			typedef typename allocator_type::pointer			pointer;
-			typedef typename node_allocator_type::pointer		node_pointer;
+			typedef std::pair<Key,T>						value_type;
+			typedef Key										key_type;
+			typedef T										mapped_type;
+			typedef Alloc									allocator_type;
+			typedef NodeAlloc								node_allocator_type;
+			typedef Compare									key_compare;
+			typedef node<const Key, T, Alloc>				node_type;
+			typedef typename allocator_type::pointer		pointer;
+			typedef typename node_allocator_type::pointer	node_pointer;
 
 		private:
 			node_pointer		_root;
@@ -48,16 +46,15 @@ namespace ft
 			node_allocator_type	_node_alloc;
 			key_compare			_comp;
 
-			// Print the tree
 			void _printTree(node_pointer root, std::string indent, bool last) {
 				if (root != NULL) {
 					std::cout << indent;
 					if (last) {
 					std::cout << "R----";
-					indent += "   ";
+					indent += "     ";
 					} else {
 					std::cout << "L----";
-					indent += "|  ";
+					indent += "|    ";
 					}
 					std::cout << root->content->first << " {" << root->height << "}" << " (" << (root->parent != NULL ? root->parent->content->first : ".")  << ")" << std::endl;
 					_printTree(root->left, indent, false);
@@ -101,6 +98,53 @@ namespace ft
 				parent = _balance_tree(parent);
 
 				return parent;
+			}
+
+			node_pointer _min_node(node_pointer parent) {
+				if (parent->left == NULL) return parent;
+				return _min_node(parent->left);
+			}
+
+			node_pointer _max_node(node_pointer parent) {
+				if (parent->right == NULL) return parent;
+				return _max_node(parent->right);
+			}
+
+			node_pointer _delete_node(node_pointer parent, const Key& key) {
+				if (parent == NULL) return NULL;
+				if (_comp(key, parent->content->first)) {
+					// val smaller than parent
+					parent->left = _delete_node(parent->left, key);
+				} else if (_comp(parent->content->first, key)) {
+					// val greater to parent
+					parent->right = _delete_node(parent->right, key);
+				} else {
+					// key found, now start deletion
+					if (parent->left == NULL || parent->right == NULL) {
+						// Now we replace parent by left/right depend. on which is not NULL
+						node_pointer new_parent = parent->left != NULL ? parent->left : parent->right;
+						// destroy the parent
+						_node_alloc.destroy(parent);
+						_node_alloc.deallocate(parent, 1);
+						// asign the new parent left/right/NULL
+						parent = new_parent;
+						if (parent == NULL) return NULL;
+					} else {
+						// Both left and right are NOT NULL
+						// Find max_node in the left subtree
+				
+						node_pointer max = _max_node(parent->left);
+						// replace current node content with max->content
+						_alloc.destroy(parent->content);
+						_alloc.construct(parent->content, *max->content);
+						// find and delete the max_node from its old position
+						parent->left = _delete_node(parent->left, parent->content->first);
+					}
+				}
+				// reset height of parent and rebalance the parent subtree.
+				_calculate_height(parent);
+				parent = _balance_tree(parent);
+				return (parent);
 			}
 
 			void _calculate_height(node_pointer node) {
@@ -185,6 +229,20 @@ namespace ft
 
 			void insert(const value_type& val) {
 				_root = _insert(_root, val);
+			}
+
+			void delete_node(const Key& key) {
+				_root = _delete_node(_root, key);
+			}
+
+			node_pointer min_node() {
+				if (_root == NULL) return NULL;
+				return _min_node(_root);
+			}
+
+			node_pointer max_node() {
+				if (_root == NULL) return NULL;
+				return _max_node(_root);
 			}
 
 			void printTree() {

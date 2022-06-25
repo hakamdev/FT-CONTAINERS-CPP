@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/24 20:58:49 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/25 04:00:38 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ namespace ft
 {
 	template < typename Key,                                     		// map::key_type
            typename T,                                       			// map::mapped_type
-           typename Alloc = std::allocator<std::pair<const Key,T> >     // map::allocator_type
+           typename Alloc = std::allocator<std::pair<const Key, T> >     // map::allocator_type
            >
 	struct node {
 			public:
 				// Memeber types
-				typedef std::pair<Key,T>		value_type;
-				typedef Key						key_type;
-				typedef T						mapped_type;
-				typedef Alloc					allocator_type;
-				typedef node<Key, T, Alloc>		node_type;
+				typedef std::pair<const Key, T>				value_type;
+				typedef Key									key_type;
+				typedef T									mapped_type;
+				typedef Alloc								allocator_type;
+				typedef node<const Key, T, Alloc>			node_type;
 				typedef typename allocator_type::pointer	pointer;
 
 			private:
@@ -55,8 +55,9 @@ namespace ft
 				}
 
 				node& operator = (const node_type& other) {
+					this->content =	this->_alloc.allocate(1);
+					this->_alloc.construct(content, *other.content);
 					this->parent = other.parent;
-					this->content = other.content;
 					this->left = other.left;
 					this->right = other.right;
 					this->height = other.height;
@@ -65,8 +66,8 @@ namespace ft
 				}
 
 				~node() {
-					//this->_alloc.destroy(content);
-					//this->_alloc.deallocate(content, 1);
+					this->_alloc.destroy(content);
+					this->_alloc.deallocate(content, 1);
 				}
 
 				void set_content(const value_type& val) {
