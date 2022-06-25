@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 22:54:07 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/25 07:04:41 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/25 19:32:38 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,33 @@ namespace ft
 	struct bidir_iterator : public ft::iterator<std::bidirectional_iterator_tag, Iter> {
 
 		typedef Iter															iterator_type;
+		typedef typename Iter::node_pointer										node_pointer;
 		typedef typename ft::iterator_traits<iterator_type>::value_type			value_type;
 		typedef typename ft::iterator_traits<iterator_type>::pointer			pointer;
 		typedef typename ft::iterator_traits<iterator_type>::reference			reference;
 
 		private:
-			iterator_type _base;
+			node_pointer _base;
+			node_pointer _prev;
 
 		// Constructors / Destructor
 		bidir_iterator( void ) : _base() {}
-		bidir_iterator( const iterator_type& base ) : _base(base) {}
-		bidir_iterator( bidir_iterator<iterator_type> const & copy ) { *this = copy; }
+		bidir_iterator( const node_pointer& base ) : _base(base) {}
+		bidir_iterator( const bidir_iterator& copy ) {
+			*this = copy;
+		}
 		template <typename T2>
-		bidir_iterator( bidir_iterator<T2> const & copy ) { this->_base = copy.base(); }
-		bidir_iterator& operator = ( bidir_iterator<Iter> const & copy ) { this->_base = copy.base(); return (*this); }
+		bidir_iterator( const bidir_iterator<T2>& copy ) {
+			this->_base = copy.base();
+		}
+		bidir_iterator& operator = ( const bidir_iterator& copy ) {
+			this->_base = copy.base(); return (*this);
+		}
 		~bidir_iterator() {}
 
-		iterator_type base() const { return _base; }
-
+		iterator_type base() const {
+			return _base;
+		}
 		// Overloaded operators
 		bool operator == ( racc_iterator const & other ) {
 			return (this->_base == other._base);
@@ -52,21 +61,25 @@ namespace ft
 			return (*this->_base);
 		}
 		bidir_iterator& operator ++ () {
-			++this->_base;
+			_prev = _base;
+			_base = iterator_type::next_node(_base);
 			return (*this);
 		}
 		bidir_iterator operator ++ ( int ) {
-			bidir_iterator<Iter> old(*this);
-			++this->_base;
+			bidir_iterator<Iter> old(_base);
+			_prev = _base;
+			_base = iterator_type::next_node(_base);
 			return (old);
 		}
 		bidir_iterator& operator -- () {
-			--this->_base;
+			_prev = _base;
+			_base = iterator_type::prev_node(_base);
 			return (*this);
 		}
 		bidir_iterator operator -- ( int ) {
-			bidir_iterator<Iter> old(*this);
-			--this->_base;
+			bidir_iterator<Iter> old(_base);
+			_prev = _base;
+			_base = iterator_type::prev_node(_base);
 			return (old);
 		}
 	};

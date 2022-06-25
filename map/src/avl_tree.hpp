@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/25 07:07:01 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/25 19:31:00 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,21 +63,9 @@ namespace ft
 				}
 			}
 
-			node_pointer _make_node(const value_type& val) {
-				node_pointer _ptr = NULL;
-				try {
-					_ptr = _node_alloc.allocate(1);
-					_node_alloc.construct(_ptr, node_type(val, _alloc));
-				} catch (std::exception& e) {
-					std::cerr << e.what() << std::endl;
-					exit(1);
-				}
-				return (_ptr);
-			}
-
 			node_pointer _insert(node_pointer parent, const value_type& val) {
 				if (parent == NULL) {
-					return _make_node(val);
+					return make_node(val);
 				}
 
 				if (_comp(val.first, parent->content->first)) {
@@ -221,14 +209,6 @@ namespace ft
 					_comp(comp), _alloc(alloc), _node_alloc(node_alloc) {
 			}
 
-			// avl_tree(node_pointer root,
-			// 		const key_compare& comp = key_compare(),
-			// 		const allocator_type& alloc = allocator_type(),
-			// 		const node_allocator_type& node_alloc = node_allocator_type()) : 
-			// 		_comp(comp), _alloc(alloc), _node_alloc(node_alloc) {
-			// 	_root = root;
-			// }
-
 			avl_tree(const avl_tree& other) {
 				*this = other;
 			}
@@ -283,7 +263,7 @@ namespace ft
 
 			static node_pointer next_node(node_pointer node) {
 				key_compare	_compare;
-				if (node == NULL) return NULL;
+				//if (node == NULL) return NULL;
 				if (node->right == NULL) {
 					node_pointer curr = node->parent;
 					while (curr != NULL && _compare(curr->content->first, node->content->first)) {
@@ -297,7 +277,7 @@ namespace ft
 
 			static node_pointer prev_node(node_pointer node) {
 				key_compare	_compare;
-				if (node == NULL) return NULL;
+				//if (node == NULL) return NULL;
 				if (node->left == NULL) {
 					node_pointer curr = node->parent;
 					while (curr != NULL && _compare(node->content->first, curr->content->first)) {
@@ -309,7 +289,17 @@ namespace ft
 				}
 			}
 
-			
+			static node_pointer make_node(const value_type& val) {
+				node_pointer _ptr = NULL;
+				try {
+					_ptr = _node_alloc.allocate(1);
+					_node_alloc.construct(_ptr, node_type(val, _alloc));
+				} catch (std::exception& e) {
+					std::cerr << e.what() << std::endl;
+					exit(1);
+				}
+				return (_ptr);
+			}
 
 	};
 } // namespace ft

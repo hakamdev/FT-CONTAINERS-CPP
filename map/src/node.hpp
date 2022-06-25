@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/25 07:07:43 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/25 18:17:10 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ namespace ft
 				*this = other;
 			}
 
+			~node() {
+				this->_alloc.destroy(content);
+				this->_alloc.deallocate(content, 1);
+			}
+
 			node& operator = (const node_type& other) {
 				this->content =	this->_alloc.allocate(1);
 				this->_alloc.construct(content, *other.content);
@@ -66,11 +71,6 @@ namespace ft
 				return *this;
 			}
 
-			~node() {
-				this->_alloc.destroy(content);
-				this->_alloc.deallocate(content, 1);
-			}
-
 			void set_content(const value_type& val) {
 				if (content != NULL) {
 					this->_alloc.destroy(content);
@@ -80,6 +80,18 @@ namespace ft
 				this->_alloc.construct(content, val);
 			}
 
+			bool operator == ( const node_type& other ) {
+				return (*this->content == *other.content
+						&& this->parent == other.parent
+						&& this->left == other.left
+						&& this->right == other.right
+						&& this->height == height
+					);
+			}
+
+			bool operator != ( const node_type& other ) {
+				return !(*this == other);
+			}
 	};
 } // namespace ft
 
