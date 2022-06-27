@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reverse_bidirectional_iterator.hpp                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 01:42:02 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/13 02:19:45 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/27 06:51:59 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,54 +25,70 @@ namespace ft
 		
 		typedef Iter															iterator_type;
 		typedef typename ft::iterator_traits<iterator_type>::value_type			value_type;
-		typedef typename ft::iterator_traits<iterator_type>::difference_type	difference_type;
 		typedef typename ft::iterator_traits<iterator_type>::pointer			pointer;
 		typedef typename ft::iterator_traits<iterator_type>::reference			reference;
 
 		private:
 			iterator_type _base;
 
-		// Constructors / Destructor
-		rbidir_iterator( void ) : _base() {}
-		rbidir_iterator( iterator_type base ) : _base(base) {}
-		rbidir_iterator( rbidir_iterator<iterator_type> const & copy ) { *this = copy; }
-		template <typename T2>
-		rbidir_iterator( rbidir_iterator<T2> const & copy ) { this->_base = copy.base(); }
-		rbidir_iterator& operator = ( rbidir_iterator<Iter> const & copy ) { this->_base = copy.base(); return (*this); }
-		~rbidir_iterator() {}
+		public:
+			// Constructors / Destructor
+			rbidir_iterator( void ) : _base() {}
 
-		iterator_type base() const { return _base; }
+			rbidir_iterator( const iterator_type& base ) : _base(base) {}
 
-		// Overloaded operators
-		bool operator == ( rbidir_iterator const & other ) {
-			return (this->_base == other._base);
-		}
-		bool operator != ( rbidir_iterator const & other ) {
-			return (this->_base != other._base);
-		}
-		reference operator * () {
-			iterator_type _correct = --this->_base;
-			++this->_base;
-			return (*_correct);
-		}
-		rbidir_iterator& operator ++ () {
-			--this->_base;
-			return (*this);
-		}
-		rbidir_iterator operator ++ ( int ) {
+			rbidir_iterator( const rbidir_iterator<iterator_type>& copy ) {
+				*this = copy;
+			}
+
+			rbidir_iterator& operator = ( const rbidir_iterator<iterator_type>& copy ) {
+				this->_base = copy.base();
+				return (*this);
+			}
+
+			~rbidir_iterator() {}
+
+			iterator_type base() const {
+				return _base;
+			}
+
+			// Overloaded operators
+			bool operator == ( rbidir_iterator const & other ) {
+				return (this->_base == other._base);
+			}
+
+			bool operator != ( rbidir_iterator const & other ) {
+				return (this->_base != other._base);
+			}
+
+			reference operator * () {
+				iterator_type _correct = this->_base;
+				--_correct;
+				return (*_correct);
+			}
+
+			rbidir_iterator& operator ++ () {
+				--this->_base;
+				return (*this);
+			}
+
+			rbidir_iterator operator ++ ( int ) {
+				rbidir_iterator<iterator_type> old(*this);
+				--this->_base;
+				return (old);
+			}
+
+			rbidir_iterator& operator -- () {
+				++this->_base;
+				return (*this);
+			}
+
+			rbidir_iterator operator -- ( int ) {
 			rbidir_iterator<iterator_type> old(*this);
-			--this->_base;
+			++this->_base;
 			return (old);
 		}
-		rbidir_iterator& operator -- () {
-			++this->_base;
-			return (*this);
-		}
-		rbidir_iterator operator -- ( int ) {
-			rbidir_iterator<iterator_type> old(*this);
-			++this->_base;
-			return (old);
-		}
+
 	};
 } // namespace ft
 

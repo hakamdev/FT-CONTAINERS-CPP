@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:47:05 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/12 21:48:31 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/27 05:24:22 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,26 @@ namespace ft
 		typedef typename Iter::value_type			value_type;
 		typedef typename Iter::pointer				pointer;
 		typedef typename Iter::reference			reference;
-		typedef typename Iter::difference_type		difference_type;
 	};
 
 	// pointers specialization
 	template <typename Ptr>
 	struct iterator_traits<Ptr*>
 	{
-		typedef std::random_access_iterator_tag	iterator_category;
+		typedef std::bidirectional_iterator_tag	iterator_category;
 		typedef Ptr								value_type;
 		typedef Ptr*							pointer;
 		typedef Ptr&							reference;
-		typedef std::ptrdiff_t					difference_type;
 	};
 
 	// const pointers specialization
 	template <typename Ptr>
 	struct iterator_traits<const Ptr*>
 	{
-		typedef std::random_access_iterator_tag	iterator_category;
+		typedef std::bidirectional_iterator_tag	iterator_category;
 		typedef Ptr								value_type;
 		typedef const Ptr*						pointer;
 		typedef const Ptr&						reference;
-		typedef std::ptrdiff_t					difference_type;
 	};
 
 	// general template

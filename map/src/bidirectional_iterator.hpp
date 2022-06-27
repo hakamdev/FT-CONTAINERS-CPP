@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 22:54:07 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/25 23:37:19 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/27 07:01:31 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,75 +33,97 @@ namespace ft
 			node_pointer _root;
 			node_pointer _past_end;
 
-		// Constructors / Destructor
-		bidir_iterator( void ) : _base(NULL), _root(NULL) {
-			this->_past_end = iterator_type::make_node();
-		}
-		bidir_iterator( const node_pointer& base, const node_pointer& root ) : _base(base), _root(root) {
-			this->_past_end = iterator_type::make_node();
-		}
-		bidir_iterator( const bidir_iterator& copy ) {
-			*this = copy;
-			this->_past_end = iterator_type::make_node();
-		}
-		template <typename T2>
-		bidir_iterator( const bidir_iterator<T2>& copy ) {
-			this->_base = copy.base();
-			this->_root = copy.root();
-			this->_past_end = iterator_type::make_node();
-		}
-		bidir_iterator& operator = ( const bidir_iterator& copy ) {
-			this->_base = copy.base();
-			this->_root = copy.root();
-			return (*this);
-		}
-		~bidir_iterator() {
-			iterator_type::destroy_node(_past_end);
-		}
-
-		node_pointer base() const {
-			return _base;
-		}
-		node_pointer root() const {
-			return _root;
-		}
-
-		// Overloaded operators
-		bool operator == ( racc_iterator const & other ) {
-			return (this->_base == other._base);
-		}
-		bool operator != ( racc_iterator const & other ) {
-			return (this->_base != other._base);
-		}
-		reference operator * () {
-			if (this->_base == NULL) {
-				return (*this->_past_end->content);
+		public:
+			// Constructors / Destructor
+			bidir_iterator( void ) : _root(NULL) {
+				this->_past_end = iterator_type::make_node();
+				this->_base = this->_past_end;
 			}
-			return (*this->_base->content);
-		}
-		bidir_iterator& operator ++ () {
-			_base = iterator_type::next_node(_base);
-			return (*this);
-		}
-		bidir_iterator operator ++ ( int ) {
-			bidir_iterator<Iter> old(_base, _root);
-			_base = iterator_type::next_node(_base);
-			return (old);
-		}
-		bidir_iterator& operator -- () {
-			if (_base == NULL)
-				this->_base = iterator_type::max_node(_root);
-			else
-				this->_base = iterator_type::prev_node(_base);
-			return (*this);
-		}
-		bidir_iterator operator -- ( int ) {
-			bidir_iterator<Iter> old(_base, _root);
-			if (_base == NULL)
-				this->_base = iterator_type::max_node(_root);
-			this->_base = iterator_type::prev_node(_base);
-			return (old);
-		}
+
+			bidir_iterator( node_pointer base, node_pointer root ) : _root(root) {
+				// this->_past_end is to be pointed to as end()
+				this->_past_end = iterator_type::make_node();
+				if (base == NULL) {
+					this->_base = _past_end;
+				} else {
+					this->_base = base;
+				}
+			}
+
+			template <typename T2>
+			bidir_iterator( const bidir_iterator<T2>& copy ) {
+				*this = copy;
+			}
+
+			bidir_iterator( const bidir_iterator& copy ) {
+				*this = copy;
+			}
+
+			bidir_iterator& operator = ( const bidir_iterator& copy ) {
+				this->_past_end = iterator_type::make_node();
+				this->_root = copy._root;
+				// If copy.base pointing at end, you need to point to _past_end
+				// that's created in this instance, because the copy.past_end might
+				// be destroyed and also you can't check equality with this->_past_end
+				if (copy.base() == copy._past_end)
+					this->_base = this->_past_end;
+				else
+					this->_base = copy.base();
+				return (*this);
+			}
+
+			~bidir_iterator() {
+				iterator_type::destroy_node(_past_end);
+			}
+
+			node_pointer base() const {
+				return this->_base;
+			}
+
+			// Overloaded operators
+			bool operator == ( const bidir_iterator& other ) {
+				return (this->_base == other._base);
+			}
+
+			bool operator != ( const bidir_iterator& other ) {
+				return (this->_base != other._base);
+			}
+
+			reference operator * () {
+				return (*this->_base->content);
+			}
+
+			bidir_iterator& operator ++ () {
+				node_pointer _next =
+					iterator_type::next_node(_base != _past_end ? _base : NULL);
+				if (_next == NULL) {
+					_base = _past_end;
+				} else {
+					_base = _next;
+				}
+				return (*this);
+			}
+
+			bidir_iterator operator ++ ( int ) {
+				bidir_iterator<Iter> old(_base != _past_end ? _base : NULL, _root);
+				operator++();
+				return (old);
+			}
+
+			bidir_iterator& operator -- () {
+				if (_base == _past_end)
+					this->_base = iterator_type::max_node(_root);
+				else
+					this->_base = iterator_type::prev_node(_base);
+				return (*this);
+			}
+
+			bidir_iterator operator -- ( int ) {
+				bidir_iterator<Iter> old(_base != _past_end ? _base : NULL, _root);
+				operator--();
+				return (old);
+			}
+
 	};
 } // namespace ft
 

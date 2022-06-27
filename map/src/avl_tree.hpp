@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/25 23:56:19 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/27 07:59:58 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ namespace ft
            >
 	class avl_tree {
 		public:
-			typedef std::pair<const Key,T>					value_type;
+			typedef std::bidirectional_iterator_tag			iterator_category;
+			typedef std::pair<const Key, T>					value_type;
 			typedef Key										key_type;
 			typedef T										mapped_type;
 			typedef Alloc									allocator_type;
@@ -42,13 +43,16 @@ namespace ft
 			typedef typename allocator_type::pointer		pointer;
 			typedef typename allocator_type::reference		reference;
 			typedef typename node_allocator_type::pointer	node_pointer;
+			typedef size_t									size_type;
 
 		private:
 			node_pointer		_root;
 			allocator_type 		_alloc;
 			node_allocator_type	_node_alloc;
 			key_compare			_comp;
+			size_type			_size;
 
+			// Private helping methods (implementation details).
 			void _printTree(node_pointer root, std::string indent, bool last) {
 				if (root != NULL) {
 					std::cout << indent;
@@ -65,22 +69,25 @@ namespace ft
 				}
 			}
 
-			node_pointer _insert(node_pointer parent, const value_type& val) {
+			node_pointer _insert(node_pointer parent, const value_type& val, node_pointer *where) {
 				if (parent == NULL) {
-					return make_node(val);
+					++_size;
+					*where = _make_node(val);
+					return *where;
 				}
 
 				if (_comp(val.first, parent->content->first)) {
 					// val smaller than parent
-					parent->left = _insert(parent->left, val);
+					parent->left = _insert(parent->left, val, where);
 					parent->left->parent = parent;
 				} else if (_comp(parent->content->first, val.first)) {
 					// val greater to parent
-					parent->right = _insert(parent->right, val);
+					parent->right = _insert(parent->right, val, where);
 					parent->right->parent = parent;
 				} else {
 					// == replace previous value
 					parent->set_content(val);
+					*where = parent;
 				}
 
 				// Calculate node hieght for balancing.
@@ -109,16 +116,14 @@ namespace ft
 						_node_alloc.deallocate(parent, 1);
 						// asign the new parent left/right/NULL
 						parent = new_parent;
+						--_size;
 						if (parent == NULL) return NULL;
 					} else {
 						// Both left and right are NOT NULL
 						// Find max_node in the left subtree
-				
 						node_pointer max = max_node(parent->left);
 						// replace current node content with max->content
 						parent->set_content(*max->content);
-						// _alloc.destroy(parent->content);
-						// _alloc.construct(parent->content, *max->content);
 						// find and delete the max_node from its old position
 						parent->left = _delete_node(parent->left, parent->content->first);
 					}
@@ -127,6 +132,20 @@ namespace ft
 				_calculate_height(parent);
 				parent = _balance_tree(parent);
 				return (parent);
+			}
+
+			node_pointer _find(node_pointer parent, const Key& key) {
+				if (parent == NULL) return NULL;
+				if (_comp(key, parent->content->first)) {
+					// val smaller than parent
+					return _delete_node(parent->left, key);
+				} else if (_comp(parent->content->first, key)) {
+					// val greater to parent
+					return _delete_node(parent->right, key);
+				} else {
+					return parent;
+				}
+				return parent;
 			}
 
 			void _calculate_height(node_pointer node) {
@@ -204,11 +223,24 @@ namespace ft
 				return (new_parent);
 			}
 
+			node_pointer _make_node(const value_type& val = value_type()) {
+				node_pointer _ptr = NULL;
+				try {
+					_ptr = _node_alloc.allocate(1);
+					_node_alloc.construct(_ptr, node_type(val, _alloc));
+				} catch (std::exception& e) {
+					std::cerr << e.what() << std::endl;
+					exit(1);
+				}
+				return (_ptr);
+			}
+
 		public:
+			// Constructors.
 			avl_tree(const key_compare& comp = key_compare(),
 					const allocator_type& alloc = allocator_type(),
 					const node_allocator_type& node_alloc = node_allocator_type()) : 
-					_comp(comp), _alloc(alloc), _node_alloc(node_alloc) {
+					_comp(comp), _alloc(alloc), _node_alloc(node_alloc), _size(0) {
 			}
 
 			avl_tree(const avl_tree& other) {
@@ -219,6 +251,7 @@ namespace ft
 				this->_alloc = other._alloc;
 				this->_node_alloc = other._node_alloc;
 				this->_comp = other._comp;
+				this->_size = 0;
 				node_pointer curr = other.min_node();
 				do {
 					if (curr == NULL) break;
@@ -227,12 +260,23 @@ namespace ft
 				return *this;
 			}
 
-			void insert(const value_type& val) {
-				_root = _insert(_root, val);
+			// Public methods for AVL Tree operations.
+			node_pointer find(const Key& key) {
+				if (empty()) return NULL;
+				return _find(root, key);
 			}
 
-			void delete_node(const Key& key) {
+			node_pointer insert(const value_type& val) {
+				node_pointer where = NULL;
+				_root = _insert(_root, val, &where);
+				return where;
+			}
+
+			size_type delete_node(const Key& key) {
+				if (empty()) return 0;
+				size_type old_size = _size;
 				_root = _delete_node(_root, key);
+				return old_size - _size;
 			}
 
 			node_pointer min_node() const {
@@ -249,19 +293,15 @@ namespace ft
 				return _root;
 			}
 
-			ft::bidir_iterator& begin() const {
-				return ft::bidir_iterator(this->min_node(), _root);
+			size_type size() const {
+				return _size;
 			}
 
-			ft::bidir_iterator& end() const {
-				ft::bidir_iterator it = ft::bidir_iterator(this->max_node(), _root);
-				return ++it;
+			bool empty() const {
+				return _size == 0;
 			}
 
-			void printTree() {
-				_printTree(_root, "", false);
-			}
-
+			// General static functions to manipulate nodes.
 			static node_pointer min_node(node_pointer parent) {
 				if (parent->left == NULL) return parent;
 				return min_node(parent->left);
@@ -274,7 +314,6 @@ namespace ft
 
 			static node_pointer next_node(node_pointer node) {
 				key_compare	_compare;
-				//if (node == NULL) return NULL;
 				if (node->right == NULL) {
 					node_pointer curr = node->parent;
 					while (curr != NULL && _compare(curr->content->first, node->content->first)) {
@@ -288,14 +327,9 @@ namespace ft
 
 			static node_pointer prev_node(node_pointer node) {
 				key_compare	_compare;
-				//if (node == NULL) return NULL;
 				if (node->left == NULL) {
 					node_pointer curr = node->parent;
 					while (curr != NULL && _compare(node->content->first, curr->content->first)) {
-						curr = curr->parent;
-					}
-					// Crash when trying to access prev node of min_node :/
-					if (curr == NULL) {
 						curr = curr->parent;
 					}
 					return curr;
@@ -305,10 +339,12 @@ namespace ft
 			}
 
 			static node_pointer make_node(const value_type& val = value_type()) {
+				allocator_type alloc;
+				node_allocator_type node_alloc;
 				node_pointer _ptr = NULL;
 				try {
-					_ptr = _node_alloc.allocate(1);
-					_node_alloc.construct(_ptr, node_type(val, _alloc));
+					_ptr = node_alloc.allocate(1);
+					node_alloc.construct(_ptr, node_type(val, alloc));
 				} catch (std::exception& e) {
 					std::cerr << e.what() << std::endl;
 					exit(1);
@@ -321,7 +357,12 @@ namespace ft
 				_node_alloc.destroy(node);
 				_node_alloc.deallocate(node, 1);
 			}
-	
+
+			// Helper functions.
+			void printTree() {
+				_printTree(_root, "", false);
+			}
+
 	};
 } // namespace ft
 
