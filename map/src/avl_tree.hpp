@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/27 07:59:58 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/29 20:41:49 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,13 @@ namespace ft
 				if (root != NULL) {
 					std::cout << indent;
 					if (last) {
-					std::cout << "R----";
+					std::cout << "R ";
 					indent += "     ";
 					} else {
-					std::cout << "L----";
+					std::cout << "L ";
 					indent += "|    ";
 					}
-					std::cout << root->content->first << " {" << root->height << "}" << " (" << (root->parent != NULL ? root->parent->content->first : ".")  << ")" << std::endl;
+					std::cout << "(" << root->content->first << ")->(" << root->content->second << ")" << std::endl;
 					_printTree(root->left, indent, false);
 					_printTree(root->right, indent, true);
 				}
@@ -98,7 +98,7 @@ namespace ft
 				return parent;
 			}
 
-			node_pointer _delete_node(node_pointer parent, const Key& key) {
+			node_pointer _delete_node(node_pointer parent, const key_type& key) {
 				if (parent == NULL) return NULL;
 				if (_comp(key, parent->content->first)) {
 					// val smaller than parent
@@ -134,14 +134,14 @@ namespace ft
 				return (parent);
 			}
 
-			node_pointer _find(node_pointer parent, const Key& key) {
+			node_pointer _find(node_pointer parent, const key_type& key) {
 				if (parent == NULL) return NULL;
 				if (_comp(key, parent->content->first)) {
 					// val smaller than parent
-					return _delete_node(parent->left, key);
+					return _find(parent->left, key);
 				} else if (_comp(parent->content->first, key)) {
 					// val greater to parent
-					return _delete_node(parent->right, key);
+					return _find(parent->right, key);
 				} else {
 					return parent;
 				}
@@ -240,7 +240,7 @@ namespace ft
 			avl_tree(const key_compare& comp = key_compare(),
 					const allocator_type& alloc = allocator_type(),
 					const node_allocator_type& node_alloc = node_allocator_type()) : 
-					_comp(comp), _alloc(alloc), _node_alloc(node_alloc), _size(0) {
+					_comp(comp), _alloc(alloc), _node_alloc(node_alloc), _root(NULL), _size(0) {
 			}
 
 			avl_tree(const avl_tree& other) {
@@ -261,9 +261,9 @@ namespace ft
 			}
 
 			// Public methods for AVL Tree operations.
-			node_pointer find(const Key& key) {
+			node_pointer find(const key_type& key) {
 				if (empty()) return NULL;
-				return _find(root, key);
+				return _find(_root, key);
 			}
 
 			node_pointer insert(const value_type& val) {
@@ -272,7 +272,26 @@ namespace ft
 				return where;
 			}
 
-			size_type delete_node(const Key& key) {
+			// hint can't be NULL or pointing to _past_end;
+			node_pointer insert(node_pointer hint, const value_type& val) {
+				node_pointer new_hint = NULL;
+				if (hint->parent == NULL)
+					new_hint = hint;
+				if (_comp(hint->content->first, hint->parent->content->first)) {
+					node_pointer curr = hint->parent;
+					while (_comp(val.first, curr->content->first)) {
+						
+					}
+				} else if (_comp(hint->parent->content->first, hint->content->first)) {
+					
+				}
+				
+				node_pointer where = NULL;
+				new_hint = _insert(new_hint, val, &where);
+				return where;
+			}
+
+			size_type delete_node(const key_type& key) {
 				if (empty()) return 0;
 				size_type old_size = _size;
 				_root = _delete_node(_root, key);

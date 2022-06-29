@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 22:54:07 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/27 07:01:31 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/29 19:26:29 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,8 @@ namespace ft
 
 		public:
 			// Constructors / Destructor
-			bidir_iterator( void ) : _root(NULL) {
+			bidir_iterator( void ) : _root(NULL), _base(NULL) {
 				this->_past_end = iterator_type::make_node();
-				this->_base = this->_past_end;
 			}
 
 			bidir_iterator( node_pointer base, node_pointer root ) : _root(root) {
@@ -78,6 +77,10 @@ namespace ft
 
 			node_pointer base() const {
 				return this->_base;
+			}
+
+			node_pointer past_end() const {
+				return _past_end;
 			}
 
 			// Overloaded operators

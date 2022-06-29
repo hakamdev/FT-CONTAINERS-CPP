@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/27 08:12:34 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/29 17:59:53 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ namespace ft
             typedef typename allocator_type::const_reference	const_reference;
             typedef typename allocator_type::pointer			pointer;
             typedef typename allocator_type::const_pointer		const_pointer;
+			typedef typename tree::node_pointer					node_pointer;
 			typedef ft::bidir_iterator<tree>   					iterator;
 			typedef ft::bidir_iterator<const tree> 				const_iterator;
 			typedef ft::rbidir_iterator<iterator>				reverse_iterator;
@@ -104,6 +105,7 @@ namespace ft
 				return const_reverse_iterator(begin());
 			}
 
+			// here
 			bool empty() const {
 				return _tree.empty();
 			}
@@ -117,7 +119,7 @@ namespace ft
 			}
 			
 			mapped_type& operator[] (const key_type& k) {
-				tree::node_pointer _p = _tree.find(k);
+				node_pointer _p = _tree.find(k);
 				if (_p == NULL) {
 					_p = _tree.insert(std::make_pair(k, mapped_type()));
 				}
@@ -130,18 +132,28 @@ namespace ft
 
 			std::pair<iterator, bool> insert (const value_type& val) {
 				size_type old_size = _tree.size();
-				tree::node_pointer _p = _tree.insert(val);
+				node_pointer _p = _tree.insert(val);
 				return std::make_pair(iterator(_p, _tree.root()), _tree.size() > old_size);
 			}
 
-			iterator insert (iterator position, const value_type& val);
+			iterator insert (iterator position, const value_type& val) {
+				node_pointer p = NULL;
+				if (position.base() == position.past_end()) {
+					p = _tree.insert(val);
+				} else {
+					p = _tree.insert(position.base(), val);
+				}
+				return iterator(p, _tree.root());
+			}
 
 			template <class InputIterator>
 			void insert (InputIterator first, InputIterator last);
 
 			void erase (iterator position);
 
-			size_type erase (const key_type& k);
+			size_type erase (const key_type& k) {
+				return _tree.delete_node(k);
+			}
 
      		void erase (iterator first, iterator last);
 
@@ -161,6 +173,11 @@ namespace ft
 			const_iterator upper_bound (const key_type& k) const;
 			std::pair<const_iterator, const_iterator> equal_range (const key_type& k) const;
 			std::pair<iterator, iterator>             equal_range (const key_type& k);
+
+			//////
+			void print() {
+				_tree.printTree();
+			}
 	};
 
 	template <class Key, class T, class Compare, class Alloc>
