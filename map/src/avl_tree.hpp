@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/29 20:41:49 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/30 21:30:08 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ namespace ft
 					*where = _make_node(val);
 					return *where;
 				}
-
 				if (_comp(val.first, parent->content->first)) {
 					// val smaller than parent
 					parent->left = _insert(parent->left, val, where);
@@ -274,18 +273,20 @@ namespace ft
 
 			// hint can't be NULL or pointing to _past_end;
 			node_pointer insert(node_pointer hint, const value_type& val) {
-				node_pointer new_hint = NULL;
-				if (hint->parent == NULL)
-					new_hint = hint;
-				if (_comp(hint->content->first, hint->parent->content->first)) {
-					node_pointer curr = hint->parent;
-					while (_comp(val.first, curr->content->first)) {
-						
+				node_pointer new_hint = _root;
+				while (new_hint != NULL) {
+					if (new_hint == hint) {
+						break ;
+					} else if (_comp(val.first, new_hint->content->first)) {
+						if (new_hint->left == NULL) break ;
+						new_hint = new_hint->left;
+					} else if (_comp(new_hint->content->first, val.first)) {
+						if (new_hint->right == NULL) break ;
+						new_hint = new_hint->right;
+					} else {
+						break ;
 					}
-				} else if (_comp(hint->parent->content->first, hint->content->first)) {
-					
 				}
-				
 				node_pointer where = NULL;
 				new_hint = _insert(new_hint, val, &where);
 				return where;

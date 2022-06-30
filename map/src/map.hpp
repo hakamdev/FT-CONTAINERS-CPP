@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/29 17:59:53 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/30 21:29:17 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ namespace ft
 				return const_reverse_iterator(begin());
 			}
 
-			// here
 			bool empty() const {
 				return _tree.empty();
 			}
@@ -126,6 +125,12 @@ namespace ft
 				return _p->content->second;
 			}
 
+			// TMEPORARY
+			iterator findNode (const key_type& k) {
+				node_pointer _p = _tree.find(k);
+				return iterator(_p, _tree.root());
+			}
+
 			allocator_type get_allocator() const {
 				return _alloc;
 			}
@@ -138,7 +143,8 @@ namespace ft
 
 			iterator insert (iterator position, const value_type& val) {
 				node_pointer p = NULL;
-				if (position.base() == position.past_end()) {
+				if (position.base() == position.past_end()
+					|| position.base()->parent == NULL) {
 					p = _tree.insert(val);
 				} else {
 					p = _tree.insert(position.base(), val);

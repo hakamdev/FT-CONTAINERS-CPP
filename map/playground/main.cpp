@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/29 19:32:32 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/06/30 21:07:00 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int main() {
 
 	// ma.print();
 
-	std::map<std::string, int> ma;
+	ft::map<std::string, int> ma;
 
 	ma.insert(std::pair<std::string, int>("2", 24));
 	ma.insert(std::pair<std::string, int>("0", 30));
@@ -120,13 +120,11 @@ int main() {
 	ma.insert(std::pair<std::string, int>("9", 55));
 	ma.insert(std::pair<std::string, int>("7", 55));
 
-	std::map<std::string, int>::iterator it = ma.begin();
-
-	++it; ++it;
+	ft::map<std::string, int>::iterator it = ma.end();
 
 	ma.insert(it, std::pair<std::string, int>("1", 11111));
 
-	//ma.print();
+	ma.print();
 
 	std::cout << ma["1"] << std::endl;
 
