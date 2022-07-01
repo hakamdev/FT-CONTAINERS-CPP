@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/01 00:43:25 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/01 19:13:10 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,20 @@
 # include "node.hpp"
 # include "bidirectional_iterator.hpp"
 # include "reverse_bidirectional_iterator.hpp"
+# include "pair.hpp"
 
 namespace ft
 {
 	template < typename Key,                                     		// map::key_type
            typename T,                                       			// map::mapped_type
            typename Compare = std::less<Key>,                     		// map::key_compare
-           typename Alloc = std::allocator<std::pair<const Key, T> >,    // map::allocator_type
+           typename Alloc = std::allocator<ft::pair<const Key, T> >,    // map::allocator_type
 		   typename NodeAlloc = std::allocator<node<const Key, T, Alloc> >
            >
 	class avl_tree {
 		public:
 			typedef std::bidirectional_iterator_tag			iterator_category;
-			typedef std::pair<const Key, T>					value_type;
+			typedef ft::pair<const Key, T>					value_type;
 			typedef Key										key_type;
 			typedef T										mapped_type;
 			typedef Alloc									allocator_type;
@@ -259,26 +260,26 @@ namespace ft
 			}
 
 			// TEST
-			node_pointer _lower_bound(node_pointer parent, const key_type& k) {
-				if (parent == NULL) return NULL;
-				if (_comp(parent->content->first, key)) {
-					return _lower_bound(parent->right, k);
-				} else {
-					return parent;
-				}
-			}
+			// node_pointer _lower_bound(node_pointer parent, const key_type& k) {
+			// 	if (parent == NULL) return NULL;
+			// 	if (_comp(parent->content->first, k)) {
+			// 		return _lower_bound(parent->right, k);
+			// 	} else {
+			// 		return parent;
+			// 	}
+			// }
 
 			// TEST
-			node_pointer _upper_bound(node_pointer parent, const key_type& k) {
-				if (parent == NULL) return NULL;
-				if (_comp(parent->content->first, key)) {
-					return _upper_bound(parent->right, k);
-				} else if (_comp(key, parent->content->first)) {
-					return parent;
-				} else {
-					return next_node(parent);
-				}
-			}
+			// node_pointer _upper_bound(node_pointer parent, const key_type& k) {
+			// 	if (parent == NULL) return NULL;
+			// 	if (_comp(parent->content->first, k)) {
+			// 		return _upper_bound(parent->right, k);
+			// 	} else if (_comp(k, parent->content->first)) {
+			// 		return parent;
+			// 	} else {
+			// 		return next_node(parent);
+			// 	}
+			// }
 
 		public:
 			// Constructors.
@@ -385,15 +386,29 @@ namespace ft
 				return _size == 0;
 			}
 
+			// TEST
 			node_pointer lower_bound(const key_type& k) {
-				return _lower_bound(_root, k);
+				if (empty()) return NULL;
+				node_pointer start = min_node();
+				while (start != NULL && _comp(start->content->first, k)) {
+					start = next_node(start);
+				}
+				return start;
 			}
 
+			// TEST
 			node_pointer upper_bound(const key_type& k) {
-				return _upper_bound(_root, k);
+				if (empty()) return NULL;
+				node_pointer start = min_node();
+				while (start != NULL && _comp(start->content->first, k)) {
+					start = next_node(start);
+				}
+				if (start == NULL) return NULL;
+				if (_comp(k, start->content->first)) return start;
+				return next_node(start);
 			}
 
-			tree& get_reference() {
+			avl_tree& get_reference() {
 				return *this;
 			}
 

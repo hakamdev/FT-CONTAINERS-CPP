@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/25 18:17:10 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/01 18:32:33 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,18 @@
 # include <memory>
 # include <utility>
 # include <functional>
+# include "pair.hpp"
 
 namespace ft
 {
 	template < typename Key,                                     		// map::key_type
            typename T,                                       			// map::mapped_type
-           typename Alloc = std::allocator<std::pair<const Key, T> >     // map::allocator_type
+           typename Alloc = std::allocator<ft::pair<const Key, T> >     // map::allocator_type
            >
 	struct node {
 		public:
 			// Memeber types
-			typedef std::pair<const Key, T>				value_type;
+			typedef ft::pair<const Key, T>				value_type;
 			typedef Key									key_type;
 			typedef T									mapped_type;
 			typedef Alloc								allocator_type;

@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/30 23:07:04 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/01 19:20:56 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,23 @@ int main() {
 
 	// ft::avl_tree<std::string, int> tr;
 
-	// ft::avl_tree<std::string, int>::node_pointer p1 = tr.insert(std::make_pair<std::string, int>("0", 100));
-	// ft::avl_tree<std::string, int>::node_pointer p2 = tr.insert(std::make_pair<std::string, int>("1", 10));
-	// ft::avl_tree<std::string, int>::node_pointer p3 = tr.insert(std::make_pair<std::string, int>("2", 20));
-	// ft::avl_tree<std::string, int>::node_pointer p4 = tr.insert(std::make_pair<std::string, int>("2", 555));
-	// tr.insert(std::make_pair<std::string, int>("3", 20));
-	// tr.insert(std::make_pair<std::string, int>("4", 34));
-	// tr.insert(std::make_pair<std::string, int>("5", 6));
-	// tr.insert(std::make_pair<std::string, int>("6", 13));
-	// tr.insert(std::make_pair<std::string, int>("7", 44));
-	// tr.insert(std::make_pair<std::string, int>("8", 67));
-	// tr.insert(std::make_pair<std::string, int>("9", 11));
+	// ft::avl_tree<std::string, int>::node_pointer p1 = tr.insert(ft::make_pair<std::string, int>("0", 100));
+	// ft::avl_tree<std::string, int>::node_pointer p2 = tr.insert(ft::make_pair<std::string, int>("1", 10));
+	// ft::avl_tree<std::string, int>::node_pointer p3 = tr.insert(ft::make_pair<std::string, int>("2", 20));
+	// ft::avl_tree<std::string, int>::node_pointer p4 = tr.insert(ft::make_pair<std::string, int>("4", 555));
+	// //tr.insert(ft::make_pair<std::string, int>("3", 20));
+	// tr.insert(ft::make_pair<std::string, int>("4", 34));
+	// tr.insert(ft::make_pair<std::string, int>("5", 6));
+	// tr.insert(ft::make_pair<std::string, int>("6", 13));
+	// tr.insert(ft::make_pair<std::string, int>("7", 44));
+	// tr.insert(ft::make_pair<std::string, int>("8", 67));
+	// // tr.insert(ft::make_pair<std::string, int>("9", 11));
+
+	// ft::avl_tree<std::string, int>::node_pointer lb = tr.lower_bound("9");
+	// ft::avl_tree<std::string, int>::node_pointer ub = tr.upper_bound("9");
+
+	// std::cout << "LB: => " << (lb != NULL ? lb->content->first : "NULL") << std::endl;
+	// std::cout << "UB: => " << (ub != NULL ? ub->content->first : "NULL") << std::endl;
 
 	// ft::avl_tree<std::string, int> tr2(tr);
 
@@ -48,7 +54,7 @@ int main() {
 	// std::cout << "P3: " << p3->content->first << " -> " << p3->content->second << std::endl;
 	// std::cout << "P4: " << p4->content->first << " -> " << p4->content->second << std::endl;
 
-	// tr.printTree();
+	//tr.printTree();
 	// tr2.printTree();
 
 	// ft::avl_tree<std::string, int>::node_pointer p = tr.max_node();
@@ -62,9 +68,9 @@ int main() {
 
 	// std::map<std::string, int> ma;
 
-	// ma.insert(std::pair<std::string, int>("0", 0));
-	// ma.insert(std::pair<std::string, int>("1", 1));
-	// ma.insert(std::pair<std::string, int>("2", 2));
+	// ma.insert(ft::pair<std::string, int>("0", 0));
+	// ma.insert(ft::pair<std::string, int>("1", 1));
+	// ma.insert(ft::pair<std::string, int>("2", 2));
 
 	// std::map<std::string, int>::iterator it = ma.begin();
 	// std::map<std::string, int>::iterator eit = ma.end();
@@ -83,22 +89,22 @@ int main() {
 	// std::cout << ma.size() << std::endl;
 	// std::cout << ma.empty() << std::endl;
 
-	// ma.insert(std::pair<std::string, int>("0", 0));
+	// ma.insert(ft::pair<std::string, int>("0", 0));
 
 	// std::cout << ma.size() << std::endl;
 	// std::cout << ma.empty() << std::endl;
 	
-	// ma.insert(std::pair<std::string, int>("1", 1));
+	// ma.insert(ft::pair<std::string, int>("1", 1));
 
 	// std::cout << ma.size() << std::endl;
 	// std::cout << ma.empty() << std::endl;
 	
-	// ma.insert(std::pair<std::string, int>("2", 2));
+	// ma.insert(ft::pair<std::string, int>("2", 2));
 
 	// std::cout << ma.size() << std::endl;
 	// std::cout << ma.empty() << std::endl;
 
-	// ma.insert(std::pair<std::string, int>("2", 24));
+	// ma.insert(ft::pair<std::string, int>("2", 24));
 
 	// std::cout << ma.size() << std::endl;
 	// std::cout << ma.empty() << std::endl;
@@ -117,15 +123,18 @@ int main() {
 	ma.insert(std::pair<std::string, int>("2", 24));
 	ma.insert(std::pair<std::string, int>("0", 30));
 	ma.insert(std::pair<std::string, int>("5", 55));
-	ma.insert(std::pair<std::string, int>("9", 55));
+	ma.insert(std::pair<std::string, int>("8", 55));
 	ma.insert(std::pair<std::string, int>("7", 55));
 
-	std::map<std::string, int>::iterator it = ma.begin();
-	std::map<std::string, int>::iterator eit = ma.end();
+	std::map<std::string, int>::iterator it = ma.lower_bound("7");
+	std::map<std::string, int>::iterator eit = ma.upper_bound("7");
 
-	std::map<std::string, int> ma2;
+	std::cout << (*it).first << std::endl;
+	std::cout << (*eit).first << std::endl;
 
-	ma.erase(eit);
+	// std::map<std::string, int> ma2;
+
+	// ma.erase(eit);
 
 	// std::map<std::string, int>::iterator it = ma.begin();
 	// std::map<std::string, int>::reverse_iterator rit = ma.rbegin();
