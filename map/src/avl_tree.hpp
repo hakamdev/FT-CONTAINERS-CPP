@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/30 21:30:08 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/01 00:43:25 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,30 @@ namespace ft
 				return parent;
 			}
 
+			node_pointer _delete_found_node(node_pointer node) {
+				// key found, now start deletion
+					if (node->left == NULL || node->right == NULL) {
+						// Now we replace parent by left/right depend. on which is not NULL
+						node_pointer new_parent = node->left != NULL ? node->left : node->right;
+						// destroy the parent
+						_node_alloc.destroy(node);
+						_node_alloc.deallocate(node, 1);
+						// asign the new parent left/right/NULL
+						node = new_parent;
+						--_size;
+						if (node == NULL) return NULL;
+					} else {
+						// Both left and right are NOT NULL
+						// Find max_node in the left subtree
+						node_pointer max = max_node(node->left);
+						// replace current node content with max->content
+						node->set_content(*max->content);
+						// find and delete the max_node from its old position
+						node->left = _delete_node(node->left, node->content->first);
+					}
+					return (node);
+			}
+
 			node_pointer _delete_node(node_pointer parent, const key_type& key) {
 				if (parent == NULL) return NULL;
 				if (_comp(key, parent->content->first)) {
@@ -106,26 +130,27 @@ namespace ft
 					// val greater to parent
 					parent->right = _delete_node(parent->right, key);
 				} else {
-					// key found, now start deletion
-					if (parent->left == NULL || parent->right == NULL) {
-						// Now we replace parent by left/right depend. on which is not NULL
-						node_pointer new_parent = parent->left != NULL ? parent->left : parent->right;
-						// destroy the parent
-						_node_alloc.destroy(parent);
-						_node_alloc.deallocate(parent, 1);
-						// asign the new parent left/right/NULL
-						parent = new_parent;
-						--_size;
-						if (parent == NULL) return NULL;
-					} else {
-						// Both left and right are NOT NULL
-						// Find max_node in the left subtree
-						node_pointer max = max_node(parent->left);
-						// replace current node content with max->content
-						parent->set_content(*max->content);
-						// find and delete the max_node from its old position
-						parent->left = _delete_node(parent->left, parent->content->first);
-					}
+					parent = _delete_found_node(parent);
+					// // key found, now start deletion
+					// if (parent->left == NULL || parent->right == NULL) {
+					// 	// Now we replace parent by left/right depend. on which is not NULL
+					// 	node_pointer new_parent = parent->left != NULL ? parent->left : parent->right;
+					// 	// destroy the parent
+					// 	_node_alloc.destroy(parent);
+					// 	_node_alloc.deallocate(parent, 1);
+					// 	// asign the new parent left/right/NULL
+					// 	parent = new_parent;
+					// 	--_size;
+					// 	if (parent == NULL) return NULL;
+					// } else {
+					// 	// Both left and right are NOT NULL
+					// 	// Find max_node in the left subtree
+					// 	node_pointer max = max_node(parent->left);
+					// 	// replace current node content with max->content
+					// 	parent->set_content(*max->content);
+					// 	// find and delete the max_node from its old position
+					// 	parent->left = _delete_node(parent->left, parent->content->first);
+					// }
 				}
 				// reset height of parent and rebalance the parent subtree.
 				_calculate_height(parent);
@@ -144,7 +169,6 @@ namespace ft
 				} else {
 					return parent;
 				}
-				return parent;
 			}
 
 			void _calculate_height(node_pointer node) {
@@ -234,6 +258,28 @@ namespace ft
 				return (_ptr);
 			}
 
+			// TEST
+			node_pointer _lower_bound(node_pointer parent, const key_type& k) {
+				if (parent == NULL) return NULL;
+				if (_comp(parent->content->first, key)) {
+					return _lower_bound(parent->right, k);
+				} else {
+					return parent;
+				}
+			}
+
+			// TEST
+			node_pointer _upper_bound(node_pointer parent, const key_type& k) {
+				if (parent == NULL) return NULL;
+				if (_comp(parent->content->first, key)) {
+					return _upper_bound(parent->right, k);
+				} else if (_comp(key, parent->content->first)) {
+					return parent;
+				} else {
+					return next_node(parent);
+				}
+			}
+
 		public:
 			// Constructors.
 			avl_tree(const key_compare& comp = key_compare(),
@@ -257,6 +303,10 @@ namespace ft
 					insert(*curr->content);
 				} while((curr = next_node(curr)) != NULL);
 				return *this;
+			}
+
+			~avl_tree() {
+				// TODO: 
 			}
 
 			// Public methods for AVL Tree operations.
@@ -293,10 +343,24 @@ namespace ft
 			}
 
 			size_type delete_node(const key_type& key) {
-				if (empty()) return 0;
 				size_type old_size = _size;
+
+				if (empty()) return 0;
 				_root = _delete_node(_root, key);
 				return old_size - _size;
+			}
+
+			void delete_node(node_pointer node) {
+				node_pointer parent = node->parent;
+
+				if (empty()) return ;
+				if (parent == NULL) {
+					_root = _delete_found_node(node);
+				} else if (node == parent->left) {
+					parent->left = _delete_found_node(node);
+				} else if (node == parent->right) {
+					parent->right = _delete_found_node(node);
+				}
 			}
 
 			node_pointer min_node() const {
@@ -319,6 +383,18 @@ namespace ft
 
 			bool empty() const {
 				return _size == 0;
+			}
+
+			node_pointer lower_bound(const key_type& k) {
+				return _lower_bound(_root, k);
+			}
+
+			node_pointer upper_bound(const key_type& k) {
+				return _upper_bound(_root, k);
+			}
+
+			tree& get_reference() {
+				return *this;
 			}
 
 			// General static functions to manipulate nodes.

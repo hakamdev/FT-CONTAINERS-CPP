@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/30 21:29:17 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/01 01:06:23 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,32 +46,35 @@ namespace ft
 			typedef ft::rbidir_iterator<const_iterator>			const_reverse_iterator;
 			typedef size_t										size_type;
 
+			class value_compare;
+
 		private:
 			allocator_type		_alloc;
 			tree				_tree;
 			key_compare			_comp;
+			value_compare		_v_comp;
 
 		public:
-			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _comp(comp), _alloc(alloc) {
-				// TODO: 
-			}
+			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+				: _comp(comp), _alloc(alloc) { }
 	
 			template <class InputIterator>
-			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) {
-				// TODO: 
+			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+				: _comp(comp), _alloc(alloc) {
+				insert<InputIterator>(first, last);
 			}
-				
+
 			map (const map& x) {
-				// TODO: 
+				*this = x;
 			}
 
 			map& operator = (const map& x) {
-				// TODO: 
+				_comp = x._comp;
+				_alloc = x._alloc;
+				_tree = x._tree;
 			}
 
-			~map() {
-				// TODO: 
-			}
+			~map() { }
 
 			iterator begin() {
 				return iterator(_tree.min_node(), _tree.root());
@@ -152,37 +155,141 @@ namespace ft
 				return iterator(p, _tree.root());
 			}
 
+			// Test
 			template <class InputIterator>
-			void insert (InputIterator first, InputIterator last);
+			void insert (InputIterator first, InputIterator last) {
+				while (first != last) {
+					insert(*(first++));
+				}
+			}
 
-			void erase (iterator position);
+			// Test
+			void erase (iterator position) {
+				if (position.base() == NULL || position.base == position.past_end()) {
+					_tree.delete_node(NULL);
+				} else {
+					_tree.delete_node(position.base());
+				}
+			}
 
 			size_type erase (const key_type& k) {
 				return _tree.delete_node(k);
 			}
 
-     		void erase (iterator first, iterator last);
+			// Test
+     		void erase (iterator first, iterator last) {
+				while (first != last) {
+					erase(*(first++));
+				}
+			}
 
-			void swap (map& x);
+			// Test
+			void swap (map& x) {
+				// allocator_type	_alloc;
+				// tree				_tree;
+				// key_compare		_comp;
+				tree& temp_tree = x._tree.get_reference();
+				allocator_type& temp_alloc = x._alloc;
+				key_compare& temp_comp = x._comp;
 
-			void clear();
+				x._tree = this->_tree.get_reference();
+				x._alloc = this->_alloc;
+				x._comp = this->_comp;
 
-			key_compare key_comp() const;
+				this->_tree = temp_tree;
+				this->_alloc = temp_alloc;
+				this->_comp = temp_comp;
+			}
 
-			// value_compare value_comp() const;
-			iterator find (const key_type& k);
-			const_iterator find (const key_type& k) const;
-			size_type count (const key_type& k) const;
-			iterator lower_bound (const key_type& k);
-			const_iterator lower_bound (const key_type& k) const;
-			iterator upper_bound (const key_type& k);
-			const_iterator upper_bound (const key_type& k) const;
-			std::pair<const_iterator, const_iterator> equal_range (const key_type& k) const;
-			std::pair<iterator, iterator>             equal_range (const key_type& k);
+			// Test
+			void clear() {
+				// TODO:
+				while (!empty()) {
+					node_pointer p = _tree.max_node();
+					_tree.delete_node(p);
+				}
+			}
+
+			key_compare key_comp() const {
+				return _comp;
+			}
+
+			value_compare value_comp() const {
+				return _v_comp;
+			}
+
+			// Test
+			iterator find (const key_type& k) {
+				node_pointer found = _tree.find(k);
+				return iterator(found, _tree.root());
+			}
+
+			// Test
+			const_iterator find (const key_type& k) const {
+				node_pointer found = _tree.find(k);
+				return const_iterator(found, _tree.root());
+			}
+
+			// Test
+			size_type count (const key_type& k) const {
+				node_pointer found = _tree.find(k);
+				return (found != NULL ? 1 : 0);
+			}
+
+			// Test
+			iterator lower_bound (const key_type& k) {
+				node_pointer lbp = _tree.lower_bound(k);
+				return iterator(lbp, _tree.root());
+			}
+
+			// Test
+			const_iterator lower_bound (const key_type& k) const {
+				node_pointer lbp = _tree.lower_bound(k);
+				return const_iterator(lbp, _tree.root());
+			}
+
+			// Test
+			iterator upper_bound (const key_type& k) {
+				node_pointer lbp = _tree.upper_bound(k);
+				return iterator(lbp, _tree.root());
+			}
+
+			// Test
+			const_iterator upper_bound (const key_type& k) const {
+				node_pointer lbp = _tree.upper_bound(k);
+				return const_iterator(lbp, _tree.root());
+			}
+
+			// Test
+			std::pair<const_iterator, const_iterator> equal_range (const key_type& k) const {
+				return std::make_pair(lower_bound(k), upper_bound(k));
+			}
+
+			// Test
+			std::pair<iterator, iterator> equal_range (const key_type& k) {
+				return std::make_pair(lower_bound(k), upper_bound(k));
+			}
 
 			//////
 			void print() {
 				_tree.printTree();
+			}
+	};
+
+	template <class Key, class T, class Compare, class Alloc>
+	class map<Key, T, Compare, Alloc>::value_compare : binary_function<value_type, value_type, bool>
+	{
+		friend class map;
+		protected:
+			Compare _comp;
+			value_compare (Compare c) : _comp(c) {}
+		public:
+			typedef bool result_type;
+			typedef value_type first_argument_type;
+			typedef value_type second_argument_type;
+			bool operator() (const value_type& x, const value_type& y) const
+			{
+				return _comp(x.first, y.first);
 			}
 	};
 
