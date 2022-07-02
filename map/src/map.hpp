@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/01 19:19:05 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/02 18:44:42 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,18 @@ namespace ft
 			explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
 				: _comp(comp), _alloc(alloc), _v_comp(comp) { }
 	
-			// TEST
 			template <class InputIterator>
 			map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
 				: _comp(comp), _alloc(alloc), _v_comp(comp) {
 				insert<InputIterator>(first, last);
 			}
 
+			// TEST
 			map(const map& x) {
 				*this = x;
 			}
 
+			// TEST
 			map& operator= (const map& x) {
 				_comp = x._comp;
 				_alloc = x._alloc;
@@ -118,11 +119,11 @@ namespace ft
 			size_type size() const {
 				return _tree.size();
 			}
-			
+
 			size_type max_size() const {
 				return this->_alloc.max_size();
 			}
-			
+
 			mapped_type& operator[] (const key_type& k) {
 				node_pointer _p = _tree.find(k);
 				if (_p == NULL) {
@@ -143,7 +144,8 @@ namespace ft
 
 			iterator insert(iterator position, const value_type& val) {
 				node_pointer p = NULL;
-				if (position.base() == position.past_end()
+				if (empty()
+					|| position.base() == position.past_end()
 					|| position.base()->parent == NULL) {
 					p = _tree.insert(val);
 				} else {
@@ -152,7 +154,6 @@ namespace ft
 				return iterator(p, _tree.root());
 			}
 
-			// Test
 			template <class InputIterator>
 			void insert(InputIterator first, InputIterator last) {
 				while (first != last) {
@@ -160,9 +161,9 @@ namespace ft
 				}
 			}
 
-			// Test
 			void erase(iterator position) {
-				if (position.base() == NULL || position.base == position.past_end()) {
+				if (position.base() == position.past_end()) {
+					// Cause segfault
 					_tree.delete_node(NULL);
 				} else {
 					_tree.delete_node(position.base());
@@ -176,7 +177,7 @@ namespace ft
 			// Test
      		void erase(iterator first, iterator last) {
 				while (first != last) {
-					erase(*(first++));
+					erase(--last);
 				}
 			}
 

@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 22:54:07 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/29 19:26:29 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/02 17:11:32 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,12 @@ namespace ft
 
 			// Overloaded operators
 			bool operator == ( const bidir_iterator& other ) {
-				return (this->_base == other._base);
+				return (this->_base == other._base
+				|| (this->_base == this->_past_end && other._base == other._past_end));
 			}
 
 			bool operator != ( const bidir_iterator& other ) {
-				return (this->_base != other._base);
+				return !(*this == other);
 			}
 
 			reference operator * () {

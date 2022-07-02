@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/01 19:20:56 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/02 19:42:07 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,19 +118,50 @@ int main() {
 
 	// ma.print();
 
-	std::map<std::string, int> ma;
+	#define NS ft
 
-	ma.insert(std::pair<std::string, int>("2", 24));
-	ma.insert(std::pair<std::string, int>("0", 30));
-	ma.insert(std::pair<std::string, int>("5", 55));
-	ma.insert(std::pair<std::string, int>("8", 55));
-	ma.insert(std::pair<std::string, int>("7", 55));
+	NS::map<std::string, int> ma;
 
-	std::map<std::string, int>::iterator it = ma.lower_bound("7");
-	std::map<std::string, int>::iterator eit = ma.upper_bound("7");
+	ma.insert(NS::pair<std::string, int>("2", 24));
+	ma.insert(NS::pair<std::string, int>("1", 30));
+	ma.insert(NS::pair<std::string, int>("5", 55));
+	ma.insert(NS::pair<std::string, int>("8", 55));
+	ma.insert(NS::pair<std::string, int>("7", 55));
 
-	std::cout << (*it).first << std::endl;
-	std::cout << (*eit).first << std::endl;
+
+	//ma.print();
+	//std::cout << std::endl;
+
+	//NS::map<std::string, int> ma2(it, eit);
+	NS::map<std::string, int>::iterator it = ma.begin();
+	NS::map<std::string, int>::iterator eit = ma.end();
+	--eit; --eit;
+
+	std::cout << "IT 1: " << (*it).first << std::endl;
+
+	//NS::map<std::string, int>::iterator tmp = ++it; --it;
+
+	ma.erase(--it);
+
+	std::cout << "IT 2: " << (*it).first << std::endl;
+
+	int i = 0;
+
+	//std::cout << ma2["0"] << std::endl;
+
+	//ma.print();
+
+	//ft::map<std::string, int> ma2(it, eit);
+
+	// ma2.insert(eit, it);
+
+ 	// std::cout << ma2["9"] << std::endl;
+ 	// std::cout << ma2["1"] << std::endl;
+
+	//ma2.print();
+
+	// std::cout << (*it).first << std::endl;
+	// std::cout << (*eit).first << std::endl;
 
 	// std::map<std::string, int> ma2;
 
