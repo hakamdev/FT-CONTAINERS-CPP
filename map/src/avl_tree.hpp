@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/02 19:40:58 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/02 21:18:27 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ namespace ft
 					std::cout << "L ";
 					indent += "|    ";
 					}
-					std::cout << "(" << root->content->first << ")->(" << root->content->second << ")" << std::endl;
+					std::cout << "(" << root->content->first << ")->(" << root->content->second << ")" << " [" << (root->parent != NULL && root->parent->content != NULL ? root->parent->content->first : 0)  << "]" << std::endl;
 					_printTree(root->left, indent, false);
 					_printTree(root->right, indent, true);
 				}
@@ -114,9 +114,9 @@ namespace ft
 						node_pointer max = max_node(node->left);
 						// Disconnect max from its parent
 						if (max == node->left)
-							node->left = NULL;
+							node->left = max->left;
 						else
-							max->parent->right = NULL;
+							max->parent->right = max->left;
 						// give max the children of node
 						max->left = node->left;
 						max->right = node->right;
@@ -310,15 +310,24 @@ namespace ft
 				return where;
 			}
 
-			size_type delete_node(const key_type& key) {
+			size_type delete_node(const key_type& key, bool is_key) {
 				size_type old_size = _size;
 
-				if (empty()) return 0;
+				if (empty() || !is_key) return 0;
 				_root = _delete_node(_root, key);
 				return old_size - _size;
 			}
 
 			void delete_node(node_pointer node) {
+				if (node != NULL)
+					std::cout << ">>>>>>> V(" << node->content->first << ") ";
+				if (node->left != NULL)
+					std::cout << "L(" << node->left->content->first << ") ";
+				if (node->right != NULL)
+					std::cout  << "R(" << node->right->content->first << ") " ;
+				if (node->parent != NULL)
+					std::cout  << "<<< P(" << node->parent->content->first << ") " << std::endl << std::endl;
+
 				node_pointer parent = node->parent;
 				if (empty()) return ;
 				if (parent == NULL) {

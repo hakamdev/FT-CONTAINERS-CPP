@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/02 18:44:42 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/02 21:08:42 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,20 +164,26 @@ namespace ft
 			void erase(iterator position) {
 				if (position.base() == position.past_end()) {
 					// Cause segfault
+					//std::cout << "ERASE: SEG" << std::endl;
 					_tree.delete_node(NULL);
 				} else {
+					//std::cout << "ERASE: BASE" << std::endl;
 					_tree.delete_node(position.base());
 				}
 			}
 
 			size_type erase(const key_type& k) {
-				return _tree.delete_node(k);
+				return _tree.delete_node(k, true);
 			}
 
 			// Test
-     		void erase(iterator first, iterator last) {
-				while (first != last) {
-					erase(--last);
+			void erase(iterator first, iterator last) {
+				int i = 0;
+				while (first != last && i < 2) {
+					std::cout << "CURR: " << (*first).first << " - " << std::endl;
+					erase(first++);
+					i++;
+					print();
 				}
 			}
 

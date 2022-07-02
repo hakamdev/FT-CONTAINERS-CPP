@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 22:54:07 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/02 17:11:32 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/02 21:05:50 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,14 @@ namespace ft
 				} else {
 					_base = _next;
 				}
+				//std::cout << "NEXT: " << _next->content->first << std::endl;
 				return (*this);
 			}
 
 			bidir_iterator operator ++ ( int ) {
 				bidir_iterator<Iter> old(_base != _past_end ? _base : NULL, _root);
 				operator++();
+				//std::cout << "NEXT BASE: " << _base->content->first << std::endl;
 				return (old);
 			}
 

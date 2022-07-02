@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/02 19:42:07 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/02 21:11:13 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,36 +120,43 @@ int main() {
 
 	#define NS ft
 
-	NS::map<std::string, int> ma;
+	NS::map<int, int> ma;
 
-	ma.insert(NS::pair<std::string, int>("2", 24));
-	ma.insert(NS::pair<std::string, int>("1", 30));
-	ma.insert(NS::pair<std::string, int>("5", 55));
-	ma.insert(NS::pair<std::string, int>("8", 55));
-	ma.insert(NS::pair<std::string, int>("7", 55));
-
-
-	//ma.print();
-	//std::cout << std::endl;
+	ma.insert(NS::pair<int, int>(10, 22));
+	ma.insert(NS::pair<int, int>(5, 11));
+	ma.insert(NS::pair<int, int>(15, 55));
+	ma.insert(NS::pair<int, int>(3, 77));
+	ma.insert(NS::pair<int, int>(7, 88));
+	ma.insert(NS::pair<int, int>(12, 88));
+	ma.insert(NS::pair<int, int>(20, 88));
+	//ma.insert(NS::pair<int, int>(6, 88));
+	ma.insert(NS::pair<int, int>(9, 88));
 
 	//NS::map<std::string, int> ma2(it, eit);
-	NS::map<std::string, int>::iterator it = ma.begin();
-	NS::map<std::string, int>::iterator eit = ma.end();
-	--eit; --eit;
 
-	std::cout << "IT 1: " << (*it).first << std::endl;
+	NS::map<int, int>::iterator it = ma.begin();
+	NS::map<int, int>::iterator eit = ma.end();
+
+	//std::cout << "IT 1: " << (*it).first << std::endl;
 
 	//NS::map<std::string, int>::iterator tmp = ++it; --it;
 
-	ma.erase(--it);
+	ma.print();
 
-	std::cout << "IT 2: " << (*it).first << std::endl;
+	ma.erase(it, eit);
 
-	int i = 0;
+	NS::map<int, int>::iterator it2 = ma.begin();
+
+	std::cout << "LAST" << std::endl;
+	ma.erase(it2);
+
+	ma.print();
+
+	//std::cout << "IT 2: " << (*it).first << std::endl;
 
 	//std::cout << ma2["0"] << std::endl;
 
-	//ma.print();
+	// ma.print();
 
 	//ft::map<std::string, int> ma2(it, eit);
 

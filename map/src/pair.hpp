@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 17:57:01 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/01 18:51:40 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/02 20:19:00 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ namespace ft
 		first_type first;
 		second_type second;
 
-		pair() {}
+		pair() : first(), second() {
+		}
 
 		template<typename U, typename V>
 		pair(const pair<U, V>& pr) : first(static_cast<first_type>(pr.first)), second(static_cast<second_type>(pr.second)) { }
