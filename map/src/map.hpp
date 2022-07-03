@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/03 02:57:14 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/03 03:13:52 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,14 +216,13 @@ namespace ft
 			}
 
 			const_iterator find(const key_type& k) const {
-				node_pointer found = _tree.find(k);
+				const_node_pointer found = _tree.const_find(k);
 				return const_iterator(found, _tree.root());
 			}
 
-			// Test
 			size_type count(const key_type& k) const {
-				const_node_pointer p = _tree.const_find(k);
-				return (p == NULL ? 0 : 1);
+				const_iterator it = find(k);
+				return (it == end() ? 0 : 1);
 			}
 
 			// Test

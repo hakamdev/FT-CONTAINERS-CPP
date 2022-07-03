@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/03 02:51:59 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/03 03:07:17 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,19 @@ namespace ft
            >
 	class avl_tree {
 		public:
-			typedef std::bidirectional_iterator_tag			iterator_category;
-			typedef ft::pair<const Key, T>					value_type;
-			typedef Key										key_type;
-			typedef T										mapped_type;
-			typedef Alloc									allocator_type;
-			typedef NodeAlloc								node_allocator_type;
-			typedef Compare									key_compare;
-			typedef node<const Key, T, Alloc>				node_type;
-			typedef typename allocator_type::pointer		pointer;
-			typedef typename allocator_type::reference		reference;
-			typedef typename node_allocator_type::pointer	node_pointer;
+			typedef std::bidirectional_iterator_tag				iterator_category;
+			typedef ft::pair<const Key, T>						value_type;
+			typedef Key											key_type;
+			typedef T											mapped_type;
+			typedef Alloc										allocator_type;
+			typedef NodeAlloc									node_allocator_type;
+			typedef Compare										key_compare;
+			typedef node<const Key, T, Alloc>					node_type;
+			typedef typename allocator_type::pointer			pointer;
+			typedef typename allocator_type::reference			reference;
+			typedef typename node_allocator_type::pointer		node_pointer;
 			typedef typename node_allocator_type::const_pointer	const_node_pointer;
-			typedef size_t									size_type;
+			typedef size_t										size_type;
 
 		private:
 			node_pointer		_root;
@@ -500,6 +500,12 @@ namespace ft
 				_node_alloc.destroy(node);
 				_node_alloc.deallocate(node, 1);
 			}
+
+			// static void destroy_node(const_node_pointer node) {
+			// 	node_allocator_type _node_alloc;
+			// 	_node_alloc.destroy(node);
+			// 	_node_alloc.deallocate(node, 1);
+			// }
 
 			// Helper functions.
 			void printTree() {

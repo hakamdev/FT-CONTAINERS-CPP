@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/03 02:39:04 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/03 03:10:35 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int main() {
 
 	//ma.print();
 
-	size_t it = ma.count(15);
+	size_t it = ma.count(-5);
 
 	std::cout << "IT: " << it << std::endl;
 
