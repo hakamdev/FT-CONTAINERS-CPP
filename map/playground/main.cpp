@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/02 21:11:13 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/03 02:39:04 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,28 +129,40 @@ int main() {
 	ma.insert(NS::pair<int, int>(7, 88));
 	ma.insert(NS::pair<int, int>(12, 88));
 	ma.insert(NS::pair<int, int>(20, 88));
-	//ma.insert(NS::pair<int, int>(6, 88));
+	ma.insert(NS::pair<int, int>(6, 88));
 	ma.insert(NS::pair<int, int>(9, 88));
+	ma.insert(NS::pair<int, int>(2, 88));
 
 	//NS::map<std::string, int> ma2(it, eit);
 
-	NS::map<int, int>::iterator it = ma.begin();
-	NS::map<int, int>::iterator eit = ma.end();
+	//ma.print();
 
-	//std::cout << "IT 1: " << (*it).first << std::endl;
+	size_t it = ma.count(15);
 
-	//NS::map<std::string, int>::iterator tmp = ++it; --it;
+	std::cout << "IT: " << it << std::endl;
 
-	ma.print();
+	//ma.print();
 
-	ma.erase(it, eit);
+	// NS::map<int, int>::iterator it = ma.begin();
+	// NS::map<int, int>::iterator eit = ma.end();
 
-	NS::map<int, int>::iterator it2 = ma.begin();
+	// //std::cout << "IT 1: " << (*it).first << std::endl;
+	// NS::map<int, int>::iterator beg = ma.begin();
 
-	std::cout << "LAST" << std::endl;
-	ma.erase(it2);
+	// ++it; ++it; ++it;
+	// NS::map<int, int>::iterator tmp = it;
 
-	ma.print();
+	// ma.print();
+
+	// ma.erase(5);
+
+	// ma.print();
+
+	// NS::map<int, int>::iterator it2 = ma.begin();
+	// std::cout << ma[15] << std::endl;
+	// ma.erase(it2);
+
+	// ma.print();
 
 	//std::cout << "IT 2: " << (*it).first << std::endl;
 

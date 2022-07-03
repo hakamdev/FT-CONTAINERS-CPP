@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 22:54:07 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/02 21:05:50 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/03 02:58:14 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@
 
 namespace ft
 {
-	template <typename Iter>
+	template <typename Iter, typename Node>
 	struct bidir_iterator : public ft::iterator<std::bidirectional_iterator_tag, Iter> {
 
 		typedef Iter															iterator_type;
-		typedef typename iterator_type::node_pointer							node_pointer;
+		typedef Node															node_pointer;
 		typedef typename ft::iterator_traits<iterator_type>::value_type			value_type;
 		typedef typename ft::iterator_traits<iterator_type>::pointer			pointer;
 		typedef typename ft::iterator_traits<iterator_type>::reference			reference;
@@ -49,9 +49,17 @@ namespace ft
 				}
 			}
 
-			template <typename T2>
-			bidir_iterator( const bidir_iterator<T2>& copy ) {
-				*this = copy;
+			template <typename T2, typename N2>
+			bidir_iterator( const bidir_iterator<T2, N2>& copy ) {
+				this->_past_end = iterator_type::make_node();
+				this->_root = copy._root;
+				// If copy.base pointing at end, you need to point to _past_end
+				// that's created in this instance, because the copy.past_end might
+				// be destroyed and also you can't check equality with this->_past_end
+				if (copy.base() == copy.past_end())
+					this->_base = this->_past_end;
+				else
+					this->_base = copy.base();
 			}
 
 			bidir_iterator( const bidir_iterator& copy ) {
@@ -64,7 +72,7 @@ namespace ft
 				// If copy.base pointing at end, you need to point to _past_end
 				// that's created in this instance, because the copy.past_end might
 				// be destroyed and also you can't check equality with this->_past_end
-				if (copy.base() == copy._past_end)
+				if (copy.base() == copy.past_end())
 					this->_base = this->_past_end;
 				else
 					this->_base = copy.base();
@@ -110,7 +118,7 @@ namespace ft
 			}
 
 			bidir_iterator operator ++ ( int ) {
-				bidir_iterator<Iter> old(_base != _past_end ? _base : NULL, _root);
+				bidir_iterator<Iter, Node> old(*this);
 				operator++();
 				//std::cout << "NEXT BASE: " << _base->content->first << std::endl;
 				return (old);
@@ -125,7 +133,7 @@ namespace ft
 			}
 
 			bidir_iterator operator -- ( int ) {
-				bidir_iterator<Iter> old(_base != _past_end ? _base : NULL, _root);
+				bidir_iterator<Iter, Node> old(_base != _past_end ? _base : NULL, _root);
 				operator--();
 				return (old);
 			}

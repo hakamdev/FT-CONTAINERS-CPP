@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/02 21:08:42 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/03 02:57:14 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,23 @@ namespace ft
            >
 	class map {
 		public:
-			typedef ft::pair<const Key, T> 					value_type;
-			typedef Key											key_type;
-			typedef T											mapped_type;
-			typedef Compare										key_compare;
-			typedef Alloc										allocator_type;
-			typedef ft::avl_tree<Key, T, Compare, Alloc>		tree;
-			typedef typename allocator_type::reference			reference;
-            typedef typename allocator_type::const_reference	const_reference;
-            typedef typename allocator_type::pointer			pointer;
-            typedef typename allocator_type::const_pointer		const_pointer;
-			typedef typename tree::node_pointer					node_pointer;
-			typedef ft::bidir_iterator<tree>   					iterator;
-			typedef ft::bidir_iterator<const tree> 				const_iterator;
-			typedef ft::rbidir_iterator<iterator>				reverse_iterator;
-			typedef ft::rbidir_iterator<const_iterator>			const_reverse_iterator;
-			typedef size_t										size_type;
+			typedef ft::pair<const Key, T> 							value_type;
+			typedef Key												key_type;
+			typedef T												mapped_type;
+			typedef Compare											key_compare;
+			typedef Alloc											allocator_type;
+			typedef ft::avl_tree<Key, T, Compare, Alloc>			tree;
+			typedef typename allocator_type::reference				reference;
+            typedef typename allocator_type::const_reference		const_reference;
+            typedef typename allocator_type::pointer				pointer;
+            typedef typename allocator_type::const_pointer			const_pointer;
+			typedef typename tree::node_pointer						node_pointer;
+			typedef typename tree::const_node_pointer				const_node_pointer;
+			typedef ft::bidir_iterator<tree, node_pointer>   		iterator;
+			typedef ft::bidir_iterator<tree, const_node_pointer>	const_iterator;
+			typedef ft::rbidir_iterator<iterator>					reverse_iterator;
+			typedef ft::rbidir_iterator<const_iterator>				const_reverse_iterator;
+			typedef size_t											size_type;
 
 			class value_compare;
 
@@ -176,22 +177,14 @@ namespace ft
 				return _tree.delete_node(k, true);
 			}
 
-			// Test
 			void erase(iterator first, iterator last) {
-				int i = 0;
-				while (first != last && i < 2) {
-					std::cout << "CURR: " << (*first).first << " - " << std::endl;
+				while (first != last) {
 					erase(first++);
-					i++;
-					print();
 				}
 			}
 
 			// Test
 			void swap(map& x) {
-				// allocator_type	_alloc;
-				// tree				_tree;
-				// key_compare		_comp;
 				tree& temp_tree = x._tree.get_reference();
 				allocator_type& temp_alloc = x._alloc;
 				key_compare& temp_comp = x._comp;
@@ -205,13 +198,8 @@ namespace ft
 				this->_comp = temp_comp;
 			}
 
-			// Test
 			void clear() {
-				// TODO:
-				while (!empty()) {
-					node_pointer p = _tree.max_node();
-					_tree.delete_node(p);
-				}
+				_tree.delete_all();
 			}
 
 			key_compare key_comp() const {
@@ -222,13 +210,11 @@ namespace ft
 				return _v_comp;
 			}
 
-			// Test
 			iterator find(const key_type& k) {
 				node_pointer found = _tree.find(k);
 				return iterator(found, _tree.root());
 			}
 
-			// Test
 			const_iterator find(const key_type& k) const {
 				node_pointer found = _tree.find(k);
 				return const_iterator(found, _tree.root());
@@ -236,8 +222,8 @@ namespace ft
 
 			// Test
 			size_type count(const key_type& k) const {
-				node_pointer found = _tree.find(k);
-				return (found != NULL ? 1 : 0);
+				const_node_pointer p = _tree.const_find(k);
+				return (p == NULL ? 0 : 1);
 			}
 
 			// Test

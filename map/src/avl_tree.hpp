@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/02 21:18:27 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/03 02:51:59 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ namespace ft
 			typedef typename allocator_type::pointer		pointer;
 			typedef typename allocator_type::reference		reference;
 			typedef typename node_allocator_type::pointer	node_pointer;
+			typedef typename node_allocator_type::const_pointer	const_node_pointer;
 			typedef size_t									size_type;
 
 		private:
@@ -64,7 +65,10 @@ namespace ft
 					std::cout << "L ";
 					indent += "|    ";
 					}
-					std::cout << "(" << root->content->first << ")->(" << root->content->second << ")" << " [" << (root->parent != NULL && root->parent->content != NULL ? root->parent->content->first : 0)  << "]" << std::endl;
+					std::cout << "(" << root->content->first << ")->(" << root->content->second << ")";
+					if (root->parent != NULL)
+						;
+					std::cout << " [" << (root->parent != NULL ? root->parent->content->first : 0) << "]" << std::endl;
 					_printTree(root->left, indent, false);
 					_printTree(root->right, indent, true);
 				}
@@ -100,47 +104,58 @@ namespace ft
 
 			node_pointer _delete_found_node(node_pointer node) {
 				// key found, now start deletion
-					if (node->left == NULL || node->right == NULL) {
-						// Now we replace parent by left/right depend. on which is not NULL
-						node_pointer new_parent = node->left != NULL ? node->left : node->right;
-						// destroy the parent
-						_node_alloc.destroy(node);
-						_node_alloc.deallocate(node, 1);
-						// asign the new parent left/right/NULL
-						node = new_parent;
-					} else {
-						// Both left and right are NOT NULL
-						// Find max_node in the left subtree
-						node_pointer max = max_node(node->left);
-						// Disconnect max from its parent
-						if (max == node->left)
-							node->left = max->left;
-						else
-							max->parent->right = max->left;
-						// give max the children of node
-						max->left = node->left;
-						max->right = node->right;
-						// destory node
-						_node_alloc.destroy(node);
-						_node_alloc.deallocate(node, 1);
-						// asign max to node to return it
-						node = max;
-					}
-					--_size;
-					return (node);
+				if (node->left == NULL || node->right == NULL) {
+					// Now we replace parent by left/right depend. on which is not NULL
+					node_pointer new_parent = node->left != NULL ? node->left : node->right;
+					// destroy the parent
+					_node_alloc.destroy(node);
+					_node_alloc.deallocate(node, 1);
+					// asign the new parent left/right/NULL
+					node = new_parent;
+				} else {
+					// Both left and right are NOT NULL
+					// Find max_node in the left subtree
+					node_pointer max = max_node(node->left);
+					// Disconnect max from its parent
+					if (max == node->left)
+						max->parent->left = max->left;
+					else
+						max->parent->right = max->left;
+					if (max->left != NULL)
+						max->left->parent = max->parent;
+					// give max the children of node
+					max->left = node->left;
+					max->right = node->right;
+					if (max->left != NULL)
+						max->left->parent = max;
+					if (max->right != NULL)
+						max->right->parent = max;
+					// destory node
+					_node_alloc.destroy(node);
+					_node_alloc.deallocate(node, 1);
+					// asign max to node to return it
+					node = max;
+				}
+				--_size;
+				return (node);
 			}
 
-			node_pointer _delete_node(node_pointer parent, const key_type& key) {
+			node_pointer _delete_node_key(node_pointer parent, const key_type& key) {
 				if (parent == NULL) return NULL;
 				if (_comp(key, parent->content->first)) {
 					// val smaller than parent
-					parent->left = _delete_node(parent->left, key);
+					parent->left = _delete_node_key(parent->left, key);
+					if (parent->left != NULL)
+						parent->left->parent = parent;
 				} else if (_comp(parent->content->first, key)) {
 					// val greater to parent
-					parent->right = _delete_node(parent->right, key);
+					parent->right = _delete_node_key(parent->right, key);
+					if (parent->left != NULL)
+						parent->left->parent = parent;
 				} else {
 					parent = _delete_found_node(parent);
 					if (parent == NULL) return NULL;
+					parent->parent = NULL;
 				}
 				// reset height of parent and rebalance the parent subtree.
 				_calculate_height(parent);
@@ -148,7 +163,53 @@ namespace ft
 				return (parent);
 			}
 
+			node_pointer _delete_node(node_pointer parent, node_pointer node) {
+				if (parent == NULL) return NULL;
+				if (_comp(node->content->first, parent->content->first)) {
+					// val smaller than parent
+					parent->left = _delete_node(parent->left, node);
+					if (parent->left != NULL)
+						parent->left->parent = parent;
+				} else if (_comp(parent->content->first, node->content->first)) {
+					// val greater to parent
+					parent->right = _delete_node(parent->right, node);
+					if (parent->right != NULL)
+						parent->right->parent = parent;
+				} else {
+					parent = _delete_found_node(parent);
+					if (parent == NULL) return NULL;
+					parent->parent = NULL;
+				}
+				// reset height of parent and rebalance the parent subtree.
+				_calculate_height(parent);
+				parent = _balance_tree(parent);
+				return (parent);
+			}
+
+			node_pointer _delete_all(node_pointer parent) {
+				if (parent == NULL) return NULL;
+				parent->left = _delete_all(parent->left);
+				parent->right = _delete_all(parent->right);
+				_node_alloc.destroy(parent);
+				_node_alloc.deallocate(parent, 1);
+				--_size;
+				return (NULL);
+			}
+
 			node_pointer _find(node_pointer parent, const key_type& key) {
+				if (parent == NULL) return NULL;
+				if (_comp(key, parent->content->first)) {
+					// val smaller than parent
+					return _find(parent->left, key);
+				} else if (_comp(parent->content->first, key)) {
+					// val greater to parent
+					return _find(parent->right, key);
+				} else {
+					return parent;
+				}
+			}
+
+			const_node_pointer _find(const_node_pointer parent, const key_type& key) const {
 				if (parent == NULL) return NULL;
 				if (_comp(key, parent->content->first)) {
 					// val smaller than parent
@@ -283,6 +344,11 @@ namespace ft
 				return _find(_root, key);
 			}
 
+			const_node_pointer const_find(const key_type& key) const {
+				if (empty()) return NULL;
+				return _find(_root, key);
+			}
+
 			node_pointer insert(const value_type& val) {
 				node_pointer where = NULL;
 				_root = _insert(_root, val, &where);
@@ -312,31 +378,22 @@ namespace ft
 
 			size_type delete_node(const key_type& key, bool is_key) {
 				size_type old_size = _size;
-
 				if (empty() || !is_key) return 0;
-				_root = _delete_node(_root, key);
+				_root = _delete_node_key(_root, key);
+				//if (_root != NULL) _root->parent = NULL;
+				//std::cout << (_root != NULL && _root->parent != NULL ? _root->parent->content->first : 0) << std::endl;
 				return old_size - _size;
 			}
 
 			void delete_node(node_pointer node) {
-				if (node != NULL)
-					std::cout << ">>>>>>> V(" << node->content->first << ") ";
-				if (node->left != NULL)
-					std::cout << "L(" << node->left->content->first << ") ";
-				if (node->right != NULL)
-					std::cout  << "R(" << node->right->content->first << ") " ;
-				if (node->parent != NULL)
-					std::cout  << "<<< P(" << node->parent->content->first << ") " << std::endl << std::endl;
-
-				node_pointer parent = node->parent;
 				if (empty()) return ;
-				if (parent == NULL) {
-					_root = _delete_found_node(node);
-				} else if (node == parent->left) {
-					parent->left = _delete_found_node(node);
-				} else if (node == parent->right) {
-					parent->right = _delete_found_node(node);
-				}
+				_root = _delete_node(_root, node);
+				//if (_root != NULL) _root->parent = NULL;
+				//std::cout << (_root != NULL && _root->parent != NULL ? _root->parent->content->first : 0) << std::endl;
+			}
+
+			void delete_all() {
+				_root = _delete_all(_root);
 			}
 
 			node_pointer min_node() const {
@@ -446,6 +503,7 @@ namespace ft
 
 			// Helper functions.
 			void printTree() {
+				std::cout << std::endl;
 				_printTree(_root, "", false);
 			}
 
