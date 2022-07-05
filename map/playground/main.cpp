@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/03 03:10:35 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/04 18:00:06 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,14 +132,21 @@ int main() {
 	ma.insert(NS::pair<int, int>(6, 88));
 	ma.insert(NS::pair<int, int>(9, 88));
 	ma.insert(NS::pair<int, int>(2, 88));
+	ma.insert(NS::pair<int, int>(4, 88));
 
 	//NS::map<std::string, int> ma2(it, eit);
 
 	//ma.print();
 
-	size_t it = ma.count(-5);
+	NS::map<int, int>::iterator it = ma.lower_bound(20);
+	NS::map<int, int>::iterator it2 = ma.upper_bound(20);
 
-	std::cout << "IT: " << it << std::endl;
+	std::cout << "LB: " << (*it).first << std::endl;
+	std::cout << "LB: " << (*it2).second << std::endl;
+
+	// size_t it = ma.count(-5);
+
+	// std::cout << "IT: " << it << std::endl;
 
 	//ma.print();
 

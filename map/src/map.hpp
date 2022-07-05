@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/03 03:13:52 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/04 17:44:50 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,11 +164,8 @@ namespace ft
 
 			void erase(iterator position) {
 				if (position.base() == position.past_end()) {
-					// Cause segfault
-					//std::cout << "ERASE: SEG" << std::endl;
 					_tree.delete_node(NULL);
 				} else {
-					//std::cout << "ERASE: BASE" << std::endl;
 					_tree.delete_node(position.base());
 				}
 			}
@@ -233,7 +230,7 @@ namespace ft
 
 			// Test
 			const_iterator lower_bound (const key_type& k) const {
-				node_pointer lbp = _tree.lower_bound(k);
+				const_node_pointer lbp = _tree.lower_bound(k);
 				return const_iterator(lbp, _tree.root());
 			}
 
@@ -245,17 +242,17 @@ namespace ft
 
 			// Test
 			const_iterator upper_bound(const key_type& k) const {
-				node_pointer lbp = _tree.upper_bound(k);
+				const_node_pointer lbp = _tree.upper_bound(k);
 				return const_iterator(lbp, _tree.root());
 			}
 
 			// Test
-			ft::pair<const_iterator, const_iterator> equal_range(const key_type& k) const {
+			ft::pair<iterator, iterator> equal_range(const key_type& k) {
 				return ft::make_pair(lower_bound(k), upper_bound(k));
 			}
 
 			// Test
-			ft::pair<iterator, iterator> equal_range(const key_type& k) {
+			ft::pair<const_iterator, const_iterator> equal_range(const key_type& k) const {
 				return ft::make_pair(lower_bound(k), upper_bound(k));
 			}
 
@@ -265,7 +262,7 @@ namespace ft
 			}
 	};
 
-	template <class Key, class T, class Compare, class Alloc>
+	template <typename Key, typename T, typename Compare, typename Alloc>
 	class map<Key, T, Compare, Alloc>::value_compare : std::binary_function<value_type, value_type, bool>
 	{
 		friend class map;
@@ -273,9 +270,9 @@ namespace ft
 			Compare _comp;
 			value_compare (Compare c) : _comp(c) {}
 		public:
-			typedef bool result_type;
-			typedef value_type first_argument_type;
-			typedef value_type second_argument_type;
+			// typedef bool result_type;
+			// typedef value_type first_argument_type;
+			// typedef value_type second_argument_type;
 			bool operator() (const value_type& x, const value_type& y) const
 			{
 				return _comp(x.first, y.first);

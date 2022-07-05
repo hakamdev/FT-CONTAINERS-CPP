@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bidirectional_iterator.hpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 22:54:07 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/03 03:12:49 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/04 18:06:56 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ namespace ft
 
 		typedef Iter															iterator_type;
 		typedef Node															node_pointer;
+		typedef typename iterator_type::node_type								node_type;
 		typedef typename ft::iterator_traits<iterator_type>::value_type			value_type;
 		typedef typename ft::iterator_traits<iterator_type>::pointer			pointer;
 		typedef typename ft::iterator_traits<iterator_type>::reference			reference;
@@ -32,16 +33,17 @@ namespace ft
 			node_pointer _base;
 			node_pointer _root;
 			node_pointer _past_end;
+			//node_type _node(value_type());
 
 		public:
 			// Constructors / Destructor
 			bidir_iterator( void ) : _root(NULL), _base(NULL) {
-				//this->_past_end = iterator_type::make_node();
+				this->_past_end = &node_type(value_type());  //iterator_type::make_node();
 			}
 
 			bidir_iterator( node_pointer base, node_pointer root ) : _root(root) {
-				// this->_past_end is to be pointed to as end()
-				// this->_past_end = iterator_type::make_node();
+				this->_past_end = &node_type(value_type()); // this->_past_end is to be pointed to as end()
+				this->_past_end = &node_type(value_type()); // this->_past_end = iterator_type::make_node();
 				if (base == NULL) {
 					this->_base = _past_end;
 				} else {
@@ -51,7 +53,7 @@ namespace ft
 
 			template <typename T2, typename N2>
 			bidir_iterator( const bidir_iterator<T2, N2>& copy ) {
-				//this->_past_end = iterator_type::make_node();
+				this->_past_end = &node_type(value_type()); //this->_past_end = iterator_type::make_node();
 				this->_root = copy.root();
 				// If copy.base pointing at end, you need to point to _past_end
 				// that's created in this instance, because the copy.past_end might
@@ -67,7 +69,7 @@ namespace ft
 			}
 
 			bidir_iterator& operator = ( const bidir_iterator& copy ) {
-				// this->_past_end = iterator_type::make_node();
+				this->_past_end = &node_type(value_type()); // this->_past_end = iterator_type::make_node();
 				this->_root = copy._root;
 				// If copy.base pointing at end, you need to point to _past_end
 				// that's created in this instance, because the copy.past_end might
