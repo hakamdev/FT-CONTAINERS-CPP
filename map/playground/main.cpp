@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/04 18:00:06 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/06 19:31:17 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,32 +121,64 @@ int main() {
 	#define NS ft
 
 	NS::map<int, int> ma;
+	NS::map<int, int> ma2;
 
 	ma.insert(NS::pair<int, int>(10, 22));
 	ma.insert(NS::pair<int, int>(5, 11));
-	ma.insert(NS::pair<int, int>(15, 55));
+	ma.insert(NS::pair<int, int>(15, 1111));
 	ma.insert(NS::pair<int, int>(3, 77));
 	ma.insert(NS::pair<int, int>(7, 88));
 	ma.insert(NS::pair<int, int>(12, 88));
 	ma.insert(NS::pair<int, int>(20, 88));
 	ma.insert(NS::pair<int, int>(6, 88));
-	ma.insert(NS::pair<int, int>(9, 88));
-	ma.insert(NS::pair<int, int>(2, 88));
-	ma.insert(NS::pair<int, int>(4, 88));
 
-	//NS::map<std::string, int> ma2(it, eit);
+	ma2.insert(NS::pair<int, int>(10, 22));
+	ma2.insert(NS::pair<int, int>(5, 11));
+	ma2.insert(NS::pair<int, int>(15, 1111));
+	ma2.insert(NS::pair<int, int>(3, 77));
+	ma2.insert(NS::pair<int, int>(7, 88));
+	ma2.insert(NS::pair<int, int>(12, 88));
+	ma2.insert(NS::pair<int, int>(20, 88));
+	ma2.insert(NS::pair<int, int>(6, 88));
 
-	//ma.print();
+	ma.print();
+	ma2.print();
 
-	NS::map<int, int>::iterator it = ma.lower_bound(20);
-	NS::map<int, int>::iterator it2 = ma.upper_bound(20);
+	std::cout << std::boolalpha;
 
-	std::cout << "LB: " << (*it).first << std::endl;
-	std::cout << "LB: " << (*it2).second << std::endl;
+	std::cout << "MA == M2: " << (ma == ma2) << std::endl;
+	std::cout << "MA != M2: " << (ma != ma2) << std::endl;
+	// std::cout << "MA < M2: " << (ma < ma2) << std::endl;
+	// std::cout << "MA > M2: " << (ma > ma2) << std::endl;
+	// std::cout << "MA <= M2: " << (ma <= ma2) << std::endl;
+	// std::cout << "MA >= M2: " << (ma >= ma2) << std::endl;
 
-	// size_t it = ma.count(-5);
+	// const map<int, int, std::__1::less<int>, std::__1::allocator<ft::pair<const int, int> > >
+	// const map<int, int, std::__1::less<int>, std::__1::allocator<ft::pair<const int, int> > >
 
-	// std::cout << "IT: " << it << std::endl;
+	// ma.print();
+	// std::cout << "MA: " << ma.size() << std::endl;
+	// ma2.print();
+	// std::cout << "MA2: " << ma2.size() << std::endl;
+
+	// ma.swap(ma2);
+
+	// ma.print();
+	// std::cout << "MA: " << ma.size() << std::endl;
+	// ma2.print();
+	// std::cout << "MA2: " << ma2.size() << std::endl;
+
+	//S::pair<NS::map<int, int>::const_iterator, NS::map<int, int>::const_iterator> p = ma.equal_range(20);
+
+	// NS::map<int, int>::iterator it = ma.lower_bound(12);
+	// NS::map<int, int>::iterator it2 = ma.upper_bound(12);
+
+	// std::cout << "LB: " << (*p.first).first << std::endl;
+	// std::cout << "UB: " << (*p.second).first << std::endl;
+
+	// size_t itqq = ma.count(55);
+
+	// std::cout << "CNT: " << itqq << std::endl;
 
 	//ma.print();
 

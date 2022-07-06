@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:47:05 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/27 05:24:22 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/06 18:24:01 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,48 +46,6 @@ namespace ft
 		typedef const Ptr*						pointer;
 		typedef const Ptr&						reference;
 	};
-
-	// general template
-	template< bool Cond, typename T = void >
-	struct enable_if;
-
-	// true specialization
-	template< typename T >
-	struct enable_if<true, T> {
-		typedef T type;
-	};
-
-	// general template for all non-integral types
-	template< typename T >
-	struct is_integral {
-		static const bool value = false;
-	};
-
-	// integral specializations
-	template<>
-	struct is_integral<int> { static const bool value = true; };
-	template<>
-	struct is_integral<long> { static const bool value = true; };
-	template<>
-	struct is_integral<short> { static const bool value = true; };
-	template<>
-	struct is_integral<char> { static const bool value = true; };
-	template<>
-	struct is_integral<bool> { static const bool value = true; };
-	template<>
-	struct is_integral<wchar_t> { static const bool value = true; };
-	template<>
-	struct is_integral<long long> { static const bool value = true; };
-	template<>
-	struct is_integral<unsigned char> { static const bool value = true; };
-	template<>
-	struct is_integral<unsigned short> { static const bool value = true; };
-	template<>
-	struct is_integral<unsigned int> { static const bool value = true; };
-	template<>
-	struct is_integral<unsigned long> { static const bool value = true; };
-	template<>
-	struct is_integral<unsigned long long> { static const bool value = true; };
 
 } // namespace ft
 

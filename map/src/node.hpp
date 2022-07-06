@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/01 18:32:33 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/06 16:53:39 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ namespace ft
 			int					height;
 
 			explicit node(const value_type& val, const allocator_type& alloc = allocator_type()) :
-					_alloc(alloc), parent(NULL), left(NULL), right(NULL), height(0) {
+					_alloc(alloc),  left(NULL), right(NULL), parent(NULL), height(0) {
 				this->content =	this->_alloc.allocate(1);
 				this->_alloc.construct(content, val);
 			}
 
-			explicit node(const node_type& other) {
+			node(const node& other) {
 				*this = other;
 			}
 
@@ -61,7 +61,7 @@ namespace ft
 				this->_alloc.deallocate(content, 1);
 			}
 
-			node& operator = (const node_type& other) {
+			node& operator = (const node& other) {
 				this->content =	this->_alloc.allocate(1);
 				this->_alloc.construct(content, *other.content);
 				this->parent = other.parent;
@@ -81,7 +81,7 @@ namespace ft
 				this->_alloc.construct(content, val);
 			}
 
-			bool operator == ( const node_type& other ) {
+			bool operator == ( const node& other ) {
 				return (*this->content == *other.content
 						&& this->parent == other.parent
 						&& this->left == other.left
@@ -90,7 +90,7 @@ namespace ft
 					);
 			}
 
-			bool operator != ( const node_type& other ) {
+			bool operator != ( const node& other ) {
 				return !(*this == other);
 			}
 	};

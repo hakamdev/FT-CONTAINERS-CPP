@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/03 03:07:17 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/06 19:54:27 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <algorithm>
 # include "node.hpp"
 # include "bidirectional_iterator.hpp"
-# include "reverse_bidirectional_iterator.hpp"
 # include "pair.hpp"
 
 namespace ft
@@ -45,6 +44,10 @@ namespace ft
 			typedef typename allocator_type::reference			reference;
 			typedef typename node_allocator_type::pointer		node_pointer;
 			typedef typename node_allocator_type::const_pointer	const_node_pointer;
+
+			typedef ft::bidir_iterator<avl_tree<Key, T, Compare, Alloc, NodeAlloc>, node_pointer>	iterator;
+			typedef ft::bidir_iterator<avl_tree<Key, T, Compare, Alloc, NodeAlloc>, node_pointer>	const_iterator;
+
 			typedef size_t										size_type;
 
 		private:
@@ -209,14 +212,14 @@ namespace ft
 				}
 			}
 
-			const_node_pointer _find(const_node_pointer parent, const key_type& key) const {
+			node_pointer _const_find(node_pointer parent, const key_type& key) const {
 				if (parent == NULL) return NULL;
 				if (_comp(key, parent->content->first)) {
 					// val smaller than parent
-					return _find(parent->left, key);
+					return _const_find(parent->left, key);
 				} else if (_comp(parent->content->first, key)) {
 					// val greater to parent
-					return _find(parent->right, key);
+					return _const_find(parent->right, key);
 				} else {
 					return parent;
 				}
@@ -314,7 +317,7 @@ namespace ft
 			avl_tree(const key_compare& comp = key_compare(),
 					const allocator_type& alloc = allocator_type(),
 					const node_allocator_type& node_alloc = node_allocator_type()) : 
-					_comp(comp), _alloc(alloc), _node_alloc(node_alloc), _root(NULL), _size(0) {
+					_root(NULL), _alloc(alloc), _node_alloc(node_alloc),  _comp(comp), _size(0) {
 			}
 
 			avl_tree(const avl_tree& other) {
@@ -325,18 +328,12 @@ namespace ft
 				this->_alloc = other._alloc;
 				this->_node_alloc = other._node_alloc;
 				this->_comp = other._comp;
-				this->_size = 0;
-				node_pointer curr = other.min_node();
-				do {
-					if (curr == NULL) break;
-					insert(*curr->content);
-				} while((curr = next_node(curr)) != NULL);
+				this->_root = other._root;
+				this->_size = other._size;
 				return *this;
 			}
 
-			~avl_tree() {
-				// TODO: 
-			}
+			~avl_tree() { }
 
 			// Public methods for AVL Tree operations.
 			node_pointer find(const key_type& key) {
@@ -344,9 +341,9 @@ namespace ft
 				return _find(_root, key);
 			}
 
-			const_node_pointer const_find(const key_type& key) const {
+			node_pointer const_find(const key_type& key) const {
 				if (empty()) return NULL;
-				return _find(_root, key);
+				return _const_find(_root, key);
 			}
 
 			node_pointer insert(const value_type& val) {
@@ -388,8 +385,6 @@ namespace ft
 			void delete_node(node_pointer node) {
 				if (empty()) return ;
 				_root = _delete_node(_root, node);
-				//if (_root != NULL) _root->parent = NULL;
-				//std::cout << (_root != NULL && _root->parent != NULL ? _root->parent->content->first : 0) << std::endl;
 			}
 
 			void delete_all() {
@@ -440,8 +435,28 @@ namespace ft
 				return next_node(start);
 			}
 
-			avl_tree& get_reference() {
-				return *this;
+			iterator begin() {
+				return iterator(this->min_node(), &_root);
+			}
+
+			const_iterator begin() const {
+				return const_iterator(this->min_node(), &_root);
+			}
+
+			iterator end() {
+				return iterator(NULL, &_root);
+			}
+
+			const_iterator end() const {
+				return const_iterator(NULL, &_root);
+			}
+
+			iterator make_iterator(node_pointer p) {
+				return iterator(p, &_root);
+			}
+
+			iterator make_iterator(node_pointer p) const {
+				return const_iterator(p, &_root);
 			}
 
 			// General static functions to manipulate nodes.
@@ -501,11 +516,11 @@ namespace ft
 				_node_alloc.deallocate(node, 1);
 			}
 
-			// static void destroy_node(const_node_pointer node) {
-			// 	node_allocator_type _node_alloc;
-			// 	_node_alloc.destroy(node);
-			// 	_node_alloc.deallocate(node, 1);
-			// }
+			static void destroy_node(const_node_pointer node) {
+				node_allocator_type _node_alloc;
+				_node_alloc.destroy(node);
+				_node_alloc.deallocate(node, 1);
+			}
 
 			// Helper functions.
 			void printTree() {

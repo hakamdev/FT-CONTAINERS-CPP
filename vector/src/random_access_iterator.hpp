@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:48:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/13 16:08:11 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/06 16:02:09 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,80 +30,80 @@ namespace ft
 			typedef typename ft::iterator_traits<iterator_type>::reference			reference;
 
 		private:
-			iterator_type __tt;
+			iterator_type _base;
 
 		public:
 			// Constructors / Destructor
-			racc_iterator( void ) : __tt() {}
-			racc_iterator( iterator_type _t ) : __tt(_t) {}
+			racc_iterator( void ) : _base() {}
+			racc_iterator( iterator_type base ) : _base(base) {}
 			racc_iterator( racc_iterator<iterator_type> const & copy ) { *this = copy; }
 			template <typename T2>
 			racc_iterator( racc_iterator<T2> const & copy ) {
-				this->__tt = copy.base();
+				this->_base = copy.base();
 			}
-			racc_iterator& operator = ( racc_iterator<Iter> const & copy ) { this->__tt = copy.base(); return (*this); }
+			racc_iterator& operator = ( racc_iterator<Iter> const & copy ) { this->_base = copy.base(); return (*this); }
 			~racc_iterator() {}
-			iterator_type base() const { return __tt; }
+			iterator_type base() const { return _base; }
 
 			// Overloaded operators
 			bool operator == ( racc_iterator const & other ) {
-				return (this->__tt == other.__tt);
+				return (this->_base == other._base);
 			}
 			bool operator != ( racc_iterator const & other ) {
-				return (this->__tt != other.__tt);
+				return (this->_base != other._base);
 			}
 			bool operator < ( racc_iterator const & other ) {
-				return (this->__tt < other.__tt);
+				return (this->_base < other._base);
 			}
 			bool operator > ( racc_iterator const & other ) {
-				return (this->__tt > other.__tt);
+				return (this->_base > other._base);
 			}
 			bool operator <= ( racc_iterator const & other ) {
-				return (this->__tt <= other.__tt);
+				return (this->_base <= other._base);
 			}
 			bool operator >= ( racc_iterator const & other ) {
-				return (this->__tt >= other.__tt);
+				return (this->_base >= other._base);
 			}
 			reference operator * () {
-				return (*this->__tt);
+				return (*this->_base);
 			}
 			racc_iterator& operator ++ () {
-				++this->__tt;
+				++this->_base;
 				return (*this);
 			}
 			racc_iterator operator ++ ( int ) {
 				racc_iterator<Iter> old(*this);
-				++this->__tt;
+				++this->_base;
 				return (old);
 			}
 			racc_iterator& operator -- () {
-				--this->__tt;
+				--this->_base;
 				return (*this);
 			}
 			racc_iterator operator -- ( int ) {
 				racc_iterator<Iter> old(*this);
-				--this->__tt;
+				--this->_base;
 				return (old);
 			}
 			racc_iterator operator + ( int n ) {
-				return (racc_iterator<Iter>(this->__tt + n));
+				return (racc_iterator<Iter>(this->_base + n));
 			}
 			racc_iterator operator - ( int n ) {
-				return (racc_iterator<Iter>(this->__tt - n));
+				return (racc_iterator<Iter>(this->_base - n));
 			}	
 			racc_iterator& operator += ( int n ) {
-				this->__tt += n;
+				this->_base += n;
 				return (*this);
 			}
 			racc_iterator& operator -= ( int n ) {
-				this->__tt -= n;
+				this->_base -= n;
 				return (*this);
 			}
 			reference operator [] ( int n ) {
-				return (this->__tt[n]);
+				return (this->_base[n]);
 			}
 			difference_type operator - ( racc_iterator const & other ) {
-				return (this->__tt - other.__tt);
+				return (this->_base - other._base);
 			}
 	};
 

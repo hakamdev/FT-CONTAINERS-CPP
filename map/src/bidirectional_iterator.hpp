@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bidirectional_iterator.hpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 22:54:07 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/04 18:06:56 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/06 19:51:49 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,27 @@ namespace ft
 	template <typename Iter, typename Node>
 	struct bidir_iterator : public ft::iterator<std::bidirectional_iterator_tag, Iter> {
 
-		typedef Iter															iterator_type;
-		typedef Node															node_pointer;
-		typedef typename iterator_type::node_type								node_type;
-		typedef typename ft::iterator_traits<iterator_type>::value_type			value_type;
-		typedef typename ft::iterator_traits<iterator_type>::pointer			pointer;
-		typedef typename ft::iterator_traits<iterator_type>::reference			reference;
+		typedef Iter									iterator_type;
+		typedef Node									node_pointer;
+		typedef typename iterator_type::node_type		node_type;
+		typedef typename iterator_type::value_type		value_type;
+		typedef typename iterator_type::pointer			pointer;
+		typedef typename iterator_type::reference		reference;
 
 		private:
-			node_pointer _base;
-			node_pointer _root;
-			node_pointer _past_end;
-			//node_type _node(value_type());
+			node_pointer	_base;
+			node_pointer*	_root;
+			node_pointer	_past_end;
 
 		public:
 			// Constructors / Destructor
 			bidir_iterator( void ) : _root(NULL), _base(NULL) {
-				this->_past_end = &node_type(value_type());  //iterator_type::make_node();
+				this->_past_end = iterator_type::make_node();
 			}
 
-			bidir_iterator( node_pointer base, node_pointer root ) : _root(root) {
-				this->_past_end = &node_type(value_type()); // this->_past_end is to be pointed to as end()
-				this->_past_end = &node_type(value_type()); // this->_past_end = iterator_type::make_node();
+			bidir_iterator( node_pointer base, node_pointer* root ) : _root(root) {
+				// this->_past_end is to be pointed to as end()
+				this->_past_end = iterator_type::make_node();
 				if (base == NULL) {
 					this->_base = _past_end;
 				} else {
@@ -53,8 +52,8 @@ namespace ft
 
 			template <typename T2, typename N2>
 			bidir_iterator( const bidir_iterator<T2, N2>& copy ) {
-				this->_past_end = &node_type(value_type()); //this->_past_end = iterator_type::make_node();
-				this->_root = copy.root();
+				this->_past_end = iterator_type::make_node();
+				this->_root = copy._root;
 				// If copy.base pointing at end, you need to point to _past_end
 				// that's created in this instance, because the copy.past_end might
 				// be destroyed and also you can't check equality with this->_past_end
@@ -69,7 +68,7 @@ namespace ft
 			}
 
 			bidir_iterator& operator = ( const bidir_iterator& copy ) {
-				this->_past_end = &node_type(value_type()); // this->_past_end = iterator_type::make_node();
+				this->_past_end = iterator_type::make_node();
 				this->_root = copy._root;
 				// If copy.base pointing at end, you need to point to _past_end
 				// that's created in this instance, because the copy.past_end might
@@ -81,14 +80,16 @@ namespace ft
 				return (*this);
 			}
 
-			~bidir_iterator() {}
+			~bidir_iterator() {
+				iterator_type::destroy_node(this->_past_end);
+			}
 
 			node_pointer base() const {
 				return this->_base;
 			}
 
 			node_pointer root() const {
-				return _root;
+				return *_root;
 			}
 
 			node_pointer past_end() const {
@@ -117,20 +118,18 @@ namespace ft
 				} else {
 					_base = _next;
 				}
-				//std::cout << "NEXT: " << _next->content->first << std::endl;
 				return (*this);
 			}
 
 			bidir_iterator operator ++ ( int ) {
 				bidir_iterator<Iter, Node> old(*this);
 				operator++();
-				//std::cout << "NEXT BASE: " << _base->content->first << std::endl;
 				return (old);
 			}
 
 			bidir_iterator& operator -- () {
 				if (_base == _past_end)
-					this->_base = iterator_type::max_node(_root);
+					this->_base = iterator_type::max_node(*_root);
 				else
 					this->_base = iterator_type::prev_node(_base);
 				return (*this);
@@ -143,6 +142,7 @@ namespace ft
 			}
 
 	};
+
 } // namespace ft
 
 #endif // __BIDIR_ITER_HPP__
