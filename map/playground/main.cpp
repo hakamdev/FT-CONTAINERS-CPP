@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/06 19:31:17 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/06 20:12:30 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,10 +148,10 @@ int main() {
 
 	std::cout << "MA == M2: " << (ma == ma2) << std::endl;
 	std::cout << "MA != M2: " << (ma != ma2) << std::endl;
-	// std::cout << "MA < M2: " << (ma < ma2) << std::endl;
-	// std::cout << "MA > M2: " << (ma > ma2) << std::endl;
-	// std::cout << "MA <= M2: " << (ma <= ma2) << std::endl;
-	// std::cout << "MA >= M2: " << (ma >= ma2) << std::endl;
+	std::cout << "MA < M2: " << (ma < ma2) << std::endl;
+	std::cout << "MA > M2: " << (ma > ma2) << std::endl;
+	std::cout << "MA <= M2: " << (ma <= ma2) << std::endl;
+	std::cout << "MA >= M2: " << (ma >= ma2) << std::endl;
 
 	// const map<int, int, std::__1::less<int>, std::__1::allocator<ft::pair<const int, int> > >
 	// const map<int, int, std::__1::less<int>, std::__1::allocator<ft::pair<const int, int> > >
