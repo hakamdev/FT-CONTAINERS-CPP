@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/07 06:39:28 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/07 18:15:30 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,29 @@ namespace ft
 
 				parent = _balance_tree(parent);
 
+				return parent;
+			}
+
+			node_pointer _insert_all(node_pointer parent, node_pointer from) {
+				// from->parent is a leaf node.
+				if (from == NULL) return NULL;
+				
+				// copy "from" content and height.
+				parent = _make_node(*from->content);
+				parent->height = from->height;
+
+				// rerun recursively for left child.
+				parent->left = _insert_all(parent->left, from->left);
+
+				// asign the parent for left child.
+				if (parent->left != NULL) parent->left->parent = parent;
+
+				// rerun recursively for right child.
+				parent->right = _insert_all(parent->right, from->right);
+
+				// asign the parent for right child.
+				if (parent->right != NULL) parent->right->parent = parent;
+				
 				return parent;
 			}
 
@@ -206,29 +229,6 @@ namespace ft
 				return (NULL);
 			}
 
-			node_pointer _insert_all(node_pointer parent, node_pointer from) {
-				// from->parent is a leaf node.
-				if (from == NULL) return NULL;
-				
-				// copy "from" content and height.
-				parent = _make_node(*from->content);
-				parent->height = from->height;
-
-				// rerun recursively for left child.
-				parent->left = _insert_all(parent->left, from->left);
-
-				// asign the parent for left child.
-				if (parent->left != NULL) parent->left->parent = parent;
-
-				// rerun recursively for right child.
-				parent->right = _insert_all(parent->right, from->right);
-
-				// asign the parent for right child.
-				if (parent->right != NULL) parent->right->parent = parent;
-				
-				return parent;
-			}
-
 			node_pointer _find(node_pointer parent, const key_type& key) {
 				if (parent == NULL) return NULL;
 				if (_comp(key, parent->content->first)) {
@@ -261,18 +261,23 @@ namespace ft
 			}
 
 			int _height(node_pointer node) {
+				// get node height or -1 if null.
 				return node == NULL ? -1 : node->height;
 			}
 
 			int _get_balance_factor(node_pointer node) {
+				// balance factor if diff between left and right subtrees.
+				// if it's not (-1 <= bf <= 1) the tree is not balanced. 
 				return _height(node->left) - _height(node->right);
 			}
 
 			bool _is_left_heavy(node_pointer node) {
+				// the tree is not balanced on the left subtree
 				return _get_balance_factor(node) > 1;
 			}
 
 			bool _is_right_heavy(node_pointer node) {
+				// the tree is not balanced on the right subtree
 				return _get_balance_factor(node) < -1;
 			}
 
@@ -290,19 +295,19 @@ namespace ft
 			}
 
 			node_pointer _left_rotate(node_pointer parent) {
-				// Perform rotation
+				// perform rotation
 				node_pointer new_parent = parent->right;
 				parent->right = new_parent->left;
 				new_parent->left = parent;
 
-				// Reset parents
+				// reset parents
 				new_parent->parent = parent->parent;
 				if (parent->right != NULL)
 					parent->right->parent = parent;
 				if (new_parent->left != NULL)
 					new_parent->left->parent = new_parent;
 
-				// Reset height
+				// reset heights
 				_calculate_height(parent);
 				_calculate_height(new_parent);
 				
@@ -310,27 +315,28 @@ namespace ft
 			}
 
 			node_pointer _right_rotate(node_pointer parent) {
-				// Perform rotation
+				// perform rotation
 				node_pointer new_parent = parent->left;
 				parent->left = new_parent->right;
 				new_parent->right = parent;
 
-				// Reset parents
+				// reset parents
 				new_parent->parent = parent->parent;
 				if (parent->left != NULL)
 					parent->left->parent = parent;
 				if (new_parent->right != NULL)
 					new_parent->right->parent = new_parent;
 
-				// Reset height
+				// reset heights
 				_calculate_height(parent);
 				_calculate_height(new_parent);
 
-				// Return new_parent to assign it to parent
 				return (new_parent);
 			}
 
 			node_pointer _make_node(const value_type& val = value_type()) {
+				// allocate and construct a new node with val and return it
+				// using map's instance of Alloc
 				node_pointer _ptr = NULL;
 				try {
 					_ptr = _node_alloc.allocate(1);
@@ -350,7 +356,7 @@ namespace ft
 					_root(NULL), _alloc(alloc), _node_alloc(node_alloc),  _comp(comp), _size(0) {
 			}
 
-			avl_tree(const avl_tree& other) {
+			avl_tree(const avl_tree& other) : _root(NULL), _size(0) {
 				*this = other;
 			}
 
@@ -384,7 +390,6 @@ namespace ft
 				return where;
 			}
 
-			// hint can't be NULL or pointing to _past_end;
 			node_pointer insert(node_pointer hint, const value_type& val) {
 				node_pointer new_hint = _root;
 				while (new_hint != NULL) {
@@ -409,8 +414,6 @@ namespace ft
 				size_type old_size = _size;
 				if (empty() || !is_key) return 0;
 				_root = _delete_node_key(_root, key);
-				//if (_root != NULL) _root->parent = NULL;
-				//std::cout << (_root != NULL && _root->parent != NULL ? _root->parent->content->first : 0) << std::endl;
 				return old_size - _size;
 			}
 

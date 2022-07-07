@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/07 06:21:36 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/07 18:50:22 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,11 +245,19 @@ namespace ft
 			}
 
 			ft::pair<iterator, iterator> equal_range(const key_type& k) {
-				return ft::make_pair(lower_bound(k), upper_bound(k));
+				iterator lbi = lower_bound(k);
+				if (_comp(k, lbi->first)) {
+					return ft::make_pair(lbi, _tree.make_iterator(lbi.base()));
+				}
+				return ft::make_pair(lbi++, lbi);
 			}
 
 			ft::pair<const_iterator, const_iterator> equal_range(const key_type& k) const {
-				return ft::make_pair(lower_bound(k), upper_bound(k));
+				const_iterator lbi = lower_bound(k);
+				if (_comp(k, lbi->first)) {
+					return ft::make_pair(lbi, _tree.make_iterator(lbi.base()));
+				}
+				return ft::make_pair(lbi++, lbi);
 			}
 
 			////// TODO: TEMPORARY
