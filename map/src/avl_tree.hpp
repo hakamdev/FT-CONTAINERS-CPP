@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/07 18:15:30 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/07 19:59:48 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,6 +361,7 @@ namespace ft
 			}
 
 			avl_tree& operator = (const avl_tree& other) {
+				delete_all();
 				this->_alloc = other._alloc;
 				this->_node_alloc = other._node_alloc;
 				this->_comp = other._comp;

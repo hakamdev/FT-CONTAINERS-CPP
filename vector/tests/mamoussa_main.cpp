@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 11:32:49 by ibaali            #+#    #+#             */
-/*   Updated: 2022/07/07 03:53:46 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/07 21:29:10 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -2480,9 +2480,13 @@ int main(void)
     std::cout << RED << "--------------------------------------------------------------------------------------------------------" << RESET << std::endl;
     signal(SIGALRM, alarm_handler);
     iterator_tests();
-    const_iterator_tests();
-    reverse_iterator_tests();
-    reverse_iterator_with_ft_vector();
-    vector_tests();
+    // const_iterator_tests();
+    // reverse_iterator_tests();
+    // reverse_iterator_with_ft_vector();
+    // vector_tests();
+
+    while(1)
+        ;
+
     return 0;
 }
