@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 23:05:18 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/01 18:06:37 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/07 04:25:55 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ namespace ft
 			typedef Container									container_type;
 			typedef size_t										size_type;
 
-		protected:
+		//protected:
 			container_type c;
 
 		public:
@@ -55,12 +55,23 @@ namespace ft
 				c.pop_back();
 			}
 
-			friend bool operator== (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-			friend bool operator!= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-			friend bool operator<  (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-			friend bool operator<= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-			friend bool operator>  (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-			friend bool operator>= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
+			template <class T1, class C1>
+			friend bool operator== (const stack<T1, C1>& lhs, const stack<T1, C1>& rhs);
+
+			template <class T1, class C1>
+			friend bool operator!= (const stack<T1, C1>& lhs, const stack<T1, C1>& rhs);
+
+			template <class T1, class C1>
+			friend bool operator<  (const stack<T1, C1>& lhs, const stack<T1, C1>& rhs);
+
+			template <class T1, class C1>
+			friend bool operator<= (const stack<T1, C1>& lhs, const stack<T1, C1>& rhs);
+
+			template <class T1, class C1>
+			friend bool operator>  (const stack<T1, C1>& lhs, const stack<T1, C1>& rhs);
+
+			template <class T1, class C1>
+			friend bool operator>= (const stack<T1, C1>& lhs, const stack<T1, C1>& rhs);
 	};
 
 	template <class T, class Container>
