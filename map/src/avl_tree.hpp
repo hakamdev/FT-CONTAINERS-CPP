@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/07 06:09:56 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/07 06:39:28 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ namespace ft
 					indent += "|    ";
 					}
 					std::cout << "(" << root->content->first << ")->(" << root->content->second << ")";
-					std::cout << " [" << (root->parent != NULL ? root->parent->content->first : 0) << "]";
+					if (root->parent != NULL && root->parent->content != NULL)
+						std::cout << " [" << (root->parent != NULL ? root->parent->content->first : 0) << "]";
 					std::cout << "{" << root->height << "}" << std::endl;
 					_printTree(root->left, indent, false);
 					_printTree(root->right, indent, true);
@@ -593,6 +594,7 @@ namespace ft
 
 			// Helper functions.
 			void printTree() {
+				// std::cout << _root->content->first << std::endl;
 				std::cout << std::endl;
 				_printTree(_root, "", false);
 			}

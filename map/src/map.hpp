@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/07 06:10:14 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/07 06:21:36 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,10 @@ namespace ft
 				insert<InputIterator>(first, last);
 			}
 
-			// TEST
 			map(const map& x) : _v_comp(_comp) {
 				*this = x;
 			}
 
-			// TEST
 			map& operator= (const map& x) {
 				_comp = x._comp;
 				_alloc = x._alloc;
