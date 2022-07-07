@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/06 22:52:50 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/07 06:10:14 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,7 @@ namespace ft
 				return *this;
 			}
 
-			~map() {
-				// clear();
-			 }
+			~map() {}
 
 			iterator begin() {
 				return _tree.begin();
@@ -157,7 +155,7 @@ namespace ft
 				} else {
 					p = _tree.insert(position.base(), val);
 				}
-				return iterator(p, _tree.root());
+				return _tree.make_iterator(p);
 			}
 
 			template <class InputIterator>
@@ -186,20 +184,19 @@ namespace ft
 			}
 
 			void swap(map& x) {
-				tree temp_tree = x._tree;
 				allocator_type temp_alloc = x._alloc;
 				key_compare temp_comp = x._comp;
 				value_compare temp_v_comp = x._v_comp;
 
-				x._tree = this->_tree;
 				x._alloc = this->_alloc;
 				x._comp = this->_comp;
 				x._v_comp = this->_v_comp;
 
-				this->_tree = temp_tree;
 				this->_alloc = temp_alloc;
 				this->_comp = temp_comp;
 				this->_v_comp = temp_v_comp;
+
+				this->_tree.swap(x._tree);
 			}
 
 			void clear() {
@@ -216,12 +213,12 @@ namespace ft
 
 			iterator find(const key_type& k) {
 				node_pointer found = _tree.find(k);
-				return iterator(found, _tree.root());
+				return _tree.make_iterator(found);
 			}
 
 			const_iterator find(const key_type& k) const {
 				node_pointer found = _tree.const_find(k);
-				return const_iterator(found, _tree.root());
+				return _tree.make_iterator(found);
 			}
 
 			size_type count(const key_type& k) const {
@@ -231,22 +228,22 @@ namespace ft
 
 			iterator lower_bound(const key_type& k) {
 				node_pointer lbp = _tree.lower_bound(k);
-				return iterator(lbp, _tree.root());
+				return _tree.make_iterator(lbp);
 			}
 
 			const_iterator lower_bound (const key_type& k) const {
 				node_pointer lbp = _tree.lower_bound(k);
-				return const_iterator(lbp, _tree.root());
+				return _tree.make_iterator(lbp);
 			}
 
 			iterator upper_bound(const key_type& k) {
 				node_pointer ubp = _tree.upper_bound(k);
-				return iterator(ubp, _tree.root());
+				return _tree.make_iterator(ubp);
 			}
 
 			const_iterator upper_bound(const key_type& k) const {
 				node_pointer ubp = _tree.upper_bound(k);
-				return const_iterator(ubp, _tree.root());
+				return _tree.make_iterator(ubp);
 			}
 
 			ft::pair<iterator, iterator> equal_range(const key_type& k) {

@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 01:42:02 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/06 22:17:26 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/07 04:34:39 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,10 @@ namespace ft
 				iterator_type _correct = this->_base;
 				--_correct;
 				return (*_correct);
+			}
+
+			pointer operator-> () {
+				return &(operator*());
 			}
 
 			rbidir_iterator& operator ++ () {

@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/06 22:59:37 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/07 06:09:56 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ namespace ft
 			typedef Compare										key_compare;
 			typedef node<const Key, T, Alloc>					node_type;
 			typedef typename allocator_type::pointer			pointer;
+			typedef typename allocator_type::const_pointer		const_pointer;
 			typedef typename allocator_type::reference			reference;
 			typedef typename node_allocator_type::pointer		node_pointer;
 			typedef typename node_allocator_type::const_pointer	const_node_pointer;
@@ -91,8 +92,7 @@ namespace ft
 					parent->right = _insert(parent->right, val, where);
 					parent->right->parent = parent;
 				} else {
-					// == replace previous value
-					parent->set_content(val);
+					// parent->set_content(val);
 					*where = parent;
 				}
 
@@ -444,7 +444,6 @@ namespace ft
 				return _size == 0;
 			}
 
-			// TEST
 			node_pointer lower_bound(const key_type& k) {
 				if (empty()) return NULL;
 				node_pointer start = min_node();
@@ -454,8 +453,27 @@ namespace ft
 				return start;
 			}
 
-			// TEST
+			node_pointer lower_bound(const key_type& k) const {
+				if (empty()) return NULL;
+				node_pointer start = min_node();
+				while (start != NULL && _comp(start->content->first, k)) {
+					start = next_node(start);
+				}
+				return start;
+			}
+
 			node_pointer upper_bound(const key_type& k) {
+				if (empty()) return NULL;
+				node_pointer start = min_node();
+				while (start != NULL && _comp(start->content->first, k)) {
+					start = next_node(start);
+				}
+				if (start == NULL) return NULL;
+				if (_comp(k, start->content->first)) return start;
+				return next_node(start);
+			}
+
+			node_pointer upper_bound(const key_type& k) const {
 				if (empty()) return NULL;
 				node_pointer start = min_node();
 				while (start != NULL && _comp(start->content->first, k)) {
@@ -486,8 +504,28 @@ namespace ft
 				return iterator(p, &_root);
 			}
 
-			iterator make_iterator(node_pointer p) const {
+			const_iterator make_iterator(node_pointer p) const {
 				return const_iterator(p, &_root);
+			}
+
+			void swap(avl_tree& rhs) {
+				node_pointer		temp_root = rhs._root;
+				allocator_type 		temp_alloc = rhs._alloc;
+				node_allocator_type	temp_node_alloc = rhs._node_alloc;
+				key_compare			temp_comp = rhs._comp;
+				size_type			temp_size = rhs._size;
+
+				rhs._root = this->_root;
+				rhs._alloc = this->_alloc;
+				rhs._node_alloc = this->_node_alloc;
+				rhs._comp = this->_comp;
+				rhs._size = this->_size;
+
+				this->_root = temp_root;
+				this->_alloc = temp_alloc;
+				this->_node_alloc = temp_node_alloc;
+				this->_comp = temp_comp;
+				this->_size = temp_size;
 			}
 
 			// General static functions to manipulate nodes.
@@ -560,6 +598,7 @@ namespace ft
 			}
 
 	};
+
 } // namespace ft
 
 #endif // __AVL_TREE_HPP__

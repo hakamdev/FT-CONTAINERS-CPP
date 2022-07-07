@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 17:57:01 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/02 20:19:00 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/07 04:47:47 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ namespace ft
 		pair& operator= (const pair& pr) {
 			first = pr.first;
 			second = pr.second;
+			return *this;
 		}
 
 	};

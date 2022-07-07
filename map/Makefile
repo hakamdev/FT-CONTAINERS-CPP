@@ -6,15 +6,15 @@
 #    By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/06 23:17:59 by ehakam            #+#    #+#              #
-#    Updated: 2022/07/06 23:18:23 by ehakam           ###   ########.fr        #
+#    Updated: 2022/07/07 04:41:31 by ehakam           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # -*- Makefile -*-
 
-SRC	= tests/main.cpp
+SRC	= tests/mamoussa_main.cpp
 NAME= test
-FLGS= -Wall -Wextra -Werror
+FLGS= #-Wall -Wextra -Werror
 
 all: $(NAME)
 

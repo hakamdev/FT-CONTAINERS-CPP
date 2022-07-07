@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 22:54:07 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/06 22:16:35 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/07 04:41:13 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ namespace ft
 		typedef typename iterator_type::node_type		node_type;
 		typedef typename iterator_type::value_type		value_type;
 		typedef typename iterator_type::pointer			pointer;
+		typedef typename iterator_type::const_pointer	const_pointer;
 		typedef typename iterator_type::reference		reference;
 
 		private:
@@ -35,7 +36,7 @@ namespace ft
 
 		public:
 			// Constructors / Destructor
-			bidir_iterator( void ) : _root(NULL), _base(NULL) {
+			bidir_iterator( void ) : _base(NULL), _root(NULL) {
 				this->_past_end = iterator_type::make_node();
 			}
 
@@ -105,6 +106,14 @@ namespace ft
 				return (*this->_base->content);
 			}
 
+			pointer operator-> () {
+				return (this->_base->content);
+			}
+
+			const_pointer operator-> () const {
+				return (this->_base->content);
+			}
+
 			bidir_iterator& operator ++ () {
 				node_pointer _next =
 					iterator_type::next_node(_base != _past_end ? _base : NULL);
@@ -135,6 +144,8 @@ namespace ft
 				operator--();
 				return (old);
 			}
+
+			
 
 	};
 
