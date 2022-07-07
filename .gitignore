@@ -1,4 +1,5 @@
 .vscode/
 a.out
+*.out
 *_test
 .DS_Store

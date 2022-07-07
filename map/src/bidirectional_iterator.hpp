@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 22:54:07 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/06 20:13:38 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/06 22:16:35 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <iterator>
 # include "iterator.hpp"
-# include "traits.hpp"
 
 namespace ft
 {

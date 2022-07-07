@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:48:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/06 16:02:09 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/07 03:40:06 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ namespace ft
 			racc_iterator( racc_iterator<T2> const & copy ) {
 				this->_base = copy.base();
 			}
-			racc_iterator& operator = ( racc_iterator<Iter> const & copy ) { this->_base = copy.base(); return (*this); }
+			racc_iterator& operator = ( racc_iterator<Iter> const & copy ) {
+				this->_base = copy.base();
+				return (*this);
+			}
 			~racc_iterator() {}
 			iterator_type base() const { return _base; }
 
@@ -66,6 +69,9 @@ namespace ft
 			}
 			reference operator * () {
 				return (*this->_base);
+			}
+			pointer operator-> () {
+				return (this->_base);
 			}
 			racc_iterator& operator ++ () {
 				++this->_base;
@@ -108,7 +114,7 @@ namespace ft
 	};
 
 	template <typename Iter>
-	racc_iterator<Iter> operator + ( int n, racc_iterator<Iter> const & other ) {
+	racc_iterator<Iter> operator + ( int n, racc_iterator<Iter>& other ) {
 		return (other + n);
 	}
 

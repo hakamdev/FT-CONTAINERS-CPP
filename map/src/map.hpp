@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/06 19:54:45 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/06 22:52:50 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ namespace ft
 			}
 
 			// TEST
-			map(const map& x) {
+			map(const map& x) : _v_comp(_comp) {
 				*this = x;
 			}
 
@@ -79,27 +79,12 @@ namespace ft
 				_alloc = x._alloc;
 				_tree = x._tree;
 				_v_comp = x._v_comp;
+				return *this;
 			}
 
 			~map() {
-				clear();
+				// clear();
 			 }
-
-			// iterator begin() {
-			// 	return iterator(_tree.min_node(), _tree.root());
-			// }
-
-			// const_iterator begin() const {
-			// 	return const_iterator(_tree.min_node(), _tree.root());
-			// }
-
-			// iterator end() {
-			// 	return iterator(NULL, _tree.root());
-			// }
-
-			// const_iterator end() const {
-			// 	return const_iterator(NULL, _tree.root());
-			// }
 
 			iterator begin() {
 				return _tree.begin();
@@ -136,7 +121,7 @@ namespace ft
 			bool empty() const {
 				return _tree.empty();
 			}
-			
+
 			size_type size() const {
 				return _tree.size();
 			}

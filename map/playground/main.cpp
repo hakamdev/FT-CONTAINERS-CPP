@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:41:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/06 20:12:30 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/06 23:01:50 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,9 @@ int main() {
 	#define NS ft
 
 	NS::map<int, int> ma;
-	NS::map<int, int> ma2;
+	NS::map<int, int> ma3;
+	
+	
 
 	ma.insert(NS::pair<int, int>(10, 22));
 	ma.insert(NS::pair<int, int>(5, 11));
@@ -129,20 +131,31 @@ int main() {
 	ma.insert(NS::pair<int, int>(3, 77));
 	ma.insert(NS::pair<int, int>(7, 88));
 	ma.insert(NS::pair<int, int>(12, 88));
-	ma.insert(NS::pair<int, int>(20, 88));
-	ma.insert(NS::pair<int, int>(6, 88));
 
-	ma2.insert(NS::pair<int, int>(10, 22));
-	ma2.insert(NS::pair<int, int>(5, 11));
-	ma2.insert(NS::pair<int, int>(15, 1111));
-	ma2.insert(NS::pair<int, int>(3, 77));
-	ma2.insert(NS::pair<int, int>(7, 88));
-	ma2.insert(NS::pair<int, int>(12, 88));
-	ma2.insert(NS::pair<int, int>(20, 88));
-	ma2.insert(NS::pair<int, int>(6, 88));
+	
+	ma3.insert(NS::pair<int, int>(20, 88));
+	ma3.insert(NS::pair<int, int>(6, 88));
+
+	NS::map<int, int> ma2 = ma;
 
 	ma.print();
-	ma2.print();
+	ma3.print();
+
+	ma.swap(ma3);
+
+	std::cout << "==== AFTER SWAP ====" << std::endl;
+
+	// ma2.insert(NS::pair<int, int>(10, 22));
+	// ma2.insert(NS::pair<int, int>(5, 11));
+	// ma2.insert(NS::pair<int, int>(15, 1111));
+	// ma2.insert(NS::pair<int, int>(3, 77));
+	// ma2.insert(NS::pair<int, int>(7, 88));
+	// ma2.insert(NS::pair<int, int>(12, 88));
+	// ma2.insert(NS::pair<int, int>(20, 88));
+	// ma2.insert(NS::pair<int, int>(6, 88));
+
+	ma.print();
+	ma3.print();
 
 	std::cout << std::boolalpha;
 

@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/06 20:10:50 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/06 22:59:37 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,8 @@ namespace ft
 					indent += "|    ";
 					}
 					std::cout << "(" << root->content->first << ")->(" << root->content->second << ")";
-					if (root->parent != NULL)
-						;
-					std::cout << " [" << (root->parent != NULL ? root->parent->content->first : 0) << "]" << std::endl;
+					std::cout << " [" << (root->parent != NULL ? root->parent->content->first : 0) << "]";
+					std::cout << "{" << root->height << "}" << std::endl;
 					_printTree(root->left, indent, false);
 					_printTree(root->right, indent, true);
 				}
@@ -191,12 +190,42 @@ namespace ft
 
 			node_pointer _delete_all(node_pointer parent) {
 				if (parent == NULL) return NULL;
+
+				// get pointers to left and right children before
+				// delete the parent node.
 				parent->left = _delete_all(parent->left);
 				parent->right = _delete_all(parent->right);
+
+				// now delete parent node safely.
 				_node_alloc.destroy(parent);
 				_node_alloc.deallocate(parent, 1);
+
+				// decrease size
 				--_size;
 				return (NULL);
+			}
+
+			node_pointer _insert_all(node_pointer parent, node_pointer from) {
+				// from->parent is a leaf node.
+				if (from == NULL) return NULL;
+				
+				// copy "from" content and height.
+				parent = _make_node(*from->content);
+				parent->height = from->height;
+
+				// rerun recursively for left child.
+				parent->left = _insert_all(parent->left, from->left);
+
+				// asign the parent for left child.
+				if (parent->left != NULL) parent->left->parent = parent;
+
+				// rerun recursively for right child.
+				parent->right = _insert_all(parent->right, from->right);
+
+				// asign the parent for right child.
+				if (parent->right != NULL) parent->right->parent = parent;
+				
+				return parent;
 			}
 
 			node_pointer _find(node_pointer parent, const key_type& key) {
@@ -328,12 +357,14 @@ namespace ft
 				this->_alloc = other._alloc;
 				this->_node_alloc = other._node_alloc;
 				this->_comp = other._comp;
-				this->_root = other._root;
+				this->_root = _insert_all(this->_root, other._root);
 				this->_size = other._size;
 				return *this;
 			}
 
-			~avl_tree() { }
+			~avl_tree() { 
+				delete_all();
+			}
 
 			// Public methods for AVL Tree operations.
 			node_pointer find(const key_type& key) {

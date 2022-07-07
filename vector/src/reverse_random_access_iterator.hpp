@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 05:34:16 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/11 21:18:22 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/07 00:53:55 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ namespace ft
 			// Constructors / Destructor
 			rracc_iterator( void ) : _base() {}
 			rracc_iterator( iterator_type base ) : _base(base) {}
+			template <typename T2>
+			rracc_iterator( rracc_iterator<T2> const & copy ) {
+				this->_base = copy.base();
+			}
 			rracc_iterator( rracc_iterator const & copy ) { *this = copy; }
 			rracc_iterator& operator = ( rracc_iterator const & copy ) {
 				this->_base = copy._base;
@@ -66,6 +70,9 @@ namespace ft
 			reference operator * () {
 				iterator_type _correct = this->_base - 1;
 				return (*_correct);
+			}
+			pointer operator-> () {
+				return &(operator*());
 			}
 			rracc_iterator& operator ++ () {
 				--this->_base;
@@ -108,8 +115,12 @@ namespace ft
 	};
 
 	template <typename Iter>
-	rracc_iterator<Iter> operator + ( int n, 
-		rracc_iterator<Iter> const & other ) {
+	rracc_iterator<Iter> operator + ( int n, rracc_iterator<Iter>& other ) {
+		return (other + n);
+	}
+
+	template <typename Iter>
+	rracc_iterator<Iter> operator - ( int n, rracc_iterator<Iter>& other ) {
 		return (other - n);
 	}
 

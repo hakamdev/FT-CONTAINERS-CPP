@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 01:42:02 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/27 06:51:59 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/06 22:17:26 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <iterator>
 # include "iterator.hpp"
-# include "traits.hpp"
 # include "bidirectional_iterator.hpp"
 
 namespace ft
@@ -23,10 +22,10 @@ namespace ft
 	template <typename Iter>
 	struct rbidir_iterator : public ft::iterator<std::bidirectional_iterator_tag, Iter> {
 		
-		typedef Iter															iterator_type;
-		typedef typename ft::iterator_traits<iterator_type>::value_type			value_type;
-		typedef typename ft::iterator_traits<iterator_type>::pointer			pointer;
-		typedef typename ft::iterator_traits<iterator_type>::reference			reference;
+		typedef Iter									iterator_type;
+		typedef typename iterator_type::value_type		value_type;
+		typedef typename iterator_type::pointer			pointer;
+		typedef typename iterator_type::reference		reference;
 
 		private:
 			iterator_type _base;
