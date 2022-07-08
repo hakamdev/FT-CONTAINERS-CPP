@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mamoussa_main.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 11:32:49 by ibaali            #+#    #+#             */
-/*   Updated: 2022/07/07 21:29:10 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/08 18:19:37 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -2480,13 +2480,10 @@ int main(void)
     std::cout << RED << "--------------------------------------------------------------------------------------------------------" << RESET << std::endl;
     signal(SIGALRM, alarm_handler);
     iterator_tests();
-    // const_iterator_tests();
-    // reverse_iterator_tests();
-    // reverse_iterator_with_ft_vector();
-    // vector_tests();
-
-    while(1)
-        ;
+    const_iterator_tests();
+    reverse_iterator_tests();
+    reverse_iterator_with_ft_vector();
+    vector_tests();
 
     return 0;
 }

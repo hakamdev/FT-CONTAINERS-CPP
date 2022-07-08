@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+         #
+#    By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/06 23:17:59 by ehakam            #+#    #+#              #
-#    Updated: 2022/07/07 04:41:31 by ehakam           ###   ########.fr        #
+#    Updated: 2022/07/08 18:17:58 by ehakam           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # -*- Makefile -*-
 
 SRC	= tests/mamoussa_main.cpp
-NAME= test
+NAME= test.out
 FLGS= #-Wall -Wextra -Werror
 
 all: $(NAME)
