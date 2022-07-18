@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 00:22:11 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/07 03:48:15 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/11 03:07:08 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,11 @@ namespace ft
 
 			~vector() {
                 // std::cout << "DEST XXXXX" << std::endl;
-                // clear();
-                // if (this->_begin == NULL) return;
-                // this->_alloc.deallocate(this->_begin, this->_capacity);
-                // this->_begin = NULL;
-                // this->_end = NULL;
+                clear();
+                if (this->_begin == NULL) return;
+                this->_alloc.deallocate(this->_begin, this->_capacity);
+                this->_begin = NULL;
+                this->_end = NULL;
 			}
 
 			// member functions

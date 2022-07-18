@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <deque>
-#if 0 //CREATE A REAL STL EXAMPLE
+#if 1 //CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>
 	#include <vector>
@@ -21,7 +21,6 @@ struct Buffer
 	int idx;
 	char buff[BUFFER_SIZE];
 };
-
 
 #define COUNT (MAX_RAM / (int)sizeof(Buffer))
 
@@ -112,5 +111,6 @@ int main(int argc, char** argv) {
 		std::cout << *it;
 	}
 	std::cout << std::endl;
+
 	return (0);
 }
