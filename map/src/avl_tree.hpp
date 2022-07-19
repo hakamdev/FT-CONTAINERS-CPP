@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/07 19:59:48 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/19 17:52:37 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -370,7 +370,7 @@ namespace ft
 				return *this;
 			}
 
-			~avl_tree() { 
+			~avl_tree() {
 				delete_all();
 			}
 
@@ -545,7 +545,8 @@ namespace ft
 			}
 
 			static node_pointer next_node(node_pointer node) {
-				key_compare	_compare;
+				key_compare	_compare = key_compare();
+
 				if (node->right == NULL) {
 					node_pointer curr = node->parent;
 					while (curr != NULL && _compare(curr->content->first, node->content->first)) {

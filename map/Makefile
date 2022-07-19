@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+         #
+#    By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/06 23:17:59 by ehakam            #+#    #+#              #
-#    Updated: 2022/07/08 18:17:58 by ehakam           ###   ########.fr        #
+#    Updated: 2022/07/19 19:14:58 by ehakam           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 SRC	= tests/mamoussa_main.cpp
 NAME= test.out
-FLGS= #-Wall -Wextra -Werror
+FLGS= -Wall -Wextra -Werror #-fsanitize=address
 
 all: $(NAME)
 

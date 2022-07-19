@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/07 18:50:22 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/19 17:39:27 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,9 @@ namespace ft
 				return *this;
 			}
 
-			~map() {}
+			~map() {
+				
+			}
 
 			iterator begin() {
 				return _tree.begin();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 00:22:11 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/11 03:07:08 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/19 16:06:25 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,20 @@ namespace ft
 			void _init (size_type initial_capacity) {
                 try {
                     this->_begin = _alloc.allocate(initial_capacity);
-                } catch (std::bad_alloc& e) {
+                } catch (std::exception& e) {
                     std::cerr << "bad_alloc: " << e.what() << std::endl;
                     exit(1);
                 }
 			}
 
             void _reallocate(size_type new_capacity) {
-                pointer _new_begin = this->_alloc.allocate(new_capacity);
+                pointer _new_begin = NULL;
+                try {
+                    _new_begin = this->_alloc.allocate(new_capacity);
+                } catch (std::exception& e) {
+                    std::cerr << "bad_alloc: " << e.what() << std::endl;
+                    exit(1);
+                }
 
                 // Copy data and delete
                 size_type i = 0;
@@ -100,17 +106,20 @@ namespace ft
             }
 
             vector& operator = (const vector& other) {
+                //std::cout << "\nBEFORE CAP: " << this->_capacity << std::endl;
                 assign(other.begin(), other.end());
+                // std::cout << "AFTER CAP: " << this->_capacity << std::endl;
                 return (*this);
 			}
 
 			~vector() {
-                // std::cout << "DEST XXXXX" << std::endl;
-                clear();
-                if (this->_begin == NULL) return;
-                this->_alloc.deallocate(this->_begin, this->_capacity);
-                this->_begin = NULL;
-                this->_end = NULL;
+				clear();
+				if (this->_begin == NULL || this->_capacity == 0) return;
+				// std::cout << "DEST CAP: " << this->_capacity << std::endl;
+				this->_alloc.deallocate(this->_begin, this->_capacity);
+				// delete this->_begin;
+				this->_begin = NULL;
+				this->_end = NULL;
 			}
 
 			// member functions
