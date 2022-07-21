@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 22:54:07 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/20 23:01:48 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/21 15:16:13 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ namespace ft
 
 		public:
 			// Constructors / Destructor
-			bidir_iterator( void ) : _base(NULL), _root(NULL) {
+			bidir_iterator( void ) : _base(NULL), _root(NULL), _past_end(NULL) {
 				//std::cout << "def constr" << std::endl;
 			}
 
-			bidir_iterator( node_pointer base, node_pointer const* root ) : _root(root) {
+			bidir_iterator( node_pointer base, node_pointer const* root ) : _base(NULL), _root(root), _past_end(NULL) {
 				//std::cout << "param constr" << std::endl;
 				// _past_end is to be pointed to as end()
 				if (base == NULL) {
@@ -52,7 +52,7 @@ namespace ft
 			}
 
 			template <typename T2, typename N2>
-			bidir_iterator( const bidir_iterator<T2, N2>& copy ) : _past_end(NULL) {
+			bidir_iterator( const bidir_iterator<T2, N2>& copy ) : _base(NULL), _root(NULL), _past_end(NULL) {
 				//std::cout << "copy constr T" << std::endl;
 				this->_root = copy._root;
 				// If copy.base pointing at end, you need to point to _past_end
@@ -64,7 +64,7 @@ namespace ft
 					this->_base = copy.base();
 			}
 
-			bidir_iterator( const bidir_iterator& copy ) {
+			bidir_iterator( const bidir_iterator& copy ) : _base(NULL), _root(NULL), _past_end(NULL) {
 				//std::cout << "copy constr" << std::endl;
 				*this = copy;
 			}
@@ -131,7 +131,9 @@ namespace ft
 			}
 
 			bidir_iterator& operator -- () {
-				if (_base == _past_end)
+				if (this->_base == iterator_type::min_node(*_root))
+					this->_base = iterator_type::prev_node(NULL);
+				else if (_base == _past_end)
 					this->_base = iterator_type::max_node(*_root);
 				else
 					this->_base = iterator_type::prev_node(_base);

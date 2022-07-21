@@ -14,7 +14,7 @@
 void test1(void) {
 	ft::map<int, std::string> my;
 
-	for (int i = 0; i < 1e6; i++) {
+	for (int i = 0; i < 1000; i++) {
 		my.insert(ft::make_pair<int, std::string>(i, "STR"));
 	}
 
@@ -22,20 +22,30 @@ void test1(void) {
 	std::mt19937 generator(randDev());
 	std::uniform_int_distribution<int> distr(0, 1e8);
 
-	for (int i = 0; i < 1e6; i++) {
+	for (int i = 0; i < 1000; i++) {
 		int n = distr(generator);
 		my.erase(n);
+	}
+
+	ft::map<int, std::string>::iterator it = my.begin();
+	ft::map<int, std::string>::iterator endit = my.end();
+
+	int f = 0;
+
+	while (it != endit) {
+		std::cout << it->first << std::endl;
+		++it;
 	}
 
 	// std::cout << "\nPRINTING:" << std::endl;
 	// my.print();
 
-	my.erase(my.begin(), my.end());
+	// my.erase(my.begin(), my.end());
 
-	if (my.size() > 0) {
-		std::cout << "\nPRINTING AFTER ERASE:" << std::endl;
-		my.print();
-	}
+	// if (my.size() > 0) {
+	// 	std::cout << "\nPRINTING AFTER ERASE:" << std::endl;
+	// 	my.print();
+	// }
 
 	// my.erase(my.begin(), my.end());
 
