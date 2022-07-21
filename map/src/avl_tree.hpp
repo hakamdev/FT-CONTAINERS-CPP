@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/19 17:52:37 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/21 00:28:08 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ namespace ft
 					std::cout << "L ";
 					indent += "|    ";
 					}
-					std::cout << "(" << root->content->first << ")->(" << root->content->second << ")";
-					if (root->parent != NULL && root->parent->content != NULL)
+					std::cout << "(" << root->content->first << ")" /*->(" << root->content->second << ")"*/;
+					if (root->parent != NULL)
 						std::cout << " [" << (root->parent != NULL ? root->parent->content->first : 0) << "]";
 					std::cout << "{" << root->height << "}" << std::endl;
 					_printTree(root->left, indent, false);
@@ -87,13 +87,14 @@ namespace ft
 				if (_comp(val.first, parent->content->first)) {
 					// val smaller than parent
 					parent->left = _insert(parent->left, val, where);
-					parent->left->parent = parent;
+					if (parent->left != NULL)
+						parent->left->parent = parent;
 				} else if (_comp(parent->content->first, val.first)) {
 					// val greater to parent
 					parent->right = _insert(parent->right, val, where);
-					parent->right->parent = parent;
+					if (parent->right != NULL)
+						parent->right->parent = parent;
 				} else {
-					// parent->set_content(val);
 					*where = parent;
 				}
 
@@ -132,12 +133,12 @@ namespace ft
 				// key found, now start deletion
 				if (node->left == NULL || node->right == NULL) {
 					// Now we replace parent by left/right depend. on which is not NULL
-					node_pointer new_parent = node->left != NULL ? node->left : node->right;
-					// destroy the parent
+					node_pointer new_node = node->left != NULL ? node->left : node->right;
+					// destroy the node
 					_node_alloc.destroy(node);
 					_node_alloc.deallocate(node, 1);
 					// asign the new parent left/right/NULL
-					node = new_parent;
+					node = new_node;
 				} else {
 					// Both left and right are NOT NULL
 					// Find max_node in the left subtree
@@ -176,8 +177,8 @@ namespace ft
 				} else if (_comp(parent->content->first, key)) {
 					// val greater to parent
 					parent->right = _delete_node_key(parent->right, key);
-					if (parent->left != NULL)
-						parent->left->parent = parent;
+					if (parent->right != NULL)
+						parent->right->parent = parent;
 				} else {
 					parent = _delete_found_node(parent);
 					if (parent == NULL) return NULL;
@@ -302,6 +303,7 @@ namespace ft
 
 				// reset parents
 				new_parent->parent = parent->parent;
+				parent->parent = new_parent;
 				if (parent->right != NULL)
 					parent->right->parent = parent;
 				if (new_parent->left != NULL)
@@ -322,6 +324,7 @@ namespace ft
 
 				// reset parents
 				new_parent->parent = parent->parent;
+				parent->parent = new_parent;
 				if (parent->left != NULL)
 					parent->left->parent = parent;
 				if (new_parent->right != NULL)
@@ -415,12 +418,14 @@ namespace ft
 				size_type old_size = _size;
 				if (empty() || !is_key) return 0;
 				_root = _delete_node_key(_root, key);
+				if (_root != NULL) _root->parent = NULL;
 				return old_size - _size;
 			}
 
 			void delete_node(node_pointer node) {
 				if (empty()) return ;
 				_root = _delete_node(_root, node);
+				if (_root != NULL) _root->parent = NULL;
 			}
 
 			void delete_all() {
@@ -549,6 +554,7 @@ namespace ft
 
 				if (node->right == NULL) {
 					node_pointer curr = node->parent;
+					// std::cerr << "NEXT: RIGHT == NULL" << std::endl;
 					while (curr != NULL && _compare(curr->content->first, node->content->first)) {
 						curr = curr->parent;
 					}

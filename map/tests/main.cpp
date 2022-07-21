@@ -1,15 +1,55 @@
 #include "../src/map.hpp"
 #include <map>
+#include <random>
+#include <vector>
+#include <iostream>
+#include <iterator>
+#include <utility>
+#include <ctime>
+#include <iomanip>
+#include <unistd.h>
+#include <signal.h>
+#include <sys/time.h>
 
 void test1(void) {
-	std::map<std::string, int> m;
+	ft::map<int, std::string> my;
 
-	m.insert(std::pair<std::string, int>("key1", 1));
+	for (int i = 0; i < 1e6; i++) {
+		my.insert(ft::make_pair<int, std::string>(i, "STR"));
+	}
 
-	std::map<std::string, int>::iterator it = m.end();
+	std::random_device randDev;
+	std::mt19937 generator(randDev());
+	std::uniform_int_distribution<int> distr(0, 1e8);
 
-	std::cout << (*it).first << std::endl;
-	std::cout << (*it).second << std::endl;
+	for (int i = 0; i < 1e6; i++) {
+		int n = distr(generator);
+		my.erase(n);
+	}
+
+	// std::cout << "\nPRINTING:" << std::endl;
+	// my.print();
+
+	my.erase(my.begin(), my.end());
+
+	if (my.size() > 0) {
+		std::cout << "\nPRINTING AFTER ERASE:" << std::endl;
+		my.print();
+	}
+
+	// my.erase(my.begin(), my.end());
+
+	// std::cout << "\nPRINTING:" << std::endl;
+	// my.print();
+
+	// std::map<std::string, int> m;
+
+	// m.insert(std::pair<std::string, int>("key1", 1));
+
+	// std::map<std::string, int>::iterator it = m.end();
+
+	// std::cout << (*it).first << std::endl;
+	// std::cout << (*it).second << std::endl;
 	//ft::map<std::string, int> m2 = m;
 
 	// m.insert(ft::make_pair("key1", 1));

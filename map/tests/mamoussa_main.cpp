@@ -1450,8 +1450,6 @@ void testModifiers()
             ft_m3.erase(ft_m3.begin(), ft_m3.end());
         }
 
-        std::cout << "MSZ: " << ft_m3.size() << ", SZ: " << m3.size() << std::endl;
-    
         cond = cond && (m3.size() == ft_m3.size() && comparemaps(m3.begin(), m3.end(), ft_m3.begin(), ft_m3.end()));
 
         EQUAL(cond);
@@ -2243,30 +2241,30 @@ int main()
     std::cout << RED << "--------------------------------------------------------------------------------------------------------" << RESET << std::endl;
     signal(SIGALRM, alarm_handler);
 
-    // std::cout << YELLOW << "Testing Iterators;" << RESET << std::endl;
-    // TEST_CASE(iterator_tests);
-    // TEST_CASE(const_iterator_tests);
-    // TEST_CASE(reverse_iterator_tests);
-    // std::cout << std::endl;
-
-    // std::cout << YELLOW << "Testing Constructors;" << RESET << std::endl;
-    // TEST_CASE(testConstructors);
-    // std::cout << std::endl;
-
-    // std::cout << YELLOW << "Testing Iterator Methods;" << RESET << std::endl;
-    // TEST_CASE(testIterators);
-    // std::cout << std::endl;
-
-    // std::cout << YELLOW << "Testing Capacity Methods;" << RESET << std::endl;
-    // TEST_CASE(testCapacityMethods)
-    // std::cout << std::endl;
-
-    // std::cout << YELLOW << "Testing Access Element Methods; " << RESET << std::endl;
-    // TEST_CASE(testElementAccess);
-    // std::cout << std::endl;
-
     std::cout << YELLOW << "Testing Modifiers Methods;" << RESET << std::endl;
     TEST_CASE(testModifiers)
+    std::cout << std::endl;
+
+    std::cout << YELLOW << "Testing Iterators;" << RESET << std::endl;
+    TEST_CASE(iterator_tests);
+    TEST_CASE(const_iterator_tests);
+    TEST_CASE(reverse_iterator_tests);
+    std::cout << std::endl;
+
+    std::cout << YELLOW << "Testing Constructors;" << RESET << std::endl;
+    TEST_CASE(testConstructors);
+    std::cout << std::endl;
+
+    std::cout << YELLOW << "Testing Iterator Methods;" << RESET << std::endl;
+    TEST_CASE(testIterators);
+    std::cout << std::endl;
+
+    std::cout << YELLOW << "Testing Capacity Methods;" << RESET << std::endl;
+    TEST_CASE(testCapacityMethods)
+    std::cout << std::endl;
+
+    std::cout << YELLOW << "Testing Access Element Methods; " << RESET << std::endl;
+    TEST_CASE(testElementAccess);
     std::cout << std::endl;
 
     // std::cout << YELLOW << "Testing Observers Methods;" << RESET << std::endl;
