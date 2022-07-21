@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 00:22:11 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/19 16:06:25 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/21 20:44:19 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,18 +106,14 @@ namespace ft
             }
 
             vector& operator = (const vector& other) {
-                //std::cout << "\nBEFORE CAP: " << this->_capacity << std::endl;
                 assign(other.begin(), other.end());
-                // std::cout << "AFTER CAP: " << this->_capacity << std::endl;
                 return (*this);
 			}
 
 			~vector() {
 				clear();
 				if (this->_begin == NULL || this->_capacity == 0) return;
-				// std::cout << "DEST CAP: " << this->_capacity << std::endl;
 				this->_alloc.deallocate(this->_begin, this->_capacity);
-				// delete this->_begin;
 				this->_begin = NULL;
 				this->_end = NULL;
 			}
@@ -247,8 +243,10 @@ namespace ft
 
                 // Copy new content from first -> last
                 size_type i = 0;
-                for (; first != last; ++i, ++first) {
-					this->_begin[i] = *first;
+                while (first != last)
+                {
+                    _alloc.construct(this->_begin + i, *first);
+                    ++i; ++first;
                 }
 
                 this->_end = this->_begin + i;
@@ -265,8 +263,10 @@ namespace ft
 
                 // Copy new content from first -> last
                 size_type i = 0;
-                for (; i < n; ++i) {
+                while (i < n) {
+                    _alloc.construct(this->_begin + i, val);
 					this->_begin[i] = val;
+                    ++i;
 				}
 
                 this->_end = this->_begin + i;

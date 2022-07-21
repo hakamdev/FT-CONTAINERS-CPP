@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehakam <ehakam@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 23:20:08 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/11 03:05:59 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/21 20:21:19 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,14 @@
 
 void leak_test() {
 	//ft::vector<int> v;
-	ft::vector<int> v2(4, 100);
+	ft::vector<int> v2(10000, 555);
 
-	ft::vector<int>::iterator it = v2.begin();
-	ft::vector<int>::iterator it2 = v2.end();
+	ft::vector<int> v3 = v2;
+
+	ft::vector<int> v4(v2);
+
+	// ft::vector<int>::iterator it = v2.begin();
+	// ft::vector<int>::iterator it2 = v2.end();
 
 	// ft::vector<int> v3(, v2.end());
 
@@ -39,9 +43,6 @@ void leak_test() {
 int main() {
 
 	leak_test();
-	
-	while (1)
-		;
 	
 	// std::cout << "===== Testing Empty Vector =====" << std::endl;
 
@@ -102,7 +103,7 @@ int main() {
 	// }
 	// std::cout << "]" << std::endl;
 
-	std::cout << "===== Testing Fill Empty Vector =====" << std::endl;
+	//std::cout << "===== Testing Fill Empty Vector =====" << std::endl;
 	
 	
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 11:32:49 by ibaali            #+#    #+#             */
-/*   Updated: 2022/07/19 16:07:27 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/21 20:47:04 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -760,6 +760,7 @@ void vector_tests(void)
 
         EQUAL(res == ft_res && c_ft_res == c_res);
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " size method "
               << "] --------------------]\t\t\033[0m";
     {
@@ -779,6 +780,7 @@ void vector_tests(void)
         /*----------------------------------------------------*/
         EQUAL(v1.size() == ft_v1.size() && v2.size() == ft_v2.size() && v3.size() == ft_v3.size() && v4.size() == ft_v4.size() && v5.size() == ft_v5.size());
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " capacity method "
               << "] --------------------]\t\t\033[0m";
     {
@@ -798,6 +800,7 @@ void vector_tests(void)
         /*----------------------------------------------------*/
         EQUAL(v1.capacity() == ft_v1.capacity() && v2.capacity() == ft_v2.capacity() && v3.capacity() == ft_v3.capacity() && v4.capacity() == ft_v4.capacity() && v5.capacity() == ft_v5.capacity());
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " max_size method "
               << "] --------------------]\t\t\033[0m";
     {
@@ -814,6 +817,7 @@ void vector_tests(void)
         /*----------------------------------------------------*/
         EQUAL(v1.max_size() == ft_v1.max_size() && v2.max_size() == ft_v2.max_size() && v4.max_size() == ft_v4.max_size());
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " resize method "
               << "] --------------------]\t\t\033[0m";
     {
@@ -1150,6 +1154,7 @@ void vector_tests(void)
         ft_v1.back() = "LEET";
         EQUAL(v1.back() == ft_v1.back() && v2.back() == ft_v2.back());
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " assign(fill) method "
               << "] --------------------]\t\t\033[0m";
     {
@@ -1210,6 +1215,7 @@ void vector_tests(void)
 
         EQUAL((s1 == ft_s1 && z1 == ft_z1 && c1 == ft_c1) && (s2 == ft_s2 && z2 == ft_z2 && c2 == ft_c2) && (s3 == ft_s3 && z3 == ft_z3 && c3 == ft_c3));
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " assign(range) method "
               << "] --------------------]\t\t\033[0m";
     {
@@ -1342,6 +1348,7 @@ void vector_tests(void)
 
         EQUAL((s1 == ft_s1 && z1 == ft_z1 && c1 == ft_c1) && (s2 == ft_s2 && z2 == ft_z2 && c2 == ft_c2) && (s3 == ft_s3 && z3 == ft_z3 && c3 == ft_c3));
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " pop_back method "
               << "] --------------------]\t\t\033[0m";
     {
@@ -1370,6 +1377,7 @@ void vector_tests(void)
             ft_s1 += ft_v[i];
         EQUAL(z1 == ft_z1 && c1 == ft_c1 && s1 == ft_s1);
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " insert method (single element) "
               << "] --------------------]\t\t\033[0m";
     {
@@ -1483,7 +1491,6 @@ void vector_tests(void)
         EQUAL(cond);
     }
     
-
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " insert method (fill) "
               << "] --------------------]\t\t\033[0m";
     {
@@ -1612,6 +1619,7 @@ void vector_tests(void)
         // /*---------------------------------------------------------------------------------------------------*/
         EQUAL(cond);
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " insert method (range) "
               << "] --------------------]\t\t\033[0m";
     {
@@ -1745,6 +1753,7 @@ void vector_tests(void)
         /*---------------------------------------------------------------------------------------------------*/
         EQUAL(cond);
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " erase method (single element) "
               << "] --------------------]\t\t\033[0m";
     {
@@ -1896,6 +1905,7 @@ void vector_tests(void)
         /*--------------------------------------------------------------------------*/
         EQUAL(cond);
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " swap method "
               << "] --------------------]\t\t\033[0m";
     {
@@ -1997,6 +2007,7 @@ void vector_tests(void)
         /*--------------------------------------------------------------------------------------------*/
         EQUAL(cond);
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " clear method "
               << "] --------------------]\t\t\033[0m";
     {
@@ -2036,6 +2047,7 @@ void vector_tests(void)
         /*--------------------------------------------------------------------------------------------*/
         EQUAL(cond);
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " get_allocator method "
               << "] --------------------]\t\t\033[0m";
     {
@@ -2044,6 +2056,7 @@ void vector_tests(void)
 
         EQUAL(v.get_allocator().max_size() == ft_v.get_allocator().max_size());
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator== "
               << "] --------------------]\t\t\033[0m";
     {
@@ -2097,6 +2110,7 @@ void vector_tests(void)
         }
         EQUAL(cond);
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator!= "
               << "] --------------------]\t\t\033[0m";
     {
@@ -2150,6 +2164,7 @@ void vector_tests(void)
         }
         EQUAL(cond);
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator< "
               << "] --------------------]\t\t\033[0m";
     {
@@ -2203,6 +2218,7 @@ void vector_tests(void)
         }
         EQUAL(cond);
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator<= "
               << "] --------------------]\t\t\033[0m";
     {
@@ -2256,6 +2272,7 @@ void vector_tests(void)
         }
         EQUAL(cond);
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator> "
               << "] --------------------]\t\t\033[0m";
     {
@@ -2309,6 +2326,7 @@ void vector_tests(void)
         }
         EQUAL(cond);
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator>= "
               << "] --------------------]\t\t\033[0m";
     {
@@ -2362,6 +2380,7 @@ void vector_tests(void)
         }
         EQUAL(cond);
     }
+
     std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " swap "
               << "] --------------------]\t\t\033[0m";
     {
@@ -2463,6 +2482,7 @@ void vector_tests(void)
         /*--------------------------------------------------------------------------------------------*/
         EQUAL(cond);
     }
+
     std::cout << "\033[1;36m\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
 } // vec_end
 
@@ -2484,5 +2504,8 @@ int main(void)
     reverse_iterator_tests();
     reverse_iterator_with_ft_vector();
     vector_tests();
+
+    system("leaks test.out");
+
     return 0;
 }
