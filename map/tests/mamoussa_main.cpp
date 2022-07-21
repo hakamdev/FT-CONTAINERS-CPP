@@ -2287,5 +2287,7 @@ int main()
     TEST_CASE(testNonMemberSwap);
     std::cout << std::endl;
 
+    system("leaks test.out");
+
     return 0;
 }
