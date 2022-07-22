@@ -6,7 +6,7 @@
 #    By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/06 23:17:59 by ehakam            #+#    #+#              #
-#    Updated: 2022/07/19 19:14:58 by ehakam           ###   ########.fr        #
+#    Updated: 2022/07/22 17:13:33 by ehakam           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 SRC	= tests/mamoussa_main.cpp
 NAME= test.out
-FLGS= -Wall -Wextra -Werror #-fsanitize=address
+FLGS= -Wall -Wextra -Werror --std=c++98 #-fsanitize=address
 
 all: $(NAME)
 

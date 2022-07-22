@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/22 00:53:41 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/22 17:15:07 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ namespace ft
             typedef typename allocator_type::pointer				pointer;
             typedef typename allocator_type::const_pointer			const_pointer;
 			typedef typename tree::node_pointer						node_pointer;
-			typedef typename tree::const_node_pointer				const_node_pointer;
 			typedef ft::bidir_iterator<tree, node_pointer>   		iterator;
 			typedef ft::bidir_iterator<tree, node_pointer>			const_iterator;
 			typedef ft::rbidir_iterator<iterator>					reverse_iterator;
