@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/19 17:39:27 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/22 00:53:41 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ namespace ft
 	template < typename Key,                                     		// map::key_type
            typename T,                                       			// map::mapped_type
            typename Compare = std::less<Key>,                     		// map::key_compare
-           typename Alloc = std::allocator<ft::pair<const Key,T> >    // map::allocator_type
+           typename Alloc = std::allocator<ft::pair<const Key,T> >      // map::allocator_type
            >
 	class map {
 		public:
@@ -57,6 +57,10 @@ namespace ft
 			tree				_tree;
 			key_compare			_comp;
 			value_compare		_v_comp;
+
+			void _print() {
+				_tree.printTree();
+			}
 
 		public:
 			explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
@@ -261,12 +265,6 @@ namespace ft
 				}
 				return ft::make_pair(lbi++, lbi);
 			}
-
-			////// TODO: TEMPORARY
-			void print() {
-				_tree.printTree();
-			}
-	
 	};
 
 	template <typename Key, typename T, typename Compare, typename Alloc>

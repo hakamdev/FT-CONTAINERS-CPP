@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 22:54:07 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/21 15:16:13 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/22 01:06:07 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ namespace ft
 			}
 
 			node_pointer past_end() const {
-				return _past_end;
+				return this->_past_end;
 			}
 
 			// Overloaded operators

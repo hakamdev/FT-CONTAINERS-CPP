@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/21 00:28:08 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/22 00:56:36 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,32 +24,31 @@
 
 namespace ft
 {
-	template < typename Key,                                     		// map::key_type
-           typename T,                                       			// map::mapped_type
-           typename Compare = std::less<Key>,                     		// map::key_compare
-           typename Alloc = std::allocator<ft::pair<const Key, T> >,    // map::allocator_type
-		   typename NodeAlloc = std::allocator<node<const Key, T, Alloc> >
+	template < typename Key,											// map::key_type
+           typename T,													// map::mapped_type
+           typename Compare = std::less<Key>,							// map::key_compare
+           typename Alloc = std::allocator<ft::pair<const Key, T> >		// map::allocator_type
            >
 	class avl_tree {
 		public:
-			typedef std::bidirectional_iterator_tag				iterator_category;
-			typedef ft::pair<const Key, T>						value_type;
-			typedef Key											key_type;
-			typedef T											mapped_type;
-			typedef Alloc										allocator_type;
-			typedef NodeAlloc									node_allocator_type;
-			typedef Compare										key_compare;
-			typedef node<const Key, T, Alloc>					node_type;
-			typedef typename allocator_type::pointer			pointer;
-			typedef typename allocator_type::const_pointer		const_pointer;
-			typedef typename allocator_type::reference			reference;
-			typedef typename node_allocator_type::pointer		node_pointer;
-			typedef typename node_allocator_type::const_pointer	const_node_pointer;
+			typedef std::bidirectional_iterator_tag										iterator_category;
+			typedef ft::pair<const Key, T>												value_type;
+			typedef Key																	key_type;
+			typedef T																	mapped_type;
+			typedef Compare																key_compare;
+			typedef node<const Key, T, Alloc>											node_type;
+			typedef Alloc																allocator_type;
+			typedef typename Alloc::template rebind<node<const Key, T, Alloc> >::other	node_allocator_type;
+			typedef typename allocator_type::pointer									pointer;
+			typedef typename allocator_type::const_pointer								const_pointer;
+			typedef typename allocator_type::reference									reference;
+			typedef typename node_allocator_type::pointer								node_pointer;
+			typedef typename node_allocator_type::const_pointer							const_node_pointer;
 
-			typedef ft::bidir_iterator<avl_tree<Key, T, Compare, Alloc, NodeAlloc>, node_pointer>	iterator;
-			typedef ft::bidir_iterator<avl_tree<Key, T, Compare, Alloc, NodeAlloc>, node_pointer>	const_iterator;
+			typedef ft::bidir_iterator<avl_tree<Key, T, Compare, allocator_type>, node_pointer>	iterator;
+			typedef ft::bidir_iterator<avl_tree<Key, T, Compare, allocator_type>, node_pointer>	const_iterator;
 
-			typedef size_t										size_type;
+			typedef size_t																size_type;
 
 		private:
 			node_pointer		_root;
@@ -352,7 +351,7 @@ namespace ft
 			}
 
 		public:
-			// Constructors.
+			// constructors/destructor.
 			avl_tree(const key_compare& comp = key_compare(),
 					const allocator_type& alloc = allocator_type(),
 					const node_allocator_type& node_alloc = node_allocator_type()) : 
@@ -377,7 +376,7 @@ namespace ft
 				delete_all();
 			}
 
-			// Public methods for AVL Tree operations.
+			// public methods for AVL Tree operations.
 			node_pointer find(const key_type& key) {
 				if (empty()) return NULL;
 				return _find(_root, key);
@@ -577,35 +576,8 @@ namespace ft
 				}
 			}
 
-			static node_pointer make_node(const value_type& val = value_type()) {
-				allocator_type alloc;
-				node_allocator_type node_alloc;
-				node_pointer _ptr = NULL;
-				try {
-					_ptr = node_alloc.allocate(1);
-					node_alloc.construct(_ptr, node_type(val, alloc));
-				} catch (std::exception& e) {
-					std::cerr << e.what() << std::endl;
-					exit(1);
-				}
-				return (_ptr);
-			}
-
-			static void destroy_node(node_pointer node) {
-				node_allocator_type _node_alloc;
-				_node_alloc.destroy(node);
-				_node_alloc.deallocate(node, 1);
-			}
-
-			static void destroy_node(const_node_pointer node) {
-				node_allocator_type _node_alloc;
-				_node_alloc.destroy(node);
-				_node_alloc.deallocate(node, 1);
-			}
-
 			// Helper functions.
 			void printTree() {
-				// std::cout << _root->content->first << std::endl;
 				std::cout << std::endl;
 				_printTree(_root, "", false);
 			}
