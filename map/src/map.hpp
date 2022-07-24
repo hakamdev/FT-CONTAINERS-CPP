@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:45:19 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/22 17:15:07 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/24 03:19:16 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,9 @@ namespace ft
             typedef typename allocator_type::pointer				pointer;
             typedef typename allocator_type::const_pointer			const_pointer;
 			typedef typename tree::node_pointer						node_pointer;
+			typedef typename tree::const_node_pointer				const_node_pointer;
 			typedef ft::bidir_iterator<tree, node_pointer>   		iterator;
-			typedef ft::bidir_iterator<tree, node_pointer>			const_iterator;
+			typedef ft::bidir_iterator<tree, const_node_pointer>	const_iterator;
 			typedef ft::rbidir_iterator<iterator>					reverse_iterator;
 			typedef ft::rbidir_iterator<const_iterator>				const_reverse_iterator;
 			typedef size_t											size_type;
@@ -59,6 +60,14 @@ namespace ft
 
 			void _print() {
 				_tree.printTree();
+			}
+
+			iterator _make_iterator(node_pointer p) {
+				return iterator(p, _tree);
+			}
+
+			const_iterator _make_iterator(const_node_pointer p) const {
+				return const_iterator(p, _tree);
 			}
 
 		public:
@@ -88,19 +97,19 @@ namespace ft
 			}
 
 			iterator begin() {
-				return _tree.begin();
+				return _make_iterator(_tree.min_node());
 			}
 
 			const_iterator begin() const {
-				return _tree.begin();
+				return _make_iterator(_tree.min_node());
 			}
 
 			iterator end() {
-				return _tree.end();
+				return _make_iterator(NULL);
 			}
 
 			const_iterator end() const {
-				return _tree.end();
+				return _make_iterator(NULL);
 			}
 
 			reverse_iterator rbegin() {
@@ -146,7 +155,7 @@ namespace ft
 			ft::pair<iterator, bool> insert(const value_type& val) {
 				size_type old_size = _tree.size();
 				node_pointer _p = _tree.insert(val);
-				return ft::make_pair(_tree.make_iterator(_p), _tree.size() > old_size);
+				return ft::make_pair(_make_iterator(_p), _tree.size() > old_size);
 			}
 
 			iterator insert(iterator position, const value_type& val) {
@@ -158,7 +167,7 @@ namespace ft
 				} else {
 					p = _tree.insert(position.base(), val);
 				}
-				return _tree.make_iterator(p);
+				return _make_iterator(p);
 			}
 
 			template <class InputIterator>
@@ -216,12 +225,12 @@ namespace ft
 
 			iterator find(const key_type& k) {
 				node_pointer found = _tree.find(k);
-				return _tree.make_iterator(found);
+				return _make_iterator(found);
 			}
 
 			const_iterator find(const key_type& k) const {
 				node_pointer found = _tree.const_find(k);
-				return _tree.make_iterator(found);
+				return _make_iterator(found);
 			}
 
 			size_type count(const key_type& k) const {
@@ -231,28 +240,28 @@ namespace ft
 
 			iterator lower_bound(const key_type& k) {
 				node_pointer lbp = _tree.lower_bound(k);
-				return _tree.make_iterator(lbp);
+				return _make_iterator(lbp);
 			}
 
 			const_iterator lower_bound (const key_type& k) const {
-				node_pointer lbp = _tree.lower_bound(k);
-				return _tree.make_iterator(lbp);
+				const_node_pointer lbp = _tree.lower_bound(k);
+				return _make_iterator(lbp);
 			}
 
 			iterator upper_bound(const key_type& k) {
 				node_pointer ubp = _tree.upper_bound(k);
-				return _tree.make_iterator(ubp);
+				return _make_iterator(ubp);
 			}
 
 			const_iterator upper_bound(const key_type& k) const {
-				node_pointer ubp = _tree.upper_bound(k);
-				return _tree.make_iterator(ubp);
+				const_node_pointer ubp = _tree.upper_bound(k);
+				return _make_iterator(ubp);
 			}
 
 			ft::pair<iterator, iterator> equal_range(const key_type& k) {
 				iterator lbi = lower_bound(k);
 				if (_comp(k, lbi->first)) {
-					return ft::make_pair(lbi, _tree.make_iterator(lbi.base()));
+					return ft::make_pair(lbi, _make_iterator(lbi.base()));
 				}
 				return ft::make_pair(lbi++, lbi);
 			}
@@ -260,7 +269,7 @@ namespace ft
 			ft::pair<const_iterator, const_iterator> equal_range(const key_type& k) const {
 				const_iterator lbi = lower_bound(k);
 				if (_comp(k, lbi->first)) {
-					return ft::make_pair(lbi, _tree.make_iterator(lbi.base()));
+					return ft::make_pair(lbi, _make_iterator(lbi.base()));
 				}
 				return ft::make_pair(lbi++, lbi);
 			}
@@ -269,11 +278,10 @@ namespace ft
 	template <typename Key, typename T, typename Compare, typename Alloc>
 	class map<Key, T, Compare, Alloc>::value_compare : std::binary_function<value_type, value_type, bool>
 	{
-		friend class map;
 		protected:
 			Compare _comp;
-			value_compare (Compare c) : _comp(c) {}
 		public:
+			value_compare (Compare c) : _comp(c) {}
 			bool operator() (const value_type& x, const value_type& y) const
 			{
 				return _comp(x.first, y.first);

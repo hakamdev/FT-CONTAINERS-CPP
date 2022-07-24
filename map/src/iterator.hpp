@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:48:11 by ehakam            #+#    #+#             */
-/*   Updated: 2022/06/12 21:46:18 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/24 03:22:37 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 namespace ft {
 	// iterator base class
-	// Used sturct because members are public by default.
+	// used sturct because members are public by default.
 	template <typename Category,
 			typename T,
 			typename Distance = ptrdiff_t,

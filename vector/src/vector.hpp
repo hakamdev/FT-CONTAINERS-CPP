@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 00:22:11 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/21 20:44:19 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/24 03:27:04 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,14 @@ namespace ft
                     exit(1);
                 }
 
-                // Copy data and delete
+                // copy data and delete
                 size_type i = 0;
                 for (; i < size(); ++i) {
                     this->_alloc.construct(&_new_begin[i], this-> _begin[i]);
                     this->_alloc.destroy(&this->_begin[i]);
                 }
 
-                // Clean old data
+                // clean old data
                 this->_alloc.deallocate(this->_begin, this->_capacity);
 
                 // reassign _begin & _end & _capacity
@@ -233,15 +233,15 @@ namespace ft
                 if (_diff < 0) throw std::length_error("length between first and last is a negative value");
 
                 size_type   _dist = static_cast<size_type>(_diff);
-                // Clear previous content
+                // clear previous content
                 clear();
 
-                // Reallocate if necessary
+                // reallocate if necessary
                 if (_dist > this->_capacity) {
                     reserve(_dist);
                 }
 
-                // Copy new content from first -> last
+                // copy new content from first -> last
                 size_type i = 0;
                 while (first != last)
                 {
@@ -253,15 +253,15 @@ namespace ft
             }
 
 			void assign(size_type n, const value_type& val) {
-                // Clear previous content
+                // clear previous content
                 clear();
 
-                // Reallocate if necessary
+                // reallocate if necessary
                 if (n > this->_capacity) {
                     reserve(n);
                 }
 
-                // Copy new content from first -> last
+                // copy new content from first -> last
                 size_type i = 0;
                 while (i < n) {
                     _alloc.construct(this->_begin + i, val);

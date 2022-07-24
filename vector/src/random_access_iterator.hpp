@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:48:32 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/07 03:40:06 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/24 03:25:31 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ namespace ft
 			iterator_type _base;
 
 		public:
-			// Constructors / Destructor
+			// constructors / destructor
 			racc_iterator( void ) : _base() {}
 			racc_iterator( iterator_type base ) : _base(base) {}
 			racc_iterator( racc_iterator<iterator_type> const & copy ) { *this = copy; }
@@ -48,7 +48,7 @@ namespace ft
 			~racc_iterator() {}
 			iterator_type base() const { return _base; }
 
-			// Overloaded operators
+			// overloaded operators
 			bool operator == ( racc_iterator const & other ) {
 				return (this->_base == other._base);
 			}

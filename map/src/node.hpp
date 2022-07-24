@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/06 16:53:39 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/24 03:23:07 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ namespace ft
            >
 	struct node {
 		public:
-			// Memeber types
+			// memeber types
 			typedef ft::pair<const Key, T>				value_type;
 			typedef Key									key_type;
 			typedef T									mapped_type;
@@ -39,7 +39,7 @@ namespace ft
 			allocator_type		_alloc;
 
 		public:
-			// Member variables
+			// member variables
 			pointer				content;
 			node_type			*left;
 			node_type			*right;

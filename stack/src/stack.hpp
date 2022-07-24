@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 23:05:18 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/07 04:25:55 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/22 18:02:16 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ namespace ft
 			typedef Container									container_type;
 			typedef size_t										size_type;
 
-		//protected:
+		protected:
 			container_type c;
 
 		public:

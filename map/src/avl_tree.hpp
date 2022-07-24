@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 18:21:45 by ehakam            #+#    #+#             */
-/*   Updated: 2022/07/22 00:56:36 by ehakam           ###   ########.fr       */
+/*   Updated: 2022/07/24 03:21:56 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,6 @@ namespace ft
 			typedef typename allocator_type::reference									reference;
 			typedef typename node_allocator_type::pointer								node_pointer;
 			typedef typename node_allocator_type::const_pointer							const_node_pointer;
-
-			typedef ft::bidir_iterator<avl_tree<Key, T, Compare, allocator_type>, node_pointer>	iterator;
-			typedef ft::bidir_iterator<avl_tree<Key, T, Compare, allocator_type>, node_pointer>	const_iterator;
-
 			typedef size_t																size_type;
 
 		private:
@@ -57,7 +53,7 @@ namespace ft
 			key_compare			_comp;
 			size_type			_size;
 
-			// Private helping methods (implementation details).
+			// private helping methods (implementation details).
 			void _printTree(node_pointer root, std::string indent, bool last) {
 				if (root != NULL) {
 					std::cout << indent;
@@ -97,7 +93,7 @@ namespace ft
 					*where = parent;
 				}
 
-				// Calculate node hieght for balancing.
+				// calculate node hieght for balancing.
 				_calculate_height(parent);
 
 				parent = _balance_tree(parent);
@@ -131,7 +127,7 @@ namespace ft
 			node_pointer _delete_found_node(node_pointer node) {
 				// key found, now start deletion
 				if (node->left == NULL || node->right == NULL) {
-					// Now we replace parent by left/right depend. on which is not NULL
+					// now we replace parent by left/right depend. on which is not NULL
 					node_pointer new_node = node->left != NULL ? node->left : node->right;
 					// destroy the node
 					_node_alloc.destroy(node);
@@ -139,10 +135,10 @@ namespace ft
 					// asign the new parent left/right/NULL
 					node = new_node;
 				} else {
-					// Both left and right are NOT NULL
-					// Find max_node in the left subtree
+					// both left and right are NOT NULL
+					// find max_node in the left subtree
 					node_pointer max = max_node(node->left);
-					// Disconnect max from its parent
+					// disconnect max from its parent
 					if (max == node->left)
 						max->parent->left = max->left;
 					else
@@ -256,7 +252,7 @@ namespace ft
 			}
 
 			void _calculate_height(node_pointer node) {
-				// Calculate node hieght for balancing.
+				// calculate node hieght for balancing.
 				node->height = std::max(_height(node->left), _height(node->right)) + 1;
 			}
 
@@ -431,12 +427,22 @@ namespace ft
 				_root = _delete_all(_root);
 			}
 
-			node_pointer min_node() const {
+			node_pointer min_node() {
 				if (_root == NULL) return NULL;
 				return avl_tree::min_node(_root);
 			}
 
-			node_pointer max_node() const {
+			const_node_pointer min_node() const {
+				if (_root == NULL) return NULL;
+				return avl_tree::min_node(_root);
+			}
+
+			node_pointer max_node() {
+				if (_root == NULL) return NULL;
+				return avl_tree::max_node(_root);
+			}
+
+			const_node_pointer max_node() const {
 				if (_root == NULL) return NULL;
 				return avl_tree::max_node(_root);
 			}
@@ -462,9 +468,9 @@ namespace ft
 				return start;
 			}
 
-			node_pointer lower_bound(const key_type& k) const {
+			const_node_pointer lower_bound(const key_type& k) const {
 				if (empty()) return NULL;
-				node_pointer start = min_node();
+				const_node_pointer start = min_node();
 				while (start != NULL && _comp(start->content->first, k)) {
 					start = next_node(start);
 				}
@@ -482,39 +488,15 @@ namespace ft
 				return next_node(start);
 			}
 
-			node_pointer upper_bound(const key_type& k) const {
+			const_node_pointer upper_bound(const key_type& k) const {
 				if (empty()) return NULL;
-				node_pointer start = min_node();
+				const_node_pointer start = min_node();
 				while (start != NULL && _comp(start->content->first, k)) {
 					start = next_node(start);
 				}
 				if (start == NULL) return NULL;
 				if (_comp(k, start->content->first)) return start;
 				return next_node(start);
-			}
-
-			iterator begin() {
-				return iterator(this->min_node(), &_root);
-			}
-
-			const_iterator begin() const {
-				return const_iterator(this->min_node(), &_root);
-			}
-
-			iterator end() {
-				return iterator(NULL, &_root);
-			}
-
-			const_iterator end() const {
-				return const_iterator(NULL, &_root);
-			}
-
-			iterator make_iterator(node_pointer p) {
-				return iterator(p, &_root);
-			}
-
-			const_iterator make_iterator(node_pointer p) const {
-				return const_iterator(p, &_root);
 			}
 
 			void swap(avl_tree& rhs) {
@@ -537,8 +519,13 @@ namespace ft
 				this->_size = temp_size;
 			}
 
-			// General static functions to manipulate nodes.
+			// general static functions to manipulate nodes.
 			static node_pointer min_node(node_pointer parent) {
+				if (parent->left == NULL) return parent;
+				return min_node(parent->left);
+			}
+
+			static const_node_pointer min_node(const_node_pointer parent) {
 				if (parent->left == NULL) return parent;
 				return min_node(parent->left);
 			}
@@ -548,12 +535,30 @@ namespace ft
 				return max_node(parent->right);
 			}
 
+			static const_node_pointer max_node(const_node_pointer parent) {
+				if (parent->right == NULL) return parent;
+				return max_node(parent->right);
+			}
+
 			static node_pointer next_node(node_pointer node) {
 				key_compare	_compare = key_compare();
 
 				if (node->right == NULL) {
 					node_pointer curr = node->parent;
-					// std::cerr << "NEXT: RIGHT == NULL" << std::endl;
+					while (curr != NULL && _compare(curr->content->first, node->content->first)) {
+						curr = curr->parent;
+					}
+					return curr;
+				} else {
+					return min_node(node->right);
+				}
+			}
+
+			static const_node_pointer next_node(const_node_pointer node) {
+				key_compare	_compare = key_compare();
+
+				if (node->right == NULL) {
+					node_pointer curr = node->parent;
 					while (curr != NULL && _compare(curr->content->first, node->content->first)) {
 						curr = curr->parent;
 					}
@@ -564,7 +569,7 @@ namespace ft
 			}
 
 			static node_pointer prev_node(node_pointer node) {
-				key_compare	_compare;
+				key_compare	_compare = key_compare();
 				if (node->left == NULL) {
 					node_pointer curr = node->parent;
 					while (curr != NULL && _compare(node->content->first, curr->content->first)) {
@@ -576,7 +581,21 @@ namespace ft
 				}
 			}
 
-			// Helper functions.
+			static const_node_pointer prev_node(const_node_pointer node) {
+				key_compare	_compare = key_compare();
+	
+				if (node->left == NULL) {
+					node_pointer curr = node->parent;
+					while (curr != NULL && _compare(node->content->first, curr->content->first)) {
+						curr = curr->parent;
+					}
+					return curr;
+				} else {
+					return max_node(node->left);
+				}
+			}
+
+			// helper functions.
 			void printTree() {
 				std::cout << std::endl;
 				_printTree(_root, "", false);
